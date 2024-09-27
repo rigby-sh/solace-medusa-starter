@@ -43,7 +43,7 @@ const AddAddress = ({ region }: { region: HttpTypes.StoreRegion }) => {
   return (
     <>
       <button
-        className="flex h-full min-h-[220px] w-full flex-col justify-between rounded-rounded border border-ui-border-base p-5"
+        className="rounded-rounded flex h-full min-h-[220px] w-full flex-col justify-between border border-ui-border-base p-5"
         onClick={open}
         data-testid="add-address-button"
       >

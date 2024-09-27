@@ -6,11 +6,12 @@ import { usePathname } from 'next/navigation'
 import { Popover, Transition } from '@headlessui/react'
 import { convertToLocale } from '@lib/util/money'
 import { HttpTypes } from '@medusajs/types'
-import { Button } from '@medusajs/ui'
+import { Button } from '@modules/common/components/button'
 import DeleteButton from '@modules/common/components/delete-button'
 import LineItemOptions from '@modules/common/components/line-item-options'
 import LineItemPrice from '@modules/common/components/line-item-price'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
+import { BagIcon } from '@modules/common/icons/bag'
 import Thumbnail from '@modules/products/components/thumbnail'
 
 const CartDropdown = ({
@@ -76,12 +77,13 @@ const CartDropdown = ({
       onMouseLeave={close}
     >
       <Popover className="relative h-full">
-        <Popover.Button className="h-full">
-          <LocalizedClientLink
-            className="hover:text-ui-fg-base"
-            href="/cart"
-            data-testid="nav-cart-link"
-          >{`Cart (${totalItems})`}</LocalizedClientLink>
+        <Popover.Button className="rounded-full bg-transparent !p-2 text-action-primary hover:bg-fg-secondary-hover hover:text-action-primary-hover active:bg-fg-secondary-pressed active:text-action-primary-pressed xsmall:!p-3.5">
+          <LocalizedClientLink href="/cart" data-testid="nav-cart-link">
+            <div className="relative">
+              <BagIcon />
+              <span className="absolute left-[14px] top-[-12px] flex h-4 w-4 items-center justify-center rounded-full bg-fg-primary-negative text-[10px] text-white xsmall:left-[18px] xsmall:top-[-16px] xsmall:h-5 xsmall:w-5 xsmall:text-sm">{`${totalItems}`}</span>
+            </div>
+          </LocalizedClientLink>
         </Popover.Button>
         <Transition
           show={cartDropdownOpen}
@@ -93,9 +95,10 @@ const CartDropdown = ({
           leaveFrom="opacity-100 translate-y-0"
           leaveTo="opacity-0 translate-y-1"
         >
+          {/* TODO: For style refactor */}
           <Popover.Panel
             static
-            className="absolute right-0 top-[calc(100%+1px)] hidden w-[420px] border-x border-b border-gray-200 bg-white text-ui-fg-base small:block"
+            className="absolute right-0 top-[calc(100%+17px)] hidden w-[420px] border-x border-b border-gray-200 bg-white text-ui-fg-base small:block"
             data-testid="nav-cart-dropdown"
           >
             <div className="flex items-center justify-center p-4">
@@ -184,11 +187,7 @@ const CartDropdown = ({
                     </span>
                   </div>
                   <LocalizedClientLink href="/cart" passHref>
-                    <Button
-                      className="w-full"
-                      size="large"
-                      data-testid="go-to-cart-button"
-                    >
+                    <Button className="w-full" data-testid="go-to-cart-button">
                       Go to cart
                     </Button>
                   </LocalizedClientLink>

@@ -103,7 +103,7 @@ const Shipping: React.FC<ShippingProps> = ({
                     value={option.id}
                     data-testid="delivery-option-radio"
                     className={clx(
-                      'text-small-regular mb-2 flex cursor-pointer items-center justify-between rounded-rounded border px-8 py-4 hover:shadow-borders-interactive-with-active',
+                      'text-small-regular rounded-rounded mb-2 flex cursor-pointer items-center justify-between border px-8 py-4 hover:shadow-borders-interactive-with-active',
                       {
                         'border-ui-border-interactive':
                           option.id === selectedShippingMethod?.id,

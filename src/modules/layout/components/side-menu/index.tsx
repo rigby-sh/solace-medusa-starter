@@ -1,109 +1,170 @@
 'use client'
 
-import { Fragment } from 'react'
+import { useMemo, useState } from 'react'
 
-import { Popover, Transition } from '@headlessui/react'
-import { ArrowRightMini, XMark } from '@medusajs/icons'
-import { HttpTypes } from '@medusajs/types'
-import { clx, Text, useToggleState } from '@medusajs/ui'
+import { createNavigation } from '@lib/constants'
+import { Box } from '@modules/common/components/box'
+import { Button } from '@modules/common/components/button'
+import {
+  Dialog,
+  DialogBody,
+  DialogClose,
+  DialogContent,
+  DialogHeader,
+  DialogOverlay,
+  DialogPortal,
+  DialogTrigger,
+} from '@modules/common/components/dialog'
+import { Heading } from '@modules/common/components/heading'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
+import { ArrowLeftIcon } from '@modules/common/icons/arrow-left'
+import { BarsIcon } from '@modules/common/icons/bars'
+import { ChevronRightIcon } from '@modules/common/icons/chevron-right'
 
-import CountrySelect from '../country-select'
-
-const SideMenuItems = {
-  Home: '/',
-  Store: '/shop',
-  Search: '/search',
-  Account: '/account',
-  Cart: '/cart',
+interface CategoryItem {
+  name: string
+  handle: string
 }
 
-const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
-  const toggleState = useToggleState()
+const SideMenu = (props: any) => {
+  const [categoryStack, setCategoryStack] = useState<CategoryItem[]>([])
+  const currentCategory = categoryStack[categoryStack.length - 1] || null
+  const [isOpen, setIsOpen] = useState(false)
+
+  const navigation = useMemo(
+    () => createNavigation(props.productCategories, props.collections),
+    [props.productCategories, props.collections]
+  )
+
+  const handleCategoryClick = (category: CategoryItem) => {
+    setCategoryStack([
+      ...categoryStack,
+      { name: category.name, handle: category.handle },
+    ])
+  }
+
+  const handleBack = () => {
+    setCategoryStack(categoryStack.slice(0, -1))
+  }
+
+  const handleOpenDialogChange = (open: boolean) => {
+    setIsOpen(open)
+
+    if (!open) {
+      setCategoryStack([])
+    }
+  }
+
+  const renderCategories = (categories: any[]) => {
+    return categories.map((item, index) => {
+      const hasChildren =
+        item.category_children && item.category_children.length > 0
+
+      return (
+        <Button
+          key={index}
+          variant="ghost"
+          className="w-full justify-between"
+          onClick={
+            hasChildren
+              ? () =>
+                  handleCategoryClick({ name: item.name, handle: item.handle })
+              : () => handleOpenDialogChange(false)
+          }
+          asChild={!hasChildren}
+        >
+          {hasChildren ? (
+            <>
+              <span className="flex items-center gap-4">
+                {item.icon && item.icon}
+                {item.name}
+              </span>
+              <ChevronRightIcon className="h-5 w-5" />
+            </>
+          ) : (
+            <LocalizedClientLink href={item.handle}>
+              <span className="flex items-center gap-4">
+                {item.icon && item.icon}
+                {item.name}
+              </span>
+            </LocalizedClientLink>
+          )}
+        </Button>
+      )
+    })
+  }
+
+  const getActiveCategories = () => {
+    let currentCategories = navigation
+
+    for (const category of categoryStack) {
+      const found = currentCategories.find(
+        (item) => item.name === category.name
+      )
+      if (found?.category_children) {
+        currentCategories = found.category_children.map((category) => ({
+          ...category,
+          icon: null,
+        }))
+      } else {
+        break
+      }
+    }
+    return currentCategories
+  }
 
   return (
-    <div className="h-full">
-      <div className="flex h-full items-center">
-        <Popover className="flex h-full">
-          {({ open, close }) => (
-            <>
-              <div className="relative flex h-full">
-                <Popover.Button
-                  data-testid="nav-menu-button"
-                  className="relative flex h-full items-center transition-all duration-200 ease-out hover:text-ui-fg-base focus:outline-none"
+    <Dialog open={isOpen} onOpenChange={handleOpenDialogChange}>
+      <DialogTrigger>
+        <Button
+          variant="icon"
+          withIcon
+          className="flex h-auto !p-2.5 xsmall:!p-4 large:hidden"
+        >
+          <BarsIcon />
+        </Button>
+      </DialogTrigger>
+      <DialogPortal>
+        <DialogOverlay />
+        <DialogContent className="!max-h-full !max-w-full !rounded-none">
+          <DialogHeader className="flex items-center gap-4">
+            {currentCategory && (
+              <Button variant="tonal" withIcon size="sm" onClick={handleBack}>
+                <ArrowLeftIcon className="h-5 w-5" />
+              </Button>
+            )}
+            <Heading
+              as="h3"
+              className="text-primary flex text-xl small:text-2xl"
+            >
+              {currentCategory?.name || 'Menu'}
+            </Heading>
+          </DialogHeader>
+          <DialogBody>
+            <Box className="flex flex-col">
+              {currentCategory && (
+                <Button
+                  variant="tonal"
+                  className="mb-4 w-max"
+                  onClick={() => handleOpenDialogChange(false)}
+                  asChild
                 >
-                  Menu
-                </Popover.Button>
-              </div>
-
-              <Transition
-                show={open}
-                as={Fragment}
-                enter="transition ease-out duration-150"
-                enterFrom="opacity-0"
-                enterTo="opacity-100 backdrop-blur-2xl"
-                leave="transition ease-in duration-150"
-                leaveFrom="opacity-100 backdrop-blur-2xl"
-                leaveTo="opacity-0"
-              >
-                <Popover.Panel className="absolute inset-x-0 z-30 m-2 flex h-[calc(100vh-1rem)] w-full flex-col pr-4 text-sm text-ui-fg-on-color backdrop-blur-2xl sm:w-1/3 sm:min-w-min sm:pr-0 2xl:w-1/4">
-                  <div
-                    data-testid="nav-menu-popup"
-                    className="flex h-full flex-col justify-between rounded-rounded bg-[rgba(3,7,18,0.5)] p-6"
-                  >
-                    <div className="flex justify-end" id="xmark">
-                      <button data-testid="close-menu-button" onClick={close}>
-                        <XMark />
-                      </button>
-                    </div>
-                    <ul className="flex flex-col items-start justify-start gap-6">
-                      {Object.entries(SideMenuItems).map(([name, href]) => {
-                        return (
-                          <li key={name}>
-                            <LocalizedClientLink
-                              href={href}
-                              className="text-3xl leading-10 hover:text-ui-fg-disabled"
-                              onClick={close}
-                              data-testid={`${name.toLowerCase()}-link`}
-                            >
-                              {name}
-                            </LocalizedClientLink>
-                          </li>
-                        )
-                      })}
-                    </ul>
-                    <div className="flex flex-col gap-y-6">
-                      <div
-                        className="flex justify-between"
-                        onMouseEnter={toggleState.open}
-                        onMouseLeave={toggleState.close}
-                      >
-                        {regions && (
-                          <CountrySelect
-                            toggleState={toggleState}
-                            regions={regions}
-                          />
-                        )}
-                        <ArrowRightMini
-                          className={clx(
-                            'transition-transform duration-150',
-                            toggleState.state ? '-rotate-90' : ''
-                          )}
-                        />
-                      </div>
-                      <Text className="txt-compact-small flex justify-between">
-                        © {new Date().getFullYear()} Medusa Store. All rights
-                        reserved.
-                      </Text>
-                    </div>
-                  </div>
-                </Popover.Panel>
-              </Transition>
-            </>
-          )}
-        </Popover>
-      </div>
-    </div>
+                  <LocalizedClientLink href={`${currentCategory.handle}`}>
+                    Shop all{' '}
+                    {currentCategory.name === 'Shop' ||
+                    currentCategory.name === 'Collections'
+                      ? ''
+                      : currentCategory.name}
+                  </LocalizedClientLink>
+                </Button>
+              )}
+              {renderCategories(getActiveCategories())}
+            </Box>
+          </DialogBody>
+          <DialogClose />
+        </DialogContent>
+      </DialogPortal>
+    </Dialog>
   )
 }
 

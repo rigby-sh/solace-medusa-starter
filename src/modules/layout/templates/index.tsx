@@ -1,14 +1,15 @@
 import React from 'react'
 
 import Footer from '@modules/layout/templates/footer'
-import Nav from '@modules/layout/templates/nav'
+import NavWrapper from '@modules/layout/templates/nav'
 
 const Layout: React.FC<{
+  params: { countryCode: string }
   children: React.ReactNode
-}> = ({ children }) => {
+}> = ({ params, children }) => {
   return (
     <div>
-      <Nav />
+      <NavWrapper countryCode={params.countryCode} />
       <main className="relative">{children}</main>
       <Footer />
     </div>

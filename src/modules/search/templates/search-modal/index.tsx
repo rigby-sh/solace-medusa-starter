@@ -57,17 +57,17 @@ export default function SearchModal() {
   return (
     <div className="relative z-[75]">
       <div className="fixed inset-0 h-screen w-screen bg-opacity-75 opacity-100 backdrop-blur-md" />
-      <div className="fixed inset-0 px-5 sm:p-0" ref={searchRef}>
+      <div className="sm:p-0 fixed inset-0 px-5" ref={searchRef}>
         <div className="flex h-fit max-h-[75vh] w-full transform flex-col items-center justify-start bg-transparent p-5 text-left align-middle shadow-none transition-all">
           <InstantSearch
             indexName={SEARCH_INDEX_NAME}
             searchClient={searchClient}
           >
             <div
-              className="absolute flex h-fit w-full flex-col sm:w-fit"
+              className="sm:w-fit absolute flex h-fit w-full flex-col"
               data-testid="search-modal-container"
             >
-              <div className="flex w-full items-center gap-x-2 rounded-rounded bg-[rgba(3,7,18,0.5)] p-4 text-ui-fg-on-color backdrop-blur-2xl">
+              <div className="rounded-rounded flex w-full items-center gap-x-2 bg-[rgba(3,7,18,0.5)] p-4 text-ui-fg-on-color backdrop-blur-2xl">
                 <MagnifyingGlassMini />
                 <SearchBox />
               </div>

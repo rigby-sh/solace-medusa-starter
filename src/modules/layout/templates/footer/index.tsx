@@ -20,7 +20,7 @@ export default async function Footer() {
               Medusa Store
             </LocalizedClientLink>
           </div>
-          <div className="text-small-regular grid grid-cols-2 gap-10 sm:grid-cols-3 md:gap-x-16">
+          <div className="text-small-regular sm:grid-cols-3 md:gap-x-16 grid grid-cols-2 gap-10">
             {product_categories && product_categories?.length > 0 && (
               <div className="flex flex-col gap-y-2">
                 <span className="txt-ui-fg-base txt-small-plus">

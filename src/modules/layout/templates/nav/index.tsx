@@ -1,70 +1,40 @@
-import { Suspense } from 'react'
-
-import { listRegions } from '@lib/data/regions'
-import { StoreRegion } from '@medusajs/types'
+import { listCategories } from '@lib/data/categories'
+import { getCollectionsList } from '@lib/data/collections'
+import { Box } from '@modules/common/components/box'
+import { Container } from '@modules/common/components/container'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
-import CartButton from '@modules/layout/components/cart-button'
+import { SolaceLogo } from '@modules/common/icons/solace-logo'
 import SideMenu from '@modules/layout/components/side-menu'
 
-export default async function Nav() {
-  const regions = await listRegions().then((regions: StoreRegion[]) => regions)
+import NavActions from './nav-actions'
+import Navigation from './navigation'
+
+export default async function NavWrapper(props: any) {
+  const productCategories = await listCategories()
+  const { collections } = await getCollectionsList()
 
   return (
-    <div className="group sticky inset-x-0 top-0 z-50">
-      <header className="relative mx-auto h-16 border-b border-ui-border-base bg-white duration-200">
-        <nav className="content-container text-small-regular txt-xsmall-plus flex h-full w-full items-center justify-between text-ui-fg-subtle">
-          <div className="flex h-full flex-1 basis-0 items-center">
-            <div className="h-full">
-              <SideMenu regions={regions} />
-            </div>
-          </div>
-
-          <div className="flex h-full items-center">
-            <LocalizedClientLink
-              href="/"
-              className="txt-compact-xlarge-plus uppercase hover:text-ui-fg-base"
-              data-testid="nav-store-link"
-            >
-              Medusa Store
-            </LocalizedClientLink>
-          </div>
-
-          <div className="flex h-full flex-1 basis-0 items-center justify-end gap-x-6">
-            <div className="hidden h-full items-center gap-x-6 small:flex">
-              {process.env.NEXT_PUBLIC_FEATURE_SEARCH_ENABLED && (
-                <LocalizedClientLink
-                  className="hover:text-ui-fg-base"
-                  href="/search"
-                  scroll={false}
-                  data-testid="nav-search-link"
-                >
-                  Search
-                </LocalizedClientLink>
-              )}
-              <LocalizedClientLink
-                className="hover:text-ui-fg-base"
-                href="/account"
-                data-testid="nav-account-link"
-              >
-                Account
-              </LocalizedClientLink>
-            </div>
-            <Suspense
-              fallback={
-                <LocalizedClientLink
-                  className="flex gap-2 hover:text-ui-fg-base"
-                  href="/cart"
-                  data-testid="nav-cart-link"
-                >
-                  Cart (0)
-                </LocalizedClientLink>
-              }
-            >
-              <CartButton />
-            </Suspense>
-          </div>
-        </nav>
-      </header>
-    </div>
+    <Container
+      as="nav"
+      className="duration-400 sticky top-0 z-50 mx-0 flex max-w-full items-center justify-between border-b border-basic-primary bg-primary !py-0 transition-all ease-in-out medium:!px-14"
+    >
+      <Box className="flex large:hidden">
+        <SideMenu
+          productCategories={productCategories}
+          collections={collections}
+        />
+      </Box>
+      <Navigation
+        countryCode={props.countryCode}
+        productCategories={productCategories}
+        collections={collections}
+      />
+      <Box className="relative block medium:absolute medium:left-1/2 medium:top-1/2 medium:-translate-x-1/2 medium:-translate-y-1/2">
+        <LocalizedClientLink href="/">
+          <SolaceLogo className="h-6 medium:h-7" />
+        </LocalizedClientLink>
+      </Box>
+      <NavActions />
+    </Container>
   )
 }

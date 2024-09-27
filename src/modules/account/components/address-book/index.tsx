@@ -13,7 +13,7 @@ type AddressBookProps = {
 const AddressBook: React.FC<AddressBookProps> = ({ customer, region }) => {
   return (
     <div className="w-full">
-      <div className="mt-4 grid flex-1 grid-cols-1 gap-4 lg:grid-cols-2">
+      <div className="lg:grid-cols-2 mt-4 grid flex-1 grid-cols-1 gap-4">
         <AddAddress region={region} />
         {customer.addresses.map((address) => {
           return (

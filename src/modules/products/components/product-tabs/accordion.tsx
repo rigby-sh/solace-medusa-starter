@@ -46,7 +46,7 @@ const Item: React.FC<AccordionItemProps> = ({
     <AccordionPrimitive.Item
       {...props}
       className={clx(
-        'group border-t border-grey-20 last:mb-0 last:border-b',
+        'border-grey-20 group border-t last:mb-0 last:border-b',
         'py-3',
         className
       )}
@@ -87,10 +87,10 @@ Accordion.Item = Item
 
 const MorphingTrigger = () => {
   return (
-    <div className="active:text-violet-60 focus:border-violet-60 group relative rounded-rounded bg-transparent p-[6px] text-grey-90 hover:bg-grey-5 active:bg-grey-5 disabled:bg-transparent disabled:text-grey-30">
+    <div className="active:text-violet-60 focus:border-violet-60 rounded-rounded text-grey-90 hover:bg-grey-5 active:bg-grey-5 disabled:text-grey-30 group relative bg-transparent p-[6px] disabled:bg-transparent">
       <div className="h-5 w-5">
-        <span className="absolute inset-y-[31.75%] left-[48%] right-1/2 w-[1.5px] rounded-circle bg-grey-50 duration-300 group-radix-state-open:rotate-90" />
-        <span className="absolute inset-x-[31.75%] bottom-1/2 top-[48%] h-[1.5px] rounded-circle bg-grey-50 duration-300 group-radix-state-open:left-1/2 group-radix-state-open:right-1/2 group-radix-state-open:rotate-90" />
+        <span className="rounded-circle absolute inset-y-[31.75%] left-[48%] right-1/2 w-[1.5px] bg-grey-50 duration-300 group-radix-state-open:rotate-90" />
+        <span className="rounded-circle absolute inset-x-[31.75%] bottom-1/2 top-[48%] h-[1.5px] bg-grey-50 duration-300 group-radix-state-open:left-1/2 group-radix-state-open:right-1/2 group-radix-state-open:rotate-90" />
       </div>
     </div>
   )
