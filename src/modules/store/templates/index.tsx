@@ -2,11 +2,14 @@ import { Suspense } from 'react'
 
 import { StoreCollection } from '@medusajs/types'
 import { Box } from '@modules/common/components/box'
+import { Container } from '@modules/common/components/container'
+import { Heading } from '@modules/common/components/heading'
+import { Text } from '@modules/common/components/text'
 import SkeletonProductGrid from '@modules/skeletons/templates/skeleton-product-grid'
-import RefinementList from '@modules/store/components/refinement-list'
 import { SortOptions } from '@modules/store/components/refinement-list/sort-products'
 
 import ProductFilters from '../components/filters'
+import StoreBreadcrumbs from './breadcrumbs'
 import PaginatedProducts from './paginated-products'
 
 const StoreTemplate = ({
@@ -24,27 +27,26 @@ const StoreTemplate = ({
   const sort = sortBy || 'created_at'
 
   return (
-    <div
-      className="content-container flex flex-col py-6 small:flex-row small:items-start"
-      data-testid="category-container"
-    >
-      <RefinementList sortBy={sort} />
-      <div className="w-full">
-        <div className="text-2xl-semi mb-8">
-          <h1 data-testid="store-page-title">All products</h1>
-        </div>
+    <Container className="!py-8">
+      <Box className="mb-6 flex flex-col gap-4 small:mb-12">
+        <StoreBreadcrumbs />
+        <Heading as="h1" className="text-4xl text-basic-primary small:text-5xl">
+          All products
+        </Heading>
+        {/* TODO: Fetch products count after meilisearch connection */}
+        <Text className="text-md text-secondary">50 products</Text>
         <Box className="mb-12">
           <ProductFilters collections={collections} />
         </Box>
-        <Suspense fallback={<SkeletonProductGrid />}>
-          <PaginatedProducts
-            sortBy={sort}
-            page={pageNumber}
-            countryCode={countryCode}
-          />
-        </Suspense>
-      </div>
-    </div>
+      </Box>
+      <Suspense fallback={<SkeletonProductGrid />}>
+        <PaginatedProducts
+          sortBy={sort}
+          page={pageNumber}
+          countryCode={countryCode}
+        />
+      </Suspense>
+    </Container>
   )
 }
 

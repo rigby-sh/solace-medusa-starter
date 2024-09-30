@@ -2,11 +2,13 @@ import { Suspense } from 'react'
 import { notFound } from 'next/navigation'
 
 import { HttpTypes } from '@medusajs/types'
-import InteractiveLink from '@modules/common/components/interactive-link'
-import LocalizedClientLink from '@modules/common/components/localized-client-link'
+import { Box } from '@modules/common/components/box'
+import { Container } from '@modules/common/components/container'
+import { Heading } from '@modules/common/components/heading'
+import { Text } from '@modules/common/components/text'
 import SkeletonProductGrid from '@modules/skeletons/templates/skeleton-product-grid'
-import RefinementList from '@modules/store/components/refinement-list'
 import { SortOptions } from '@modules/store/components/refinement-list/sort-products'
+import StoreBreadcrumbs from '@modules/store/templates/breadcrumbs'
 import PaginatedProducts from '@modules/store/templates/paginated-products'
 
 export default function CategoryTemplate({
@@ -24,60 +26,26 @@ export default function CategoryTemplate({
   const sort = sortBy || 'created_at'
 
   const category = categories[categories.length - 1]
-  const parents = categories.slice(0, categories.length - 1)
 
   if (!category || !countryCode) notFound()
 
   return (
-    <div
-      className="content-container flex flex-col py-6 small:flex-row small:items-start"
-      data-testid="category-container"
-    >
-      <RefinementList sortBy={sort} data-testid="sort-by-container" />
-      <div className="w-full">
-        <div className="text-2xl-semi mb-8 flex flex-row gap-4">
-          {parents &&
-            parents.map((parent) => (
-              <span key={parent.id} className="text-ui-fg-subtle">
-                <LocalizedClientLink
-                  className="mr-4 hover:text-black"
-                  href={`/categories/${parent.handle}`}
-                  data-testid="sort-by-link"
-                >
-                  {parent.name}
-                </LocalizedClientLink>
-                /
-              </span>
-            ))}
-          <h1 data-testid="category-page-title">{category.name}</h1>
-        </div>
-        {category.description && (
-          <div className="text-base-regular mb-8">
-            <p>{category.description}</p>
-          </div>
-        )}
-        {category.category_children && (
-          <div className="text-base-large mb-8">
-            <ul className="grid grid-cols-1 gap-2">
-              {category.category_children?.map((c) => (
-                <li key={c.id}>
-                  <InteractiveLink href={`/categories/${c.handle}`}>
-                    {c.name}
-                  </InteractiveLink>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-        <Suspense fallback={<SkeletonProductGrid />}>
-          <PaginatedProducts
-            sortBy={sort}
-            page={pageNumber}
-            categoryId={category.id}
-            countryCode={countryCode}
-          />
-        </Suspense>
-      </div>
-    </div>
+    <Container className="!py-8">
+      <Box className="mb-6 flex flex-col gap-4 small:mb-12">
+        <StoreBreadcrumbs category={category} />
+        <Heading as="h1" className="text-4xl text-basic-primary small:text-5xl">
+          {category.name}
+        </Heading>
+        {/* TODO: Fetch products count after meilisearch connection */}
+        <Text className="text-md text-secondary">50 products</Text>
+      </Box>
+      <Suspense fallback={<SkeletonProductGrid />}>
+        <PaginatedProducts
+          sortBy={sort}
+          page={pageNumber}
+          countryCode={countryCode}
+        />
+      </Suspense>
+    </Container>
   )
 }

@@ -58,7 +58,7 @@ export const FilterItems: React.FC<CheckboxProps> = ({ items, param }) => {
 
           return (
             <DynamicTag
-              className="text-basic-primary flex items-center gap-2 p-1 pr-[90px]"
+              className="flex items-center gap-2 p-1 pr-[90px] text-basic-primary"
               href={href}
               key={item.handle}
             >
@@ -76,7 +76,7 @@ export const FilterItems: React.FC<CheckboxProps> = ({ items, param }) => {
               <Label
                 htmlFor={`${param}-${item.handle}`}
                 size="lg"
-                className={clsx('text-basic-primary cursor-pointer', {
+                className={clsx('cursor-pointer text-basic-primary', {
                   'text-disabled': item.disabled,
                 })}
               >

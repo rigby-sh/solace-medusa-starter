@@ -14,9 +14,9 @@ export const Checkbox = forwardRef<
   <RadixCheckbox.Root
     ref={ref}
     className={cn(
-      'data-[state=unchecked]:border-primary data-[state=checked]:bg-fg-primary data-[state=indeterminate]:bg-fg-primary data-[state=unchecked]:bg-secondary data-[state=checked]:hover:bg-fg-primary-hover data-[state=indeterminate]:hover:bg-fg-primary-hover data-[state=unchecked]:hover:bg-hover m-2.5 flex h-5 w-5 items-center justify-center data-[state=unchecked]:border',
+      'data-[state=unchecked]:border-primary m-2.5 flex h-5 w-5 items-center justify-center data-[state=unchecked]:border data-[state=checked]:bg-fg-primary data-[state=indeterminate]:bg-fg-primary data-[state=unchecked]:bg-secondary data-[state=checked]:hover:bg-fg-primary-hover data-[state=indeterminate]:hover:bg-fg-primary-hover data-[state=unchecked]:hover:bg-hover',
       {
-        '!bg-disabled cursor-not-allowed !border-none': props.disabled,
+        'cursor-not-allowed !border-none !bg-disabled': props.disabled,
       },
 
       className
@@ -45,13 +45,13 @@ const CheckboxIndicator = forwardRef<
   >
     {checked === 'indeterminate' ? (
       <MinusHeavyIcon
-        className={cn('text-static h-3.5 w-3.5', {
+        className={cn('h-3.5 w-3.5 text-static', {
           'text-disabled': props.disabled,
         })}
       />
     ) : (
       <TickHeavyIcon
-        className={cn('text-static h-3.5 w-3.5', {
+        className={cn('h-3.5 w-3.5 text-static', {
           'text-disabled': props.disabled,
         })}
       />

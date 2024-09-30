@@ -65,7 +65,7 @@ export const SelectLabel: React.FC<
   return (
     <Label
       className={cn(
-        'text-secondary text-sm font-medium',
+        'text-sm font-medium text-secondary',
         { 'text-negative': context?.error },
         className
       )}
@@ -90,7 +90,7 @@ export const SelectTrigger = React.forwardRef<HTMLButtonElement, TriggerProps>(
         ref={ref}
         onClick={() => context.setIsOpen(!context.isOpen)}
         className={cn(
-          'border-primary !bg-secondary text-md flex w-full items-center justify-between gap-2 border px-4 py-3 focus-within:ring-0 focus-within:ring-offset-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0',
+          'border-primary flex w-full items-center justify-between gap-2 border !bg-secondary px-4 py-3 text-md focus-within:ring-0 focus-within:ring-offset-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0',
           { 'border-negative focus:border-negative': context.error },
           { 'border-action-primary': context.isOpen },
           className
@@ -100,7 +100,7 @@ export const SelectTrigger = React.forwardRef<HTMLButtonElement, TriggerProps>(
         {children}
         <span className="flex items-center gap-2.5">
           <SelectPrimitive.Icon>
-            <ChevronDownIcon className="text-basic-primary h-5 w-5" />
+            <ChevronDownIcon className="h-5 w-5 text-basic-primary" />
           </SelectPrimitive.Icon>
         </span>
       </SelectPrimitive.Trigger>
@@ -140,7 +140,7 @@ export const SelectContent = ({
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
         className={cn(
-          'bg-primary border-action-primary z-10 max-h-[300px] w-max border py-2',
+          'z-10 max-h-[300px] w-max border border-action-primary bg-primary py-2',
           className
         )}
         position={position}
@@ -149,14 +149,14 @@ export const SelectContent = ({
         align={align}
         {...props}
       >
-        <SelectPrimitive.ScrollUpButton className="bg-primary text-secondary flex cursor-default items-center justify-center py-0.5">
-          <ChevronDownIcon className="text-basic-primary h-4.5 w-4.5 rotate-180" />
+        <SelectPrimitive.ScrollUpButton className="flex cursor-default items-center justify-center bg-primary py-0.5 text-secondary">
+          <ChevronDownIcon className="h-4.5 w-4.5 rotate-180 text-basic-primary" />
         </SelectPrimitive.ScrollUpButton>
         <SelectPrimitive.Viewport className="w-full">
           {children}
         </SelectPrimitive.Viewport>
-        <SelectPrimitive.ScrollDownButton className="bg-primary text-secondary flex h-auto cursor-default items-center justify-center py-0.5">
-          <ChevronDownIcon className="text-basic-primary h-4.5 w-4.5" />
+        <SelectPrimitive.ScrollDownButton className="flex h-auto cursor-default items-center justify-center bg-primary py-0.5 text-secondary">
+          <ChevronDownIcon className="h-4.5 w-4.5 text-basic-primary" />
         </SelectPrimitive.ScrollDownButton>
       </SelectPrimitive.Content>
     </SelectPrimitive.Portal>
@@ -174,7 +174,7 @@ export const SelectGroup = React.forwardRef<
   <SelectPrimitive.Group ref={ref}>
     {label && (
       <SelectPrimitive.Label
-        className={cn('text-basic-primary text-md w-full p-4', className)}
+        className={cn('w-full p-4 text-md text-basic-primary', className)}
       >
         {label}
       </SelectPrimitive.Label>
@@ -197,7 +197,7 @@ export const SelectItem = React.forwardRef<HTMLDivElement, ItemProps>(
         ref={ref}
         value={value}
         className={cn(
-          'text-basic-primary duration-250 text-md hover:bg-hover focus:bg-hover flex w-full cursor-pointer items-center justify-between gap-2 p-4 !outline-none transition-all ease-in-out',
+          'duration-250 flex w-full cursor-pointer items-center justify-between gap-2 p-4 text-md text-basic-primary !outline-none transition-all ease-in-out hover:bg-hover focus:bg-hover',
           className
         )}
         {...props}
@@ -224,7 +224,7 @@ export const SelectDescription: React.FC<
     <Text
       as="p"
       className={cn(
-        'text-secondary mt-2 text-sm font-medium',
+        'mt-2 text-sm font-medium text-secondary',
         { 'text-negative': context?.error },
         className
       )}
