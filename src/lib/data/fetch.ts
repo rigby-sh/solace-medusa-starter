@@ -1,4 +1,4 @@
-import { HeroBannerData } from 'types/strapi'
+import { BlogData, HeroBannerData } from 'types/strapi'
 
 export const fetchStrapiClient = async (
   endpoint: string,
@@ -27,6 +27,17 @@ export const getHeroBannerData = async (): Promise<HeroBannerData> => {
     `/api/homepage?populate[1]=HeroBanner&populate[2]=HeroBanner.CTA&populate[3]=HeroBanner.Image`,
     {
       next: { tags: ['hero-banner'] },
+    }
+  )
+
+  return res.json()
+}
+
+export const getExploreBlogData = async (): Promise<BlogData> => {
+  const res = await fetchStrapiClient(
+    `/api/blogs?populate[1]=FeaturedImage&sort=createdAt:desc&pagination[start]=0&pagination[limit]=3`,
+    {
+      next: { tags: ['explore-blog'] },
     }
   )
 

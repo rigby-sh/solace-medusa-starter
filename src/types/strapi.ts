@@ -17,3 +17,17 @@ export type HeroBannerData = {
     HeroBanner: HeroBanner
   }
 }
+
+export type BlogPost = {
+  Title: string
+  Slug: string
+  Content: string
+  FeaturedImage: {
+    url: string
+    alternativeText?: string
+  }
+}
+
+export type BlogData = {
+  data: BlogPost[]
+}

@@ -1,9 +1,10 @@
 import { Metadata } from 'next'
 
 import { getCollectionsWithProducts } from '@lib/data/collections'
-import { getHeroBannerData } from '@lib/data/fetch'
+import { getExploreBlogData, getHeroBannerData } from '@lib/data/fetch'
 import { getProductsList } from '@lib/data/products'
 import { getRegion } from '@lib/data/regions'
+import { ExploreBlog } from '@modules/home/components/explore-blog'
 import Hero from '@modules/home/components/hero'
 import { OurBestsellers } from '@modules/home/components/our-bestsellers'
 
@@ -34,6 +35,8 @@ export default async function Home({
     data: { HeroBanner },
   } = await getHeroBannerData()
 
+  const { data: posts } = await getExploreBlogData()
+
   if (!products || !collections || !region) {
     return null
   }
@@ -42,6 +45,7 @@ export default async function Home({
     <>
       <Hero data={HeroBanner} />
       <OurBestsellers products={products} />
+      <ExploreBlog posts={posts} />
     </>
   )
 }
