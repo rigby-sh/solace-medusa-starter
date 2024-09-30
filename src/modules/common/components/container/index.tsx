@@ -9,7 +9,7 @@ const containerVariants = cva({
     maxWidth: {
       sm: 'max-w-[600px]',
       md: 'max-w-[900px]',
-      lg: 'max-w-[1440px]',
+      lg: 'max-w-[1328px]',
       full: 'max-w-full',
     },
   },

@@ -4,8 +4,8 @@ import { HttpTypes } from '@medusajs/types'
 import { Text } from '@medusajs/ui'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
 
+import ProductPrice from '../product-tile/price'
 import Thumbnail from '../thumbnail'
-import PreviewPrice from './price'
 
 export default async function ProductPreview({
   product,
@@ -43,7 +43,7 @@ export default async function ProductPreview({
             {product.title}
           </Text>
           <div className="flex items-center gap-x-2">
-            {cheapestPrice && <PreviewPrice price={cheapestPrice} />}
+            {cheapestPrice && <ProductPrice price={cheapestPrice} />}
           </div>
         </div>
       </div>
