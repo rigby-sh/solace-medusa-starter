@@ -115,7 +115,7 @@ const Overview = ({ customer, orders }: OverviewProps) => {
                               <span className="sr-only">
                                 Go to order #{order.display_id}
                               </span>
-                              <ChevronDown className="-rotate-90" />
+                              <ChevronDownIcon className="-rotate-90" />
                             </button>
                           </Container>
                         </LocalizedClientLink>
