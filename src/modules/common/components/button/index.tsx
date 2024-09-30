@@ -49,7 +49,8 @@ const buttonVariants = cva({
     {
       withIcon: true,
       variant: 'tonal',
-      className: 'bg-secondary text-primary hover:bg-hover active:bg-pressed',
+      className:
+        'bg-secondary text-basic-primary hover:bg-hover active:bg-pressed',
     },
     {
       withIcon: true,

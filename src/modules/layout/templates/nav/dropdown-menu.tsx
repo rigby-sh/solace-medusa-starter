@@ -51,7 +51,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
           <div key={index} className="flex flex-col">
             <NavigationItem
               href={subItem.handle}
-              className="text-primary py-2 text-lg"
+              className="py-2 text-lg text-basic-primary"
             >
               {subItem.name}
             </NavigationItem>

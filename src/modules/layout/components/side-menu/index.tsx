@@ -135,7 +135,7 @@ const SideMenu = (props: any) => {
             )}
             <Heading
               as="h3"
-              className="text-primary flex text-xl small:text-2xl"
+              className="flex text-xl text-basic-primary small:text-2xl"
             >
               {currentCategory?.name || 'Menu'}
             </Heading>
