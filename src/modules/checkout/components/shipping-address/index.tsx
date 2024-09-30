@@ -2,8 +2,9 @@ import React, { useEffect, useMemo, useState } from 'react'
 
 import { HttpTypes } from '@medusajs/types'
 import { Container } from '@medusajs/ui'
-import Checkbox from '@modules/common/components/checkbox'
+import { Checkbox } from '@modules/common/components/checkbox'
 import Input from '@modules/common/components/input'
+import { Label } from '@modules/common/components/label'
 import { mapKeys } from 'lodash'
 
 import AddressSelect from '../address-select'
@@ -172,14 +173,17 @@ const ShippingAddress = ({
           data-testid="shipping-province-input"
         />
       </div>
-      <div className="my-8">
+      <div className="my-8 flex items-center gap-x-2">
         <Checkbox
-          label="Billing address same as shipping address"
+          id="same_as_billing"
           name="same_as_billing"
           checked={checked}
           onChange={onChange}
           data-testid="billing-address-checkbox"
         />
+        <Label size="lg" htmlFor="same_as_billing" className="cursor-pointer">
+          Billing address same as shipping address
+        </Label>
       </div>
       <div className="mb-4 grid grid-cols-2 gap-4">
         <Input

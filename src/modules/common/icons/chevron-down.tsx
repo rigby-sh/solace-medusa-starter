@@ -1,8 +1,8 @@
-import React from 'react'
-
 import { IconProps } from 'types/icon'
 
-const ChevronDown = (props: IconProps) => {
+// TODO: Replace icon with the open source one
+
+export const ChevronDownIcon = (props: IconProps) => {
   return (
     <svg
       width="20"
@@ -20,5 +20,3 @@ const ChevronDown = (props: IconProps) => {
     </svg>
   )
 }
-
-export default ChevronDown
