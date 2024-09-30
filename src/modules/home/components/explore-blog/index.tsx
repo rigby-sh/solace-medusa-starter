@@ -35,7 +35,7 @@ export function ExploreBlog({ posts }: { posts: BlogPost[] }) {
             return <BlogTile key={id} post={post} />
           })}
         </Box>
-        <div ref={emblaRef} className="flex large:hidden">
+        <div ref={emblaRef} className="block large:hidden">
           <Box className="flex gap-2">
             {posts.map((post, id) => {
               return (
