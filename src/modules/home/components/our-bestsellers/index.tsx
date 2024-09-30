@@ -48,7 +48,7 @@ export function OurBestsellers({ products }: { products: StoreProduct[] }) {
         <Box className="flex justify-between">
           <Heading
             as="h2"
-            className="text-basic-primary text-2xl small:text-3xl"
+            className="text-2xl text-basic-primary small:text-3xl"
           >
             Our bestsellers
           </Heading>
@@ -78,7 +78,7 @@ export function OurBestsellers({ products }: { products: StoreProduct[] }) {
             {products.map((item, index) => {
               return (
                 <Box
-                  className="flex-[0_0_calc(72.666%-8px)] small:flex-[0_0_calc(62.666%-8px)] xl:flex-[0_0_calc(33.333%-8px)] medium:flex-[0_0_calc(42.666%-8px)] 2xl:flex-[0_0_calc(30.333%-8px)]"
+                  className="flex-[0_0_calc(72.666%-8px)] small:flex-[0_0_calc(62.666%-8px)] medium:flex-[0_0_calc(42.666%-8px)] xl:flex-[0_0_calc(33.333%-8px)] 2xl:flex-[0_0_calc(30.333%-8px)]"
                   key={index}
                 >
                   <ProductTile product={item} />

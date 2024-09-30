@@ -23,7 +23,7 @@ const Hero = ({ data }: { data: HeroBanner }) => {
         />
       </Box>
       <Container className="flex flex-col gap-2 !py-6 small:gap-8 small:!py-10">
-        <Heading className="text-basic-primary max-w-full text-4xl small:max-w-[510px] medium:text-5xl">
+        <Heading className="max-w-full text-4xl text-basic-primary small:max-w-[510px] medium:text-5xl">
           {Headline}
         </Heading>
         <Box className="flex flex-col-reverse justify-between gap-8 medium:flex-row medium:items-center">
@@ -34,7 +34,7 @@ const Hero = ({ data }: { data: HeroBanner }) => {
           </Button>
           <Text
             size="lg"
-            className="text-basic-primary max-w-full medium:max-w-[410px] medium:text-end"
+            className="max-w-full text-basic-primary medium:max-w-[410px] medium:text-end"
           >
             {text}
           </Text>

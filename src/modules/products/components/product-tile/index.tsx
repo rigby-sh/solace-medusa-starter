@@ -86,7 +86,7 @@ function ProductInfo({
           <Heading
             title={product.title}
             as="h3"
-            className="text-basic-primary line-clamp-2 text-center text-lg"
+            className="line-clamp-2 text-center text-lg text-basic-primary"
           >
             {product.title}
           </Heading>

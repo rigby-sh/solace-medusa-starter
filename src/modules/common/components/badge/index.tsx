@@ -32,7 +32,7 @@ export function Badge({ label, icon, ...props }: BadgeProps) {
 
   return (
     <Box className="relative z-10">
-      <Box className="bg-primary absolute left-0 top-0 z-[-1] h-full w-full rounded-2xl" />
+      <Box className="absolute left-0 top-0 z-[-1] h-full w-full rounded-2xl bg-primary" />
       <Box className={badgeClassName}>
         {icon && <div className="mr-1">{icon}</div>}
         <Label size="sm">{label}</Label>

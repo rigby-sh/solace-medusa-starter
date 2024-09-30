@@ -14,7 +14,7 @@ export default function ProductPrice({ price }: { price: VariantPrice }) {
           {price.original_price}
         </Text>
       )}
-      <Text className="text-basic-primary font-bold" size="lg">
+      <Text className="font-bold text-basic-primary" size="lg">
         {price.calculated_price}
       </Text>
     </Box>
