@@ -16,7 +16,7 @@ export default function PageLayout(props: {
     <>
       <NavWrapper countryCode={props.params.countryCode} />
       {props.children}
-      <Footer />
+      <Footer countryCode={props.params.countryCode} />
     </>
   )
 }

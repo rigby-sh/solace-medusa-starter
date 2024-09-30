@@ -105,3 +105,89 @@ export const createNavigation = (
     category_children: null,
   },
 ]
+
+export const createFooterNavigation = (
+  productCategories: StoreProductCategory[]
+) => {
+  return {
+    navigation: [
+      {
+        header: 'Categories',
+        links: [
+          ...productCategories
+            .filter((category) => !category.parent_category)
+            .slice(0, 5)
+            .map((category) => ({
+              title: category.name,
+              href: `/categories/${category.handle}`,
+            })),
+        ],
+      },
+      {
+        header: 'Orders',
+        links: [
+          {
+            title: 'Orders and delivery',
+            href: '/account/orders',
+          },
+          {
+            title: 'Returns and refunds',
+            href: '#',
+          },
+          {
+            title: 'Payment and pricing',
+            href: '#',
+          },
+        ],
+      },
+      {
+        header: 'About',
+        links: [
+          {
+            title: 'About us',
+            href: '#',
+          },
+          {
+            title: 'Blog',
+            href: '#',
+          },
+          {
+            title: 'Careers',
+            href: '#',
+          },
+        ],
+      },
+      {
+        header: 'Need help?',
+        links: [
+          {
+            title: 'FAQs',
+            href: '#',
+          },
+          {
+            title: 'Support center',
+            href: '#',
+          },
+          {
+            title: 'Contact us',
+            href: '#',
+          },
+        ],
+      },
+    ],
+    contact: {
+      header: "Let's stay in touch",
+      text: 'Keep up to date with the latest product launches and news. Find out more about our brands and get special promo codes.',
+    },
+    other: [
+      {
+        title: 'Privacy Policy',
+        href: '#',
+      },
+      {
+        title: 'Terms & Conditions',
+        href: '#',
+      },
+    ],
+  }
+}

@@ -115,7 +115,7 @@ const SideMenu = (props: any) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenDialogChange}>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button
           variant="icon"
           withIcon

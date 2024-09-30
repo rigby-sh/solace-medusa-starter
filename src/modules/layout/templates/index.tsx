@@ -11,7 +11,7 @@ const Layout: React.FC<{
     <div>
       <NavWrapper countryCode={params.countryCode} />
       <main className="relative">{children}</main>
-      <Footer />
+      <Footer countryCode={params.countryCode} />
     </div>
   )
 }
