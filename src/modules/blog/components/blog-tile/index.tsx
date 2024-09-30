@@ -14,7 +14,7 @@ export function BlogTile({ post }: { post: BlogPost }) {
           <Image
             className="h-full w-full object-cover object-center"
             src={post.FeaturedImage.url}
-            alt={post.FeaturedImage.alternativeText}
+            alt={post.FeaturedImage.alternativeText ?? 'Blog post image'}
             width={600}
             height={600}
           />
