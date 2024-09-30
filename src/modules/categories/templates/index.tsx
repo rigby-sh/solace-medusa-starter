@@ -33,11 +33,11 @@ export default function CategoryTemplate({
     <Container className="!py-8">
       <Box className="mb-6 flex flex-col gap-4 small:mb-12">
         <StoreBreadcrumbs category={category} />
-        <Heading as="h1" className="text-basic-primary text-4xl small:text-5xl">
+        <Heading as="h1" className="text-4xl text-basic-primary small:text-5xl">
           {category.name}
         </Heading>
         {/* TODO: Fetch products count after meilisearch connection */}
-        <Text className="text-secondary text-md">50 products</Text>
+        <Text className="text-md text-secondary">50 products</Text>
       </Box>
       <Suspense fallback={<SkeletonProductGrid />}>
         <PaginatedProducts

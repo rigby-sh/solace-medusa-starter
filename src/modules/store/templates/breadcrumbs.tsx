@@ -30,7 +30,7 @@ export default function StoreBreadcrumbs({
           <BreadcrumbsItem>
             <BreadcrumbsLink
               href="/"
-              className="text-md flex items-center gap-2"
+              className="flex items-center gap-2 text-md"
             >
               <ArrowLeftIcon className="h-[18px] w-[18px]" />
               Back to Home Page
