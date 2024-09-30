@@ -10,7 +10,7 @@ import LocalizedClientLink from '@modules/common/components/localized-client-lin
 import ChevronDown from '@modules/common/icons/chevron-down'
 import MapPin from '@modules/common/icons/map-pin'
 import Package from '@modules/common/icons/package'
-import User from '@modules/common/icons/user'
+import { UserIcon } from '@modules/common/icons/user'
 
 const AccountNav = ({
   customer,
@@ -53,7 +53,7 @@ const AccountNav = ({
                   >
                     <>
                       <div className="flex items-center gap-x-2">
-                        <User size={20} />
+                        <UserIcon size={20} />
                         <span>Profile</span>
                       </div>
                       <ChevronDown className="-rotate-90 transform" />
