@@ -4,3 +4,7 @@ export const PRICING_OPTIONS = [
   { handle: '501-1000', label: '$501-$1000' },
   { handle: 'more-than-1000', label: '$1001+' },
 ] as const
+
+export function getDefaultSearchFilters(regionId: string) {
+  return `variants.prices.region_id = ${regionId}`
+}

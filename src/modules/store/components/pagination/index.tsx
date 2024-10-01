@@ -3,6 +3,8 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 import { clx } from '@medusajs/ui'
+import { ChevronLeftIcon } from '@modules/common/icons/chevron-left'
+import { ChevronRightIcon } from '@modules/common/icons/chevron-right'
 
 export function Pagination({
   page,
@@ -36,13 +38,30 @@ export function Pagination({
   ) => (
     <button
       key={p}
-      className={clx('txt-xlarge-plus text-ui-fg-muted', {
-        'text-ui-fg-base hover:text-ui-fg-subtle': isCurrent,
+      className={clx('txt-xlarge-plus h-10 w-10 text-basic-primary', {
+        'rounded-full border-2 border-black bg-fg-secondary hover:text-ui-fg-subtle':
+          isCurrent,
       })}
       disabled={isCurrent}
       onClick={() => handlePageChange(p)}
     >
       {label}
+    </button>
+  )
+
+  const renderArrowButton = (direction: 'prev' | 'next', disabled: boolean) => (
+    <button
+      className="txt-xlarge-plus flex h-10 w-10 items-center justify-center text-ui-fg-muted"
+      disabled={disabled}
+      onClick={() =>
+        handlePageChange(direction === 'prev' ? page - 1 : page + 1)
+      }
+    >
+      {direction === 'prev' ? (
+        <ChevronLeftIcon className="h-5 w-5 text-basic-primary" />
+      ) : (
+        <ChevronRightIcon className="h-5 w-5 text-basic-primary" />
+      )}
     </button>
   )
 
@@ -109,8 +128,10 @@ export function Pagination({
   // Render the component
   return (
     <div className="mt-12 flex w-full justify-center">
-      <div className="flex items-end gap-3" data-testid={dataTestid}>
+      <div className="flex items-center gap-1" data-testid={dataTestid}>
+        {renderArrowButton('prev', page <= 1)}
         {renderPageButtons()}
+        {renderArrowButton('next', page >= totalPages)}
       </div>
     </div>
   )
