@@ -6,7 +6,7 @@ import { getProductsList } from '@lib/data/products'
 import { getRegion } from '@lib/data/regions'
 import { ExploreBlog } from '@modules/home/components/explore-blog'
 import Hero from '@modules/home/components/hero'
-import { OurBestsellers } from '@modules/home/components/our-bestsellers'
+import { ProductCarousel } from '@modules/products/components/product-carousel'
 
 export const metadata: Metadata = {
   title: 'Medusa Next.js Starter Template',
@@ -44,7 +44,14 @@ export default async function Home({
   return (
     <>
       <Hero data={HeroBanner} />
-      <OurBestsellers products={products} />
+      <ProductCarousel
+        products={products}
+        title="Our bestsellers"
+        viewAll={{
+          link: '/shop',
+          text: 'View all',
+        }}
+      />
       <ExploreBlog posts={posts} />
     </>
   )

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { StoreProduct } from '@medusajs/types'
 import { Box } from '@modules/common/components/box'
@@ -13,7 +13,22 @@ import { ArrowRightIcon } from '@modules/common/icons/arrow-right'
 import ProductTile from '@modules/products/components/product-tile'
 import useEmblaCarousel from 'embla-carousel-react'
 
-export function OurBestsellers({ products }: { products: StoreProduct[] }) {
+interface ViewAllProps {
+  link: string
+  text?: string
+}
+
+interface ProductCarouselProps {
+  products: StoreProduct[]
+  title: string
+  viewAll?: ViewAllProps
+}
+
+export function ProductCarousel({
+  products,
+  title,
+  viewAll,
+}: ProductCarouselProps) {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: 'start',
     skipSnaps: false,
@@ -50,7 +65,7 @@ export function OurBestsellers({ products }: { products: StoreProduct[] }) {
             as="h2"
             className="text-2xl text-basic-primary small:text-3xl"
           >
-            Our bestsellers
+            {title}
           </Heading>
           <Box className="hidden gap-2 small:flex">
             <Button
@@ -75,21 +90,23 @@ export function OurBestsellers({ products }: { products: StoreProduct[] }) {
         </Box>
         <div ref={emblaRef}>
           <Box className="flex gap-2">
-            {products.map((item, index) => {
-              return (
-                <Box
-                  className="flex-[0_0_calc(72.666%-8px)] small:flex-[0_0_calc(62.666%-8px)] medium:flex-[0_0_calc(42.666%-8px)] xl:flex-[0_0_calc(33.333%-8px)] 2xl:flex-[0_0_calc(30.333%-8px)]"
-                  key={index}
-                >
-                  <ProductTile product={item} />
-                </Box>
-              )
-            })}
+            {products.map((item, index) => (
+              <Box
+                className="flex-[0_0_calc(72.666%-8px)] small:flex-[0_0_calc(62.666%-8px)] medium:flex-[0_0_calc(42.666%-8px)] xl:flex-[0_0_calc(33.333%-8px)] 2xl:flex-[0_0_calc(30.333%-8px)]"
+                key={index}
+              >
+                <ProductTile product={item} />
+              </Box>
+            ))}
           </Box>
         </div>
-        <Button className="mx-auto w-max" asChild>
-          <LocalizedClientLink href="/shop">View all</LocalizedClientLink>
-        </Button>
+        {viewAll && (
+          <Button className="mx-auto w-max" asChild>
+            <LocalizedClientLink href={viewAll.link}>
+              {viewAll.text || 'View all'}
+            </LocalizedClientLink>
+          </Button>
+        )}
       </Box>
     </Container>
   )
