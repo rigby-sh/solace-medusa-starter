@@ -50,7 +50,7 @@ export default function ProductTile({ product }: { product: StoreProduct }) {
         </LocalizedClientLink>
         <Button
           withIcon
-          className="absolute bottom-3 right-3 opacity-100 transition-opacity duration-300 group-hover:opacity-100 small:bottom-5 small:right-5 small:opacity-0"
+          className="absolute bottom-3 right-3 opacity-100 transition-opacity duration-300 group-hover:opacity-100 small:bottom-5 small:right-5 large:opacity-0"
           onClick={handleAddToCart}
         >
           <BasketIcon />

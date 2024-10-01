@@ -1,7 +1,10 @@
 'use client'
 
+import React from 'react'
+
 import { StoreCollection } from '@medusajs/types'
 import { Box } from '@modules/common/components/box'
+import Divider from '@modules/common/components/divider'
 import {
   Select,
   SelectContent,
@@ -10,6 +13,7 @@ import {
 import { PRICING_OPTIONS } from '@modules/search/const'
 
 import { FilterItems } from './filter-item'
+import FilterWrapper from './filter-wrapper'
 
 export default function ProductFilters({
   collections,
@@ -30,17 +34,28 @@ export default function ProductFilters({
 
   return (
     <>
-      <Box className="flex w-full items-center gap-2">
+      <Box className="flex flex-col gap-4 small:hidden">
+        <FilterWrapper
+          title="Collections"
+          content={<FilterItems items={collectionOptions} param="collection" />}
+        />
+        <Divider />
+        <FilterWrapper
+          title="Price"
+          content={<FilterItems items={priceOptions} param="price" />}
+        />
+      </Box>
+      <Box className="hidden items-center gap-2 small:flex">
         {collectionOptions && collectionOptions.length > 0 && (
           <Select value={null} onValueChange={() => {}}>
-            <SelectTrigger className="mt-2">Collections</SelectTrigger>
+            <SelectTrigger>Collections</SelectTrigger>
             <SelectContent className="w-full">
               <FilterItems items={collectionOptions} param="collection" />
             </SelectContent>
           </Select>
         )}
         <Select value={null} onValueChange={() => {}}>
-          <SelectTrigger className="mt-2">Price</SelectTrigger>
+          <SelectTrigger>Price</SelectTrigger>
           <SelectContent>
             <FilterItems items={priceOptions} param="price" />
           </SelectContent>

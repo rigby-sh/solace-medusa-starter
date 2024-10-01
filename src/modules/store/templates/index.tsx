@@ -9,6 +9,8 @@ import SkeletonProductGrid from '@modules/skeletons/templates/skeleton-product-g
 import { SortOptions } from '@modules/store/components/refinement-list/sort-products'
 
 import ProductFilters from '../components/filters'
+import ProductFiltersDrawer from '../components/filters/filter-dialog'
+import RefinementList from '../components/refinement-list'
 import StoreBreadcrumbs from './breadcrumbs'
 import PaginatedProducts from './paginated-products'
 
@@ -35,8 +37,14 @@ const StoreTemplate = ({
         </Heading>
         {/* TODO: Fetch products count after meilisearch connection */}
         <Text className="text-md text-secondary">50 products</Text>
-        <Box className="mb-12">
-          <ProductFilters collections={collections} />
+        <Box className="grid w-full grid-cols-2 items-center justify-between gap-2 small:flex small:flex-wrap">
+          <Box className="hidden small:flex">
+            <ProductFilters collections={collections} />
+          </Box>
+          <ProductFiltersDrawer>
+            <ProductFilters collections={collections} />
+          </ProductFiltersDrawer>
+          <RefinementList sortBy={sortBy || 'created_at'} />
         </Box>
       </Box>
       <Suspense fallback={<SkeletonProductGrid />}>

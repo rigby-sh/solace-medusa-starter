@@ -31,6 +31,7 @@ export const Select = ({
   value,
   onValueChange,
   error,
+  className,
 }: RootProps) => {
   const [isOpen, setIsOpen] = React.useState(false)
   const ref = React.useRef<HTMLDivElement>(null)
@@ -39,7 +40,7 @@ export const Select = ({
     <SelectContext.Provider
       value={{ value, onValueChange, isOpen, setIsOpen, error }}
     >
-      <div ref={ref}>
+      <div ref={ref} className={className}>
         <SelectPrimitive.Root
           value={value}
           onValueChange={onValueChange}
@@ -197,7 +198,7 @@ export const SelectItem = React.forwardRef<HTMLDivElement, ItemProps>(
         ref={ref}
         value={value}
         className={cn(
-          'duration-250 flex w-full cursor-pointer items-center justify-between gap-2 p-4 text-md text-basic-primary !outline-none transition-all ease-in-out hover:bg-hover focus:bg-hover',
+          'duration-250 flex w-full cursor-pointer items-center justify-between gap-2 p-4 text-lg text-basic-primary !outline-none transition-all ease-in-out hover:bg-hover focus:bg-hover',
           className
         )}
         {...props}

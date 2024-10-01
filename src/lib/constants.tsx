@@ -6,6 +6,22 @@ import Bancontact from '@modules/common/icons/bancontact'
 import Ideal from '@modules/common/icons/ideal'
 import PayPal from '@modules/common/icons/paypal'
 
+// Product filters
+export const FILTER_KEYS = {
+  ORDER_BY_KEY: 'sort_by',
+  SEARCH_KEY: 'q',
+  PAGE_KEY: 'p',
+  PRICE_KEY: 'price',
+  MATERIAL_KEY: 'material',
+  ACTIVE: 'active',
+}
+
+export const PRODUCT_LIST_PATHNAMES = {
+  CATEGORY: '/categories',
+  EXPLORE: '/shop',
+  SEARCH: '/search',
+} as const
+
 /* Map of payment provider_id to their title and icon. Add in any payment providers you want to use. */
 export const paymentInfoMap: Record<
   string,

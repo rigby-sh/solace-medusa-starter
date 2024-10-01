@@ -8,6 +8,7 @@ export type RootProps = {
   value: string
   onValueChange: (value: string) => void
   error?: string
+  className?: string
 }
 
 export type TriggerProps = {

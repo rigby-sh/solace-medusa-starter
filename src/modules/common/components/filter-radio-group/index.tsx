@@ -1,58 +1,53 @@
-import { EllipseMiniSolid } from '@medusajs/icons'
-import { clx, Label, RadioGroup, Text } from '@medusajs/ui'
+import { ChangeEvent } from 'react'
+
+import { cn } from '@lib/util/cn'
+import { TickThinIcon } from '@modules/common/icons/tick-thin'
+
+import { Label } from '../label'
 
 type FilterRadioGroupProps = {
-  title: string
-  items: {
-    value: string
-    label: string
-  }[]
+  items: { value: string; label: string }[]
   value: any
   handleChange: (...args: any[]) => void
-  'data-testid'?: string
 }
 
 const FilterRadioGroup = ({
-  title,
   items,
   value,
   handleChange,
-  'data-testid': dataTestId,
 }: FilterRadioGroupProps) => {
   return (
-    <div className="flex flex-col gap-x-3 gap-y-3">
-      <Text className="txt-compact-small-plus text-ui-fg-muted">{title}</Text>
-      <RadioGroup data-testid={dataTestId} onValueChange={handleChange}>
-        {items?.map((i) => (
-          <div
-            key={i.value}
-            className={clx('flex items-center gap-x-2', {
-              'ml-[-23px]': i.value === value,
+    <div className="flex w-[230px] flex-col bg-primary p-2">
+      {items?.map((item) => (
+        <Label
+          key={item.value}
+          className="grid cursor-pointer grid-cols-[25px_1fr] items-center space-x-2 p-3"
+        >
+          <input
+            type="radio"
+            checked={item.value === value}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              handleChange(e, item.value)
+            }
+            className="hidden"
+            id={item.value}
+            value={item.value}
+          />
+          <TickThinIcon
+            className={cn('!m-0', {
+              'w-0': item.value !== value,
+              'h-4 w-4': item.value === value,
             })}
+          />
+          <span
+            className={`text-md ${
+              item.value === value ? 'font-medium' : 'font-base'
+            }`}
           >
-            {i.value === value && <EllipseMiniSolid />}
-            <RadioGroup.Item
-              checked={i.value === value}
-              className="peer hidden"
-              id={i.value}
-              value={i.value}
-            />
-            <Label
-              htmlFor={i.value}
-              className={clx(
-                '!txt-compact-small !transform-none text-ui-fg-subtle hover:cursor-pointer',
-                {
-                  'text-ui-fg-base': i.value === value,
-                }
-              )}
-              data-testid="radio-label"
-              data-active={i.value === value}
-            >
-              {i.label}
-            </Label>
-          </div>
-        ))}
-      </RadioGroup>
+            {item.label}
+          </span>
+        </Label>
+      ))}
     </div>
   )
 }
