@@ -39,7 +39,7 @@ export function Pagination({
     <button
       key={p}
       className={clx('txt-xlarge-plus h-10 w-10 text-basic-primary', {
-        'rounded-full border-2 border-black bg-fg-secondary hover:text-ui-fg-subtle':
+        'rounded-full border-[1px] border-black bg-fg-secondary hover:text-ui-fg-subtle':
           isCurrent,
       })}
       disabled={isCurrent}
