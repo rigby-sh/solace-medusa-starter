@@ -13,6 +13,7 @@ export const FILTER_KEYS = {
   PAGE_KEY: 'p',
   PRICE_KEY: 'price',
   MATERIAL_KEY: 'material',
+  COLLECTION_KEY: 'collection',
   ACTIVE: 'active',
 }
 

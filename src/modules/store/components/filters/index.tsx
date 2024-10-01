@@ -12,8 +12,8 @@ import {
 } from '@modules/common/components/select'
 import { PRICING_OPTIONS } from '@modules/search/const'
 
-import { FilterItems } from './filter-item'
 import FilterWrapper from './filter-wrapper'
+import { FilterItems } from './filter-wrapper/filter-item'
 
 export default function ProductFilters({
   collections,

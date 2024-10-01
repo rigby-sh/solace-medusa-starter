@@ -8,7 +8,8 @@ import { Heading } from '@modules/common/components/heading'
 import { Text } from '@modules/common/components/text'
 import SkeletonProductGrid from '@modules/skeletons/templates/skeleton-product-grid'
 import ProductFilters from '@modules/store/components/filters'
-import ProductFiltersDrawer from '@modules/store/components/filters/filter-dialog'
+import ActiveProductFilters from '@modules/store/components/filters/active-filters'
+import ProductFiltersDrawer from '@modules/store/components/filters/filters-drawer'
 import RefinementList from '@modules/store/components/refinement-list'
 import { SortOptions } from '@modules/store/components/refinement-list/sort-products'
 import StoreBreadcrumbs from '@modules/store/templates/breadcrumbs'
@@ -35,8 +36,8 @@ export default function CategoryTemplate({
   if (!category || !countryCode) notFound()
 
   return (
-    <Container className="!py-8">
-      <Box className="mb-6 flex flex-col gap-4 small:mb-12">
+    <Container className="flex flex-col gap-8 !py-8">
+      <Box className="flex flex-col gap-4">
         <StoreBreadcrumbs category={category} />
         <Heading as="h1" className="text-4xl text-basic-primary small:text-5xl">
           {category.name}
@@ -52,6 +53,11 @@ export default function CategoryTemplate({
           </ProductFiltersDrawer>
           <RefinementList sortBy={sortBy || 'created_at'} />
         </Box>
+        <ActiveProductFilters
+          countryCode={countryCode}
+          currentCategory={category}
+          collectionsOptions={collections}
+        />
       </Box>
       <Suspense fallback={<SkeletonProductGrid />}>
         <PaginatedProducts
