@@ -20,7 +20,7 @@ export default function ActiveFilterItem({
   handleRemoveFilter,
 }: ActiveFilterItemProps) {
   return (
-    <Box className="flex items-center gap-4">
+    <Box className="flex items-start gap-4 medium:items-center">
       <Label className="text-secondary">{label}:</Label>
       <Box className="flex flex-wrap gap-2">
         {options
