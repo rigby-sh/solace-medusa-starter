@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import { useParams, usePathname } from 'next/navigation'
 
 import { signout } from '@lib/data/customer'
@@ -7,10 +8,12 @@ import { ArrowRightOnRectangle } from '@medusajs/icons'
 import { HttpTypes } from '@medusajs/types'
 import { clx } from '@medusajs/ui'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
-import { ChevronDownIcon } from '@modules/common/icons/chevron-down'
-import MapPin from '@modules/common/icons/map-pin'
-import Package from '@modules/common/icons/package'
-import { UserIcon } from '@modules/common/icons/user'
+import {
+  ChevronDownIcon,
+  MapPinIcon,
+  PackageIcon,
+  UserIcon,
+} from '@modules/common/icons'
 
 const AccountNav = ({
   customer,
@@ -68,7 +71,7 @@ const AccountNav = ({
                   >
                     <>
                       <div className="flex items-center gap-x-2">
-                        <MapPin size={20} />
+                        <MapPinIcon size={20} />
                         <span>Addresses</span>
                       </div>
                       <ChevronDownIcon className="-rotate-90 transform" />
@@ -82,7 +85,7 @@ const AccountNav = ({
                     data-testid="orders-link"
                   >
                     <div className="flex items-center gap-x-2">
-                      <Package size={20} />
+                      <PackageIcon size={20} />
                       <span>Orders</span>
                     </div>
                     <ChevronDownIcon className="-rotate-90 transform" />

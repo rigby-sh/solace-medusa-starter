@@ -1,6 +1,6 @@
 'use client'
 
-import { Fragment, useEffect, useRef, useState } from 'react'
+import React, { Fragment, useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
 
 import { Popover, Transition } from '@headlessui/react'
@@ -11,7 +11,7 @@ import DeleteButton from '@modules/common/components/delete-button'
 import LineItemOptions from '@modules/common/components/line-item-options'
 import LineItemPrice from '@modules/common/components/line-item-price'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
-import { BagIcon } from '@modules/common/icons/bag'
+import { BagIcon } from '@modules/common/icons'
 import Thumbnail from '@modules/products/components/thumbnail'
 
 const CartDropdown = ({

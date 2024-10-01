@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { StoreProductCategory } from '@medusajs/types'
 import {
   Breadcrumbs,
@@ -7,7 +9,7 @@ import {
   BreadcrumbsSeparator,
   BreadcrumbsStatic,
 } from '@modules/common/components/breadcrumbs'
-import { ArrowLeftIcon } from '@modules/common/icons/arrow-left'
+import { ArrowLeftIcon } from '@modules/common/icons'
 
 export default function StoreBreadcrumbs({
   category,

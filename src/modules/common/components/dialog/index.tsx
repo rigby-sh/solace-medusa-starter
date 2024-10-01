@@ -1,7 +1,7 @@
 import { ElementRef, forwardRef, HTMLAttributes } from 'react'
 
 import { cn } from '@lib/util/cn'
-import X from '@modules/common/icons/x'
+import { XIcon } from '@modules/common/icons'
 import * as RadixDialog from '@radix-ui/react-dialog'
 
 import { Button } from '../button'
@@ -18,7 +18,7 @@ export const DialogClose = forwardRef<
 >(({ className, children, ...props }, forwardedRef) => {
   const inner = children ?? (
     <Button withIcon variant="icon" size="sm">
-      <X />
+      <XIcon />
     </Button>
   )
 

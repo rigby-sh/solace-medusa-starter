@@ -1,8 +1,7 @@
 import React, { useEffect, useImperativeHandle, useState } from 'react'
 
 import { Label } from '@medusajs/ui'
-import Eye from '@modules/common/icons/eye'
-import EyeOff from '@modules/common/icons/eye-off'
+import { EyeIcon, EyeOffIcon } from '@modules/common/icons'
 
 type InputProps = Omit<
   Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'>,
@@ -62,7 +61,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-0 top-3 px-4 text-ui-fg-subtle outline-none transition-all duration-150 focus:text-ui-fg-base focus:outline-none"
             >
-              {showPassword ? <Eye /> : <EyeOff />}
+              {showPassword ? <EyeIcon /> : <EyeOffIcon />}
             </button>
           )}
         </div>

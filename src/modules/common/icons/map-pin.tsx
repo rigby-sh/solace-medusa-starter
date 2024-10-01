@@ -2,7 +2,7 @@ import React from 'react'
 
 import { IconProps } from 'types/icon'
 
-const MapPin: React.FC<IconProps> = ({
+export const MapPinIcon: React.FC<IconProps> = ({
   size = '20',
   color = 'currentColor',
   ...attributes
@@ -33,5 +33,3 @@ const MapPin: React.FC<IconProps> = ({
     </svg>
   )
 }
-
-export default MapPin

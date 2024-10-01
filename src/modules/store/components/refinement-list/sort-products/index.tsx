@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from '@modules/common/components/select'
 import { Text } from '@modules/common/components/text'
-import { SortIcon } from '@modules/common/icons/sort'
+import { SortIcon } from '@modules/common/icons'
 
 export type SortOptions = 'price_asc' | 'price_desc' | 'created_at'
 

@@ -10,7 +10,7 @@ import { Box } from '@modules/common/components/box'
 import { Button } from '@modules/common/components/button'
 import { Heading } from '@modules/common/components/heading'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
-import { BasketIcon } from '@modules/common/icons/basket'
+import { BasketIcon } from '@modules/common/icons'
 
 import ProductPrice from './price'
 

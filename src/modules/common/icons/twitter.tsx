@@ -1,6 +1,6 @@
 import { IconProps } from 'types/icon'
 
-export const XIcon = (props: IconProps) => {
+export const XLogoIcon = (props: IconProps) => {
   return (
     <svg
       width="24"

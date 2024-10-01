@@ -6,8 +6,7 @@ import { cn } from '@lib/util/cn'
 import Divider from '@modules/common/components/divider'
 import { Label } from '@modules/common/components/label'
 import { Text } from '@modules/common/components/text'
-import { ChevronDownIcon } from '@modules/common/icons/chevron-down'
-import { TickThinIcon } from '@modules/common/icons/tick-thin'
+import { ChevronDownIcon, TickThinIcon } from '@modules/common/icons'
 import * as SelectPrimitive from '@radix-ui/react-select'
 
 import {

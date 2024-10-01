@@ -1,4 +1,4 @@
-import { FormEvent } from 'react'
+import React, { FormEvent } from 'react'
 
 import { XMarkMini } from '@medusajs/icons'
 

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { IconProps } from 'types/icon'
 
-const Package: React.FC<IconProps> = ({
+export const PackageIcon: React.FC<IconProps> = ({
   size = '20',
   color = 'currentColor',
   ...attributes
@@ -40,5 +40,3 @@ const Package: React.FC<IconProps> = ({
     </svg>
   )
 }
-
-export default Package

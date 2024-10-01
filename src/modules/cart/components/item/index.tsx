@@ -17,7 +17,7 @@ import {
   SelectItem,
   SelectTrigger,
 } from '@modules/common/components/select'
-import Spinner from '@modules/common/icons/spinner'
+import { Spinner } from '@modules/common/icons'
 import Thumbnail from '@modules/products/components/thumbnail'
 
 type ItemProps = {

@@ -1,7 +1,7 @@
 import { ChangeEvent } from 'react'
 
 import { cn } from '@lib/util/cn'
-import { TickThinIcon } from '@modules/common/icons/tick-thin'
+import { TickThinIcon } from '@modules/common/icons'
 
 import { Label } from '../label'
 

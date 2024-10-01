@@ -8,7 +8,7 @@ import {
 } from '@modules/common/components/accordion'
 import { Box } from '@modules/common/components/box'
 import { Heading } from '@modules/common/components/heading'
-import { ChevronDownIcon } from '@modules/common/icons/chevron-down'
+import { ChevronDownIcon } from '@modules/common/icons'
 
 type FilterWrapperProps = {
   title: string

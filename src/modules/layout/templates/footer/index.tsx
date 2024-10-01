@@ -14,11 +14,13 @@ import { Heading } from '@modules/common/components/heading'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
 import { NavigationItem } from '@modules/common/components/navigation-item'
 import { Text } from '@modules/common/components/text'
-import { ChevronDownIcon } from '@modules/common/icons/chevron-down'
-import { FacebookIcon } from '@modules/common/icons/facebook'
-import { LinkedinIcon } from '@modules/common/icons/linkedin'
-import { SolaceLogo } from '@modules/common/icons/solace-logo'
-import { XIcon } from '@modules/common/icons/twitter'
+import {
+  ChevronDownIcon,
+  FacebookIcon,
+  LinkedinIcon,
+  SolaceLogo,
+  XLogoIcon,
+} from '@modules/common/icons'
 
 function SocialMedia({ className }: { className?: string }) {
   return (
@@ -35,7 +37,7 @@ function SocialMedia({ className }: { className?: string }) {
       </div>
       <div className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full text-static">
         <LocalizedClientLink href="#">
-          <XIcon />
+          <XLogoIcon />
         </LocalizedClientLink>
       </div>
     </Box>

@@ -2,7 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 
 import { clx, Container } from '@medusajs/ui'
-import PlaceholderImage from '@modules/common/icons/placeholder-image'
+import { PlaceholderImage } from '@modules/common/icons'
 
 type ThumbnailProps = {
   thumbnail?: string | null

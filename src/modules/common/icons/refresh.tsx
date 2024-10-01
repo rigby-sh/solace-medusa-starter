@@ -2,7 +2,7 @@ import React from 'react'
 
 import { IconProps } from 'types/icon'
 
-const Refresh: React.FC<IconProps> = ({
+export const RefreshIcon: React.FC<IconProps> = ({
   size = '16',
   color = 'currentColor',
   ...attributes
@@ -47,5 +47,3 @@ const Refresh: React.FC<IconProps> = ({
     </svg>
   )
 }
-
-export default Refresh

@@ -3,7 +3,7 @@ import { Button } from '@modules/common/components/button'
 import { Heading } from '@modules/common/components/heading'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
 import { Text } from '@modules/common/components/text'
-import { BasketIcon } from '@modules/common/icons/basket'
+import { BasketIcon } from '@modules/common/icons'
 
 const EmptyCartMessage = () => {
   return (

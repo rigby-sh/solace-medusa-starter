@@ -2,7 +2,7 @@ import React from 'react'
 
 import { IconProps } from 'types/icon'
 
-const PlaceholderImage: React.FC<IconProps> = ({
+export const PlaceholderImage: React.FC<IconProps> = ({
   size = '20',
   color = 'currentColor',
   ...attributes
@@ -40,5 +40,3 @@ const PlaceholderImage: React.FC<IconProps> = ({
     </svg>
   )
 }
-
-export default PlaceholderImage

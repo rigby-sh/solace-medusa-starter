@@ -1,8 +1,7 @@
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from 'react'
 
 import { cn } from '@lib/util/cn'
-import { MinusHeavyIcon } from '@modules/common/icons/minus-heavy'
-import { TickHeavyIcon } from '@modules/common/icons/tick-heavy'
+import { MinusHeavyIcon, TickHeavyIcon } from '@modules/common/icons'
 import * as RadixCheckbox from '@radix-ui/react-checkbox'
 
 export const Checkbox = forwardRef<

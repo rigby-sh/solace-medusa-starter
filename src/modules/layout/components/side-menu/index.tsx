@@ -16,9 +16,11 @@ import {
   DialogTrigger,
 } from '@modules/common/components/dialog'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
-import { ArrowLeftIcon } from '@modules/common/icons/arrow-left'
-import { BarsIcon } from '@modules/common/icons/bars'
-import { ChevronRightIcon } from '@modules/common/icons/chevron-right'
+import {
+  ArrowLeftIcon,
+  BarsIcon,
+  ChevronRightIcon,
+} from '@modules/common/icons'
 
 interface CategoryItem {
   name: string
