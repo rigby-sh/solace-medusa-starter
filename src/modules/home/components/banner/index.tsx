@@ -23,7 +23,7 @@ export const Banner = ({ data }: { data: HeroBanner }) => {
         />
 
         <div className="absolute inset-0 flex flex-col items-center justify-center px-10 text-white">
-          <Heading className="text-center text-2xl">{Headline}</Heading>
+          <Heading className="text-center text-3xl">{Headline}</Heading>
 
           <Text
             size="lg"
