@@ -6,15 +6,17 @@ import { PRODUCT_LIMIT } from 'app/[countryCode]/(main)/collections/[handle]/pag
 import { getDefaultSearchFilters } from './const'
 
 type SearchParams = {
-  page?: number
   regionId: string
   categoryHandle?: string
+  page?: number
+  query?: string
 }
 
 export async function search({
   page = 1,
   regionId,
   categoryHandle,
+  query,
 }: SearchParams) {
   const filterQueries = [getDefaultSearchFilters(regionId)]
 
@@ -25,6 +27,7 @@ export async function search({
   const { results } = await searchClient.search({
     queries: [
       {
+        q: query,
         indexUid: SEARCH_INDEX_NAME,
         filter: filterQueries.join(' AND '),
         limit: PRODUCT_LIMIT,
