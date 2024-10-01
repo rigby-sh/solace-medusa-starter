@@ -12,11 +12,14 @@ export type HeroBanner = {
   }
 }
 
-export type HeroBannerData = {
+export type BannerResponse<T extends string> = {
   data: {
-    HeroBanner: HeroBanner
+    [K in T]: HeroBanner
   }
 }
+
+export type HeroBannerData = BannerResponse<'HeroBanner'>
+export type MidBannerData = BannerResponse<'MidBanner'>
 
 export type BlogPost = {
   Title: string
