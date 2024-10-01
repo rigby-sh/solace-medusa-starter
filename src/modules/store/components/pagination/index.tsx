@@ -1,6 +1,7 @@
 'use client'
 
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import Link from 'next/link'
+import { usePathname, useSearchParams } from 'next/navigation'
 
 import { clx } from '@medusajs/ui'
 import { ChevronLeftIcon } from '@modules/common/icons/chevron-left'
@@ -15,7 +16,6 @@ export function Pagination({
   totalPages: number
   'data-testid'?: string
 }) {
-  const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
@@ -23,47 +23,70 @@ export function Pagination({
   const arrayRange = (start: number, stop: number) =>
     Array.from({ length: stop - start + 1 }, (_, index) => start + index)
 
-  // Function to handle page changes
-  const handlePageChange = (newPage: number) => {
-    const params = new URLSearchParams(searchParams)
-    params.set('page', newPage.toString())
-    router.push(`${pathname}?${params.toString()}`)
-  }
-
   // Function to render a page button
   const renderPageButton = (
     p: number,
     label: string | number,
     isCurrent: boolean
-  ) => (
-    <button
-      key={p}
-      className={clx('txt-xlarge-plus h-10 w-10 text-basic-primary', {
-        'rounded-full border-[1px] border-black bg-fg-secondary hover:text-ui-fg-subtle':
-          isCurrent,
-      })}
-      disabled={isCurrent}
-      onClick={() => handlePageChange(p)}
-    >
-      {label}
-    </button>
-  )
+  ) => {
+    const params = new URLSearchParams(searchParams)
+    params.set('page', p.toString())
+    const href = `${pathname}?${params.toString()}`
 
-  const renderArrowButton = (direction: 'prev' | 'next', disabled: boolean) => (
-    <button
-      className="txt-xlarge-plus flex h-10 w-10 items-center justify-center text-ui-fg-muted"
-      disabled={disabled}
-      onClick={() =>
-        handlePageChange(direction === 'prev' ? page - 1 : page + 1)
-      }
-    >
-      {direction === 'prev' ? (
-        <ChevronLeftIcon className="h-5 w-5 text-basic-primary" />
-      ) : (
-        <ChevronRightIcon className="h-5 w-5 text-basic-primary" />
-      )}
-    </button>
-  )
+    return (
+      <Link
+        key={p}
+        href={href}
+        scroll={false}
+        onClick={(e) => {
+          if (isCurrent) {
+            e.preventDefault()
+            return
+          }
+          window.scrollTo({ top: 0, behavior: 'smooth' })
+        }}
+        className={clx(
+          'txt-xlarge-plus flex h-10 w-10 items-center justify-center text-basic-primary',
+          {
+            'rounded-full border-[1px] border-black bg-fg-secondary hover:text-ui-fg-subtle':
+              isCurrent,
+          }
+        )}
+        aria-current={isCurrent ? 'page' : undefined}
+      >
+        {label}
+      </Link>
+    )
+  }
+
+  const renderArrowButton = (direction: 'prev' | 'next', disabled: boolean) => {
+    const newPage = direction === 'prev' ? page - 1 : page + 1
+    const params = new URLSearchParams(searchParams)
+    params.set('page', newPage.toString())
+    const href = `${pathname}?${params.toString()}`
+
+    return (
+      <Link
+        href={href}
+        scroll={false}
+        onClick={(e) => {
+          if (disabled) {
+            e.preventDefault()
+            return
+          }
+          window.scrollTo({ top: 0, behavior: 'smooth' })
+        }}
+        className="txt-xlarge-plus flex h-10 w-10 items-center justify-center text-ui-fg-muted"
+        aria-disabled={disabled}
+      >
+        {direction === 'prev' ? (
+          <ChevronLeftIcon className="h-5 w-5 text-basic-primary" />
+        ) : (
+          <ChevronRightIcon className="h-5 w-5 text-basic-primary" />
+        )}
+      </Link>
+    )
+  }
 
   // Function to render ellipsis
   const renderEllipsis = (key: string) => (
