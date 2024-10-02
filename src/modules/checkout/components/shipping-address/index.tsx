@@ -115,7 +115,7 @@ const ShippingAddress = ({
           />
         </Container>
       )}
-      <Box className="grid grid-cols-1 gap-2 small:grid-cols-2 small:gap-4">
+      <Box className="grid grid-cols-1 gap-2 small:gap-4 xl:grid-cols-2">
         <Input
           label="First name"
           name="shipping_address.first_name"

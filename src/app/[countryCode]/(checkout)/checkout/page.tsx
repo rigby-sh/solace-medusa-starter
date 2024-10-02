@@ -37,7 +37,7 @@ export default async function Checkout({
 
   return (
     <Container className="mx-0 max-w-full bg-secondary">
-      <Container className="grid grid-cols-1 gap-y-4 !p-0 large:grid-cols-[1fr_416px] large:gap-x-10 xl:gap-x-40">
+      <Container className="grid grid-cols-1 gap-y-4 !p-0 large:grid-cols-[1fr_416px] large:gap-x-10 2xl:gap-x-40">
         <Wrapper cart={cart}>
           <CheckoutForm cart={cart} customer={customer} />
         </Wrapper>
