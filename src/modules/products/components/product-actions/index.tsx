@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useParams } from 'next/navigation'
 
 import { addToCart } from '@lib/data/cart'
@@ -12,7 +12,8 @@ import OptionSelect from '@modules/products/components/product-actions/option-se
 import { isEqual } from 'lodash'
 
 import ProductPrice from '../product-price'
-import MobileActions from './mobile-actions'
+
+// import MobileActions from './mobile-actions'
 
 type ProductActionsProps = {
   product: HttpTypes.StoreProduct
@@ -146,7 +147,7 @@ export default function ProductActions({
               ? 'Out of stock'
               : 'Add to cart'}
         </Button>
-        <MobileActions
+        {/* <MobileActions
           product={product}
           variant={selectedVariant}
           options={options}
@@ -156,7 +157,7 @@ export default function ProductActions({
           isAdding={isAdding}
           show={!inView}
           optionsDisabled={!!disabled || isAdding}
-        />
+        /> */}
       </div>
     </>
   )

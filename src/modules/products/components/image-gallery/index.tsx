@@ -10,7 +10,7 @@ type ImageGalleryProps = {
 const ImageGallery = ({ images }: ImageGalleryProps) => {
   return (
     <div className="relative flex items-start">
-      <div className="flex flex-1 flex-col gap-y-4 small:mx-16">
+      <div className="flex flex-1 flex-col gap-y-4">
         {images.map((image, index) => {
           return (
             <Container
