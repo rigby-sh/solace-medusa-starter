@@ -22,7 +22,10 @@ const ItemsPreviewTemplate = ({ items }: ItemsTemplateProps) => {
       })}
     >
       <Table>
-        <Table.Body data-testid="items-table" className="flex flex-col gap-y-2">
+        <Table.Body
+          data-testid="items-table"
+          className="flex flex-col gap-y-2 border-none"
+        >
           {items
             ? items
                 .sort((a, b) => {
