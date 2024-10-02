@@ -21,13 +21,15 @@ export const DialogClose = forwardRef<
       <X />
     </Button>
   )
+
   return (
     <RadixDialog.Close
       ref={forwardedRef}
       className={cn(
         className,
-        'absolute right-3 top-2.5 small:right-4 small:top-4'
+        'absolute right-4 top-2.5 small:right-4 small:top-4'
       )}
+      asChild
       {...props}
     >
       {inner}
@@ -94,7 +96,7 @@ export function DialogHeader({
   ...props
 }: HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
+    <RadixDialog.Title
       className={cn(
         className,
         'w-full border-b-[.5px] border-basic-primary p-4 pr-16 small:p-5'
@@ -102,7 +104,7 @@ export function DialogHeader({
       {...props}
     >
       {children}
-    </div>
+    </RadixDialog.Title>
   )
 }
 DialogHeader.displayName = 'DialogHeader'

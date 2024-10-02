@@ -10,7 +10,7 @@ import {
 } from 'react'
 
 import { clx, IconBadge } from '@medusajs/ui'
-import ChevronDown from '@modules/common/icons/chevron-down'
+import { ChevronDownIcon } from '@modules/common/icons/chevron-down'
 
 type NativeSelectProps = {
   placeholder?: string
@@ -60,7 +60,7 @@ const CartItemSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
             {children}
           </select>
           <span className="pointer-events-none absolute flex w-8 justify-end group-hover:animate-pulse">
-            <ChevronDown />
+            <ChevronDownIcon />
           </span>
         </IconBadge>
       </div>

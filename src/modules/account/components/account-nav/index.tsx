@@ -7,7 +7,7 @@ import { ArrowRightOnRectangle } from '@medusajs/icons'
 import { HttpTypes } from '@medusajs/types'
 import { clx } from '@medusajs/ui'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
-import ChevronDown from '@modules/common/icons/chevron-down'
+import { ChevronDownIcon } from '@modules/common/icons/chevron-down'
 import MapPin from '@modules/common/icons/map-pin'
 import Package from '@modules/common/icons/package'
 import { UserIcon } from '@modules/common/icons/user'
@@ -34,7 +34,7 @@ const AccountNav = ({
             data-testid="account-main-link"
           >
             <>
-              <ChevronDown className="rotate-90 transform" />
+              <ChevronDownIcon className="rotate-90 transform" />
               <span>Account</span>
             </>
           </LocalizedClientLink>
@@ -56,7 +56,7 @@ const AccountNav = ({
                         <UserIcon size={20} />
                         <span>Profile</span>
                       </div>
-                      <ChevronDown className="-rotate-90 transform" />
+                      <ChevronDownIcon className="-rotate-90 transform" />
                     </>
                   </LocalizedClientLink>
                 </li>
@@ -71,7 +71,7 @@ const AccountNav = ({
                         <MapPin size={20} />
                         <span>Addresses</span>
                       </div>
-                      <ChevronDown className="-rotate-90 transform" />
+                      <ChevronDownIcon className="-rotate-90 transform" />
                     </>
                   </LocalizedClientLink>
                 </li>
@@ -85,7 +85,7 @@ const AccountNav = ({
                       <Package size={20} />
                       <span>Orders</span>
                     </div>
-                    <ChevronDown className="-rotate-90 transform" />
+                    <ChevronDownIcon className="-rotate-90 transform" />
                   </LocalizedClientLink>
                 </li>
                 <li>
@@ -99,7 +99,7 @@ const AccountNav = ({
                       <ArrowRightOnRectangle />
                       <span>Log out</span>
                     </div>
-                    <ChevronDown className="-rotate-90 transform" />
+                    <ChevronDownIcon className="-rotate-90 transform" />
                   </button>
                 </li>
               </ul>

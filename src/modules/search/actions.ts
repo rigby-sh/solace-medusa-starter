@@ -1,30 +1,44 @@
 'use server'
 
 import { SEARCH_INDEX_NAME, searchClient } from '@lib/search-client'
+import { PRODUCT_LIMIT } from 'app/[countryCode]/(main)/collections/[handle]/page'
 
-interface Hits {
-  readonly objectID?: string
-  id?: string
-  [x: string | number | symbol]: unknown
+import { getDefaultSearchFilters } from './const'
+
+type SearchParams = {
+  regionId: string
+  categoryHandle?: string
+  page?: number
+  query?: string
 }
 
-/**
- * Uses MeiliSearch or Algolia to search for a query
- * @param {string} query - search query
- */
-export async function search(query: string) {
-  // MeiliSearch
-  const queries = [{ params: { query }, indexName: SEARCH_INDEX_NAME }]
-  const { results } = (await searchClient.search(queries)) as Record<
-    string,
-    any
-  >
-  const { hits } = results[0] as { hits: Hits[] }
+export async function search({
+  page = 1,
+  regionId,
+  categoryHandle,
+  query,
+}: SearchParams) {
+  const filterQueries = [getDefaultSearchFilters(regionId)]
 
-  // In case you want to use Algolia instead of MeiliSearch, uncomment the following lines and delete the above lines.
+  if (categoryHandle) {
+    filterQueries.push(`categories.handle = ${categoryHandle}`)
+  }
 
-  // const index = searchClient.initIndex(SEARCH_INDEX_NAME)
-  // const { hits } = (await index.search(query)) as { hits: Hits[] }
+  const { results } = await searchClient.search({
+    queries: [
+      {
+        q: query,
+        indexUid: SEARCH_INDEX_NAME,
+        filter: filterQueries.join(' AND '),
+        limit: PRODUCT_LIMIT,
+        offset: (page - 1) * PRODUCT_LIMIT,
+        sort: ['created_at:desc'],
+      },
+    ],
+  })
 
-  return hits
+  return {
+    ...results[0],
+    estimatedTotalHits: results[0].estimatedTotalHits ?? 0,
+  }
 }

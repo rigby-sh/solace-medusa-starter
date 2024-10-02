@@ -14,7 +14,7 @@ import { Heading } from '@modules/common/components/heading'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
 import { NavigationItem } from '@modules/common/components/navigation-item'
 import { Text } from '@modules/common/components/text'
-import ChevronDown from '@modules/common/icons/chevron-down'
+import { ChevronDownIcon } from '@modules/common/icons/chevron-down'
 import { FacebookIcon } from '@modules/common/icons/facebook'
 import { LinkedinIcon } from '@modules/common/icons/linkedin'
 import { SolaceLogo } from '@modules/common/icons/solace-logo'
@@ -111,7 +111,7 @@ export default async function Footer({ countryCode }: { countryCode: string }) {
                       id="chevronDownSvg"
                       className="flex h-12 w-12 shrink-0 items-center justify-center text-static duration-200 ease-in-out"
                     >
-                      <ChevronDown />
+                      <ChevronDownIcon />
                     </div>
                   </AccordionTrigger>
                   <AccordionContent className="flex flex-col gap-3">

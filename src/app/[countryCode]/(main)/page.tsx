@@ -1,7 +1,11 @@
 import { Metadata } from 'next'
 
-import { getCollectionsWithProducts } from '@lib/data/collections'
 import {
+  getCollectionsList,
+  getCollectionsWithProducts,
+} from '@lib/data/collections'
+import {
+  getCollectionsData,
   getExploreBlogData,
   getHeroBannerData,
   getMidBannerData,
@@ -9,6 +13,7 @@ import {
 import { getProductsList } from '@lib/data/products'
 import { getRegion } from '@lib/data/regions'
 import { Banner } from '@modules/home/components/banner'
+import Collections from '@modules/home/components/collections'
 import { ExploreBlog } from '@modules/home/components/explore-blog'
 import Hero from '@modules/home/components/hero'
 import { OurBestsellers } from '@modules/home/components/our-bestsellers'
@@ -35,6 +40,9 @@ export default async function Home({
     countryCode,
   })
   const region = await getRegion(countryCode)
+  const { collections: collectionsList } = await getCollectionsList()
+
+  const strapiCollections = await getCollectionsData()
 
   const {
     data: { HeroBanner },
@@ -53,6 +61,10 @@ export default async function Home({
   return (
     <>
       <Hero data={HeroBanner} />
+      <Collections
+        cmsCollections={strapiCollections}
+        medusaCollections={collectionsList}
+      />
       <OurBestsellers products={products} />
       <Banner data={MidBanner} />
       <ExploreBlog posts={posts} />

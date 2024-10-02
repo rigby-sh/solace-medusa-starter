@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 
 import { createNavigation } from '@lib/constants'
 import { Box } from '@modules/common/components/box'
@@ -15,7 +15,6 @@ import {
   DialogPortal,
   DialogTrigger,
 } from '@modules/common/components/dialog'
-import { Heading } from '@modules/common/components/heading'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
 import { ArrowLeftIcon } from '@modules/common/icons/arrow-left'
 import { BarsIcon } from '@modules/common/icons/bars'
@@ -127,18 +126,13 @@ const SideMenu = (props: any) => {
       <DialogPortal>
         <DialogOverlay />
         <DialogContent className="!max-h-full !max-w-full !rounded-none">
-          <DialogHeader className="flex items-center gap-4">
+          <DialogHeader className="flex items-center gap-4 text-xl text-basic-primary small:text-2xl">
             {currentCategory && (
               <Button variant="tonal" withIcon size="sm" onClick={handleBack}>
                 <ArrowLeftIcon className="h-5 w-5" />
               </Button>
             )}
-            <Heading
-              as="h3"
-              className="flex text-xl text-basic-primary small:text-2xl"
-            >
-              {currentCategory?.name || 'Menu'}
-            </Heading>
+            {currentCategory?.name || 'Menu'}
           </DialogHeader>
           <DialogBody>
             <Box className="flex flex-col">

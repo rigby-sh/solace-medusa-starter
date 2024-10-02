@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { Heading, Text } from '@medusajs/ui'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
 import RefinementList from '@modules/store/components/refinement-list'

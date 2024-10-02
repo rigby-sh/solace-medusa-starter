@@ -1,3 +1,5 @@
+'use client'
+
 import { useMemo } from 'react'
 import Image from 'next/image'
 
@@ -39,6 +41,7 @@ export default function ProductTile({ product }: { product: StoreProduct }) {
             <Badge label="New product" variant="brand" />
           </Box>
         )}
+
         <LocalizedClientLink href={`/products/${product.handle}`}>
           <Image
             src={product.thumbnail}
@@ -50,7 +53,7 @@ export default function ProductTile({ product }: { product: StoreProduct }) {
         </LocalizedClientLink>
         <Button
           withIcon
-          className="absolute bottom-3 right-3 opacity-100 transition-opacity duration-300 group-hover:opacity-100 small:bottom-5 small:right-5 small:opacity-0"
+          className="absolute bottom-3 right-3 opacity-100 transition-opacity duration-300 group-hover:opacity-100 small:bottom-5 small:right-5 large:opacity-0"
           onClick={handleAddToCart}
         >
           <BasketIcon />
