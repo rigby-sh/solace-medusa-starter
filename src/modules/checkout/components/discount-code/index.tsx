@@ -6,7 +6,7 @@ import { applyPromotions, submitPromotionForm } from '@lib/data/cart'
 import { convertToLocale } from '@lib/util/money'
 import { HttpTypes } from '@medusajs/types'
 import { Badge, Heading, Input, Label, Text } from '@medusajs/ui'
-import Trash from '@modules/common/icons/trash'
+import { TrashIcon } from '@modules/common/icons'
 import { useFormState } from 'react-dom'
 
 import ErrorMessage from '../error-message'
@@ -156,7 +156,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
                         }}
                         data-testid="remove-discount-button"
                       >
-                        <Trash size={14} />
+                        <TrashIcon size={14} />
                         <span className="sr-only">
                           Remove discount code from order
                         </span>

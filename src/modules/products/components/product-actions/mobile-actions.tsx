@@ -5,8 +5,7 @@ import useToggleState from '@lib/hooks/use-toggle-state'
 import { getProductPrice } from '@lib/util/get-product-price'
 import { HttpTypes } from '@medusajs/types'
 import { Button, clx } from '@medusajs/ui'
-import ChevronDown from '@modules/common/icons/chevron-down'
-import X from '@modules/common/icons/x'
+import { ChevronDownIcon, XIcon } from '@modules/common/icons'
 
 import OptionSelect from './option-select'
 
@@ -108,7 +107,7 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                       ? Object.values(options).join(' / ')
                       : 'Select Options'}
                   </span>
-                  <ChevronDown />
+                  <ChevronDownIcon />
                 </div>
               </Button>
               <Button
@@ -163,7 +162,7 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                       className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-ui-fg-base"
                       data-testid="close-modal-button"
                     >
-                      <X />
+                      <XIcon />
                     </button>
                   </div>
                   <div className="bg-white px-6 py-12">

@@ -21,7 +21,10 @@ export default async function SearchResults({ params, searchParams }: Params) {
   const { query } = params
   const { sortBy, page } = searchParams
 
-  const hits = await search(query).then((data) => data)
+  const hits = await search({
+    query,
+    regionId: params.countryCode,
+  }).then((data) => data)
 
   const ids = hits
     .map((h) => h.objectID || h.id)

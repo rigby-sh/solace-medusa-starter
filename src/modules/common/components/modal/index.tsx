@@ -3,7 +3,7 @@ import React, { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { ModalProvider, useModal } from '@lib/context/modal-context'
 import { clx } from '@medusajs/ui'
-import X from '@modules/common/icons/x'
+import { XIcon } from '@modules/common/icons'
 
 type ModalProps = {
   isOpen: boolean
@@ -87,7 +87,7 @@ const Title: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <div className="text-large-semi">{children}</div>
       <div>
         <button onClick={close} data-testid="close-modal-button">
-          <X size={20} />
+          <XIcon size={20} />
         </button>
       </div>
     </Dialog.Title>

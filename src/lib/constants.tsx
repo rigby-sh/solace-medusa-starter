@@ -2,9 +2,24 @@ import React from 'react'
 
 import { CreditCard } from '@medusajs/icons'
 import { StoreCollection, StoreProductCategory } from '@medusajs/types'
-import Bancontact from '@modules/common/icons/bancontact'
-import Ideal from '@modules/common/icons/ideal'
-import PayPal from '@modules/common/icons/paypal'
+import { BancontactIcon, IdealIcon, PayPalIcon } from '@modules/common/icons'
+
+// Product filters
+export const FILTER_KEYS = {
+  ORDER_BY_KEY: 'sort_by',
+  SEARCH_KEY: 'q',
+  PAGE_KEY: 'p',
+  PRICE_KEY: 'price',
+  MATERIAL_KEY: 'material',
+  COLLECTION_KEY: 'collection',
+  ACTIVE: 'active',
+}
+
+export const PRODUCT_LIST_PATHNAMES = {
+  CATEGORY: '/categories',
+  EXPLORE: '/shop',
+  SEARCH: '/search',
+} as const
 
 /* Map of payment provider_id to their title and icon. Add in any payment providers you want to use. */
 export const paymentInfoMap: Record<
@@ -17,15 +32,15 @@ export const paymentInfoMap: Record<
   },
   'pp_stripe-ideal_stripe': {
     title: 'iDeal',
-    icon: <Ideal />,
+    icon: <IdealIcon />,
   },
   'pp_stripe-bancontact_stripe': {
     title: 'Bancontact',
-    icon: <Bancontact />,
+    icon: <BancontactIcon />,
   },
   pp_paypal_paypal: {
     title: 'PayPal',
-    icon: <PayPal />,
+    icon: <PayPalIcon />,
   },
   pp_system_default: {
     title: 'Manual Payment',
@@ -191,3 +206,14 @@ export const createFooterNavigation = (
     ],
   }
 }
+
+export const checkoutFooterNavigation = [
+  {
+    title: 'Privacy Policy',
+    href: '#',
+  },
+  {
+    title: 'Terms & Conditions',
+    href: '#',
+  },
+]

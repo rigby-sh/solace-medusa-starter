@@ -2,7 +2,7 @@ import React from 'react'
 
 import { IconProps } from 'types/icon'
 
-const FastDelivery: React.FC<IconProps> = ({
+export const FastDeliveryIcon: React.FC<IconProps> = ({
   size = '16',
   color = 'currentColor',
   ...attributes
@@ -61,5 +61,3 @@ const FastDelivery: React.FC<IconProps> = ({
     </svg>
   )
 }
-
-export default FastDelivery

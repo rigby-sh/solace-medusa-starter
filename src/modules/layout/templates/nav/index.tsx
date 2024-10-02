@@ -3,7 +3,7 @@ import { getCollectionsList } from '@lib/data/collections'
 import { Box } from '@modules/common/components/box'
 import { Container } from '@modules/common/components/container'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
-import { SolaceLogo } from '@modules/common/icons/solace-logo'
+import { SolaceLogo } from '@modules/common/icons'
 import SideMenu from '@modules/layout/components/side-menu'
 
 import NavActions from './nav-actions'

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { IconProps } from 'types/icon'
 
-const EyeOff: React.FC<IconProps> = ({
+export const EyeOffIcon: React.FC<IconProps> = ({
   size = '20',
   color = 'currentColor',
   ...attributes
@@ -33,5 +33,3 @@ const EyeOff: React.FC<IconProps> = ({
     </svg>
   )
 }
-
-export default EyeOff

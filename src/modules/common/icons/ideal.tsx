@@ -2,7 +2,7 @@ import React from 'react'
 
 import { IconProps } from 'types/icon'
 
-const Ideal: React.FC<IconProps> = ({
+export const IdealIcon: React.FC<IconProps> = ({
   size = '20',
   color = 'currentColor',
   ...attributes
@@ -22,5 +22,3 @@ const Ideal: React.FC<IconProps> = ({
     </svg>
   )
 }
-
-export default Ideal

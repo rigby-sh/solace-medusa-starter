@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import { getCategoryByHandle, listCategories } from '@lib/data/categories'
+import { getCollectionsList } from '@lib/data/collections'
 import { getProductsList } from '@lib/data/products'
 import { listRegions } from '@lib/data/regions'
 import { StoreProductCategory, StoreRegion } from '@medusajs/types'
@@ -80,6 +81,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     },
     countryCode: params.countryCode,
   })
+  const collections = await getCollectionsList()
 
   if (!product_categories) {
     notFound()
@@ -92,6 +94,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
       page={page}
       countryCode={params.countryCode}
       recommendedProducts={recommendedProducts}
+      collections={collections.collections}
     />
   )
 }

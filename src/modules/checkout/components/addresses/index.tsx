@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 import { setAddresses } from '@lib/data/cart'
@@ -8,7 +9,7 @@ import { CheckCircleSolid } from '@medusajs/icons'
 import { HttpTypes } from '@medusajs/types'
 import { Heading, Text, useToggleState } from '@medusajs/ui'
 import Divider from '@modules/common/components/divider'
-import Spinner from '@modules/common/icons/spinner'
+import { Spinner } from '@modules/common/icons'
 import { useFormState } from 'react-dom'
 
 import BillingAddress from '../billing_address'

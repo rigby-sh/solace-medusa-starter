@@ -1,8 +1,7 @@
 import { Box } from '@modules/common/components/box'
 import { Button } from '@modules/common/components/button'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
-import { SearchIcon } from '@modules/common/icons/search'
-import { UserIcon } from '@modules/common/icons/user'
+import { SearchIcon, UserIcon } from '@modules/common/icons'
 import CartButton from '@modules/layout/components/cart-button'
 
 export default function NavActions() {

@@ -1,8 +1,7 @@
 import { HttpTypes } from '@medusajs/types'
-import Divider from '@modules/common/components/divider'
+import { Container } from '@modules/common/components/container'
 
 import EmptyCartMessage from '../components/empty-cart-message'
-import SignInPrompt from '../components/sign-in-prompt'
 import ItemsTemplate from './items'
 import Summary from './summary'
 
@@ -14,17 +13,11 @@ const CartTemplate = ({
   customer: HttpTypes.StoreCustomer | null
 }) => {
   return (
-    <div className="py-12">
-      <div className="content-container" data-testid="cart-container">
+    <Container className="mx-0 max-w-full bg-secondary px-0 py-0 small:px-0 small:py-0">
+      <Container className="flex items-center justify-center">
         {cart?.items?.length ? (
-          <div className="grid grid-cols-1 gap-x-40 small:grid-cols-[1fr_360px]">
-            <div className="flex flex-col gap-y-6 bg-white py-6">
-              {!customer && (
-                <>
-                  <SignInPrompt />
-                  <Divider />
-                </>
-              )}
+          <div className="flex w-full flex-col gap-4 large:flex-row large:justify-between large:gap-0">
+            <div className="flex max-w-[765px] shrink grow flex-col gap-4 large:mr-12">
               <ItemsTemplate items={cart?.items} />
             </div>
             <div className="relative">
@@ -44,8 +37,8 @@ const CartTemplate = ({
             <EmptyCartMessage />
           </div>
         )}
-      </div>
-    </div>
+      </Container>
+    </Container>
   )
 }
 

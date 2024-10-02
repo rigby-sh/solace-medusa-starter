@@ -33,6 +33,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: process.env.NEXT_PUBLIC_CDN_SPACE_DOMAIN,
       },
+      {
+        protocol: 'https',
+        hostname: process.env.NEXT_PUBLIC_SPACE_ENDPOINT,
+      },
     ],
   },
 }

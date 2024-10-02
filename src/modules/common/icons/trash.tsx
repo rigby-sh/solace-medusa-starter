@@ -2,7 +2,7 @@ import React from 'react'
 
 import { IconProps } from 'types/icon'
 
-const Trash: React.FC<IconProps> = ({
+export const TrashIcon: React.FC<IconProps> = ({
   size = '16',
   color = 'currentColor',
   ...attributes
@@ -47,5 +47,3 @@ const Trash: React.FC<IconProps> = ({
     </svg>
   )
 }
-
-export default Trash

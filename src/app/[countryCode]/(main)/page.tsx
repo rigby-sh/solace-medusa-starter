@@ -1,9 +1,19 @@
 import { Metadata } from 'next'
 
-import { getCollectionsWithProducts } from '@lib/data/collections'
-import { getExploreBlogData, getHeroBannerData } from '@lib/data/fetch'
+import {
+  getCollectionsList,
+  getCollectionsWithProducts,
+} from '@lib/data/collections'
+import {
+  getCollectionsData,
+  getExploreBlogData,
+  getHeroBannerData,
+  getMidBannerData,
+} from '@lib/data/fetch'
 import { getProductsList } from '@lib/data/products'
 import { getRegion } from '@lib/data/regions'
+import { Banner } from '@modules/home/components/banner'
+import Collections from '@modules/home/components/collections'
 import { ExploreBlog } from '@modules/home/components/explore-blog'
 import Hero from '@modules/home/components/hero'
 import { ProductCarousel } from '@modules/products/components/product-carousel'
@@ -30,10 +40,17 @@ export default async function Home({
     countryCode,
   })
   const region = await getRegion(countryCode)
+  const { collections: collectionsList } = await getCollectionsList()
+
+  const strapiCollections = await getCollectionsData()
 
   const {
     data: { HeroBanner },
   } = await getHeroBannerData()
+
+  const {
+    data: { MidBanner },
+  } = await getMidBannerData()
 
   const { data: posts } = await getExploreBlogData()
 
@@ -44,6 +61,10 @@ export default async function Home({
   return (
     <>
       <Hero data={HeroBanner} />
+      <Collections
+        cmsCollections={strapiCollections}
+        medusaCollections={collectionsList}
+      />
       <ProductCarousel
         products={products}
         title="Our bestsellers"
@@ -52,6 +73,7 @@ export default async function Home({
           text: 'View all',
         }}
       />
+      <Banner data={MidBanner} />
       <ExploreBlog posts={posts} />
     </>
   )

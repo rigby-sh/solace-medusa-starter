@@ -1,9 +1,11 @@
 'use client'
 
 import { HttpTypes } from '@medusajs/types'
-import Back from '@modules/common/icons/back'
-import FastDelivery from '@modules/common/icons/fast-delivery'
-import Refresh from '@modules/common/icons/refresh'
+import {
+  ArrowLeftIcon,
+  FastDeliveryIcon,
+  RefreshIcon,
+} from '@modules/common/icons'
 
 import Accordion from './accordion'
 
@@ -83,7 +85,7 @@ const ShippingInfoTab = () => {
     <div className="text-small-regular py-8">
       <div className="grid grid-cols-1 gap-y-8">
         <div className="flex items-start gap-x-2">
-          <FastDelivery />
+          <FastDeliveryIcon />
           <div>
             <span className="font-semibold">Fast delivery</span>
             <p className="max-w-sm">
@@ -93,7 +95,7 @@ const ShippingInfoTab = () => {
           </div>
         </div>
         <div className="flex items-start gap-x-2">
-          <Refresh />
+          <RefreshIcon />
           <div>
             <span className="font-semibold">Simple exchanges</span>
             <p className="max-w-sm">
@@ -103,7 +105,7 @@ const ShippingInfoTab = () => {
           </div>
         </div>
         <div className="flex items-start gap-x-2">
-          <Back />
+          <ArrowLeftIcon />
           <div>
             <span className="font-semibold">Easy returns</span>
             <p className="max-w-sm">
