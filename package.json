@@ -50,6 +50,7 @@
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "tailwindcss-radix": "^2.8.0",
+    "validator": "^13.12.0",
     "webpack": "^5"
   },
   "devDependencies": {

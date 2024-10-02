@@ -1,8 +1,9 @@
+import React from 'react'
+
 import { getPercentageDiff } from '@lib/util/get-precentage-diff'
 import { getPricesForVariant } from '@lib/util/get-product-price'
 import { convertToLocale } from '@lib/util/money'
 import { HttpTypes } from '@medusajs/types'
-import { clx } from '@medusajs/ui'
 
 type LineItemPriceProps = {
   item: HttpTypes.StoreCartLineItem | HttpTypes.StoreOrderLineItem
@@ -24,7 +25,7 @@ const LineItemPrice = ({ item, style = 'default' }: LineItemPriceProps) => {
 
   return (
     <div className="flex flex-col items-end gap-x-2 text-basic-primary">
-      <div className="flex flex-row-reverse gap-2 small:flex-col small:gap-0">
+      <div className="flex flex-row-reverse items-center gap-2 small:flex-col small:items-end small:gap-0">
         {hasReducedPrice && (
           <>
             <p>

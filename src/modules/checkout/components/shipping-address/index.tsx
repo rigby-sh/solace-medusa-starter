@@ -1,10 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
+import { validateField } from '@lib/util/validator'
 import { HttpTypes } from '@medusajs/types'
 import { Container } from '@medusajs/ui'
-import { Checkbox } from '@modules/common/components/checkbox'
+import { Box } from '@modules/common/components/box'
 import { Input } from '@modules/common/components/input'
-import { Label } from '@modules/common/components/label'
+import { Text } from '@modules/common/components/text'
 import { mapKeys } from 'lodash'
 
 import AddressSelect from '../address-select'
@@ -13,15 +14,15 @@ import CountrySelect from '../country-select'
 const ShippingAddress = ({
   customer,
   cart,
-  checked,
-  onChange,
 }: {
   customer: HttpTypes.StoreCustomer | null
   cart: HttpTypes.StoreCart | null
-  checked: boolean
-  onChange: () => void
 }) => {
-  const [formData, setFormData] = useState<Record<string, any>>({})
+  const [formData, setFormData] = useState<any>({})
+  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [touchedFields, setTouchedFields] = useState<Record<string, boolean>>(
+    {}
+  )
 
   const countriesInRegion = useMemo(
     () => cart?.region?.countries?.map((c) => c.iso_2),
@@ -71,24 +72,38 @@ const ShippingAddress = ({
     if (cart && !cart.email && customer?.email) {
       setFormAddress(undefined, customer.email)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cart]) // Add cart as a dependency
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
+    const { name, value } = e.target
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     })
+    validateField(name, value, 'billing', touchedFields, setErrors)
+  }
+
+  const handleBlur = (
+    e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name } = e.target
+    setTouchedFields({
+      ...touchedFields,
+      [name]: true,
+    })
+    validateField(name, formData[name], 'billing', touchedFields, setErrors)
   }
 
   return (
     <>
       {customer && (addressesInRegion?.length || 0) > 0 && (
         <Container className="mb-6 flex flex-col gap-y-4 p-5">
-          <p className="text-small-regular">
+          <Text className="text-sm">
             {`Hi ${customer.first_name}, do you want to use one of your saved addresses?`}
-          </p>
+          </Text>
           <AddressSelect
             addresses={customer.addresses}
             addressInput={
@@ -100,32 +115,42 @@ const ShippingAddress = ({
           />
         </Container>
       )}
-      <div className="grid grid-cols-2 gap-4">
+      <Box className="grid grid-cols-1 gap-2 small:grid-cols-2 small:gap-4">
         <Input
+          label="First name"
           name="shipping_address.first_name"
           autoComplete="given-name"
           value={formData['shipping_address.first_name']}
           onChange={handleChange}
+          onBlur={handleBlur}
           required
+          error={errors['shipping_address.first_name']}
           data-testid="shipping-first-name-input"
         />
         <Input
+          label="Last name"
           name="shipping_address.last_name"
           autoComplete="family-name"
           value={formData['shipping_address.last_name']}
           onChange={handleChange}
+          onBlur={handleBlur}
           required
+          error={errors['shipping_address.last_name']}
           data-testid="shipping-last-name-input"
         />
         <Input
+          label="Address"
           name="shipping_address.address_1"
           autoComplete="address-line1"
           value={formData['shipping_address.address_1']}
           onChange={handleChange}
+          onBlur={handleBlur}
           required
+          error={errors['shipping_address.address_1']}
           data-testid="shipping-address-input"
         />
         <Input
+          label="Company name"
           name="shipping_address.company"
           value={formData['shipping_address.company']}
           onChange={handleChange}
@@ -133,22 +158,29 @@ const ShippingAddress = ({
           data-testid="shipping-company-input"
         />
         <Input
+          label="Postal code"
           name="shipping_address.postal_code"
           autoComplete="postal-code"
           value={formData['shipping_address.postal_code']}
           onChange={handleChange}
+          onBlur={handleBlur}
           required
+          error={errors['shipping_address.postal_code']}
           data-testid="shipping-postal-code-input"
         />
         <Input
+          label="City"
           name="shipping_address.city"
           autoComplete="address-level2"
           value={formData['shipping_address.city']}
           onChange={handleChange}
+          onBlur={handleBlur}
           required
+          error={errors['shipping_address.city']}
           data-testid="shipping-city-input"
         />
         <CountrySelect
+          label="Country"
           name="shipping_address.country_code"
           autoComplete="country"
           region={cart?.region}
@@ -158,45 +190,25 @@ const ShippingAddress = ({
           data-testid="shipping-country-select"
         />
         <Input
+          label="State / Province (optional)"
           name="shipping_address.province"
           autoComplete="address-level1"
           value={formData['shipping_address.province']}
           onChange={handleChange}
-          required
           data-testid="shipping-province-input"
         />
-      </div>
-      <div className="my-8 flex items-center gap-x-2">
-        <Checkbox
-          id="same_as_billing"
-          name="same_as_billing"
-          checked={checked}
-          onChange={onChange}
-          data-testid="billing-address-checkbox"
-        />
-        <Label size="lg" htmlFor="same_as_billing" className="cursor-pointer">
-          Billing address same as shipping address
-        </Label>
-      </div>
-      <div className="mb-4 grid grid-cols-2 gap-4">
         <Input
-          name="email"
-          type="email"
-          title="Enter a valid email address."
-          autoComplete="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-          data-testid="shipping-email-input"
-        />
-        <Input
+          label="Phone"
           name="shipping_address.phone"
           autoComplete="tel"
+          onBlur={handleBlur}
           value={formData['shipping_address.phone']}
           onChange={handleChange}
+          required
+          error={errors['shipping_address.phone']}
           data-testid="shipping-phone-input"
         />
-      </div>
+      </Box>
     </>
   )
 }

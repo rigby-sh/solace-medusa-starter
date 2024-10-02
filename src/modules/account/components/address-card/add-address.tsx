@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { addCustomerAddress } from '@lib/data/customer'
 import useToggleState from '@lib/hooks/use-toggle-state'

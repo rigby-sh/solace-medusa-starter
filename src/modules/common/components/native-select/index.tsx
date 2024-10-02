@@ -7,11 +7,12 @@ import {
   useState,
 } from 'react'
 
-import { ChevronUpDown } from '@medusajs/icons'
 import { clx } from '@medusajs/ui'
+import { ChevronDownIcon } from '@modules/common/icons/chevron-down'
 
 export type NativeSelectProps = {
   placeholder?: string
+  label?: string
   errors?: Record<string, unknown>
   touched?: Record<string, unknown>
 } & SelectHTMLAttributes<HTMLSelectElement>
@@ -43,10 +44,10 @@ const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
           onFocus={() => innerRef.current?.focus()}
           onBlur={() => innerRef.current?.blur()}
           className={clx(
-            'text-base-regular relative flex items-center rounded-md border border-ui-border-base bg-ui-bg-subtle hover:bg-ui-bg-field-hover',
+            'border-primary relative flex items-center border bg-secondary text-basic-primary',
             className,
             {
-              'text-ui-fg-muted': isPlaceholder,
+              'text-secondary': isPlaceholder,
             }
           )}
         >
@@ -54,7 +55,7 @@ const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
             ref={innerRef}
             defaultValue={defaultValue}
             {...props}
-            className="flex-1 appearance-none border-none bg-transparent px-4 py-2.5 outline-none transition-colors duration-150"
+            className="flex-1 appearance-none border-none bg-transparent px-4 py-2.5 text-md outline-none transition-colors duration-150"
           >
             <option disabled value="">
               {placeholder}
@@ -62,7 +63,7 @@ const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
             {children}
           </select>
           <span className="pointer-events-none absolute inset-y-0 right-4 flex items-center">
-            <ChevronUpDown />
+            <ChevronDownIcon className="h-5 w-5 text-basic-primary" />
           </span>
         </div>
       </div>

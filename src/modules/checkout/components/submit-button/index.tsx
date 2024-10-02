@@ -2,17 +2,24 @@
 
 import React from 'react'
 
-import { Button } from '@medusajs/ui'
+import { Button } from '@modules/common/components/button'
 import { useFormStatus } from 'react-dom'
 
 export function SubmitButton({
   children,
-  variant = 'primary',
+  variant = 'filled',
   className,
   'data-testid': dataTestId,
 }: {
   children: React.ReactNode
-  variant?: 'primary' | 'secondary' | 'transparent' | 'danger' | null
+  variant?:
+    | 'filled'
+    | 'ghost'
+    | 'tonal'
+    | 'text'
+    | 'destructive'
+    | 'icon'
+    | null
   className?: string
   'data-testid'?: string
 }) {
@@ -20,11 +27,10 @@ export function SubmitButton({
 
   return (
     <Button
-      size="large"
       className={className}
       type="submit"
       isLoading={pending}
-      variant={variant || 'primary'}
+      variant={variant || 'filled'}
       data-testid={dataTestId}
     >
       {children}

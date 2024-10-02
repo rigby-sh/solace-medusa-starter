@@ -21,8 +21,8 @@ export const MaestroIcon = (props: IconProps) => {
         fill="#0099DF"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M27.4999 22.9188C29.4562 21.2515 30.6966 18.7705 30.6966 16C30.6966 13.2296 29.4562 10.7486 27.4999 9.08125C25.5437 10.7486 24.3032 13.2296 24.3032 16C24.3032 18.7705 25.5437 21.2515 27.4999 22.9188Z"
         fill="#6C6BBD"
       />

@@ -1,17 +1,26 @@
 'use client'
 
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 import { RadioGroup } from '@headlessui/react'
 import { isStripe as isStripeFunc, paymentInfoMap } from '@lib/constants'
 import { initiatePaymentSession } from '@lib/data/cart'
-import { CheckCircleSolid, CreditCard } from '@medusajs/icons'
-import { Button, clx, Container, Heading, Text } from '@medusajs/ui'
+import { cn } from '@lib/util/cn'
 import ErrorMessage from '@modules/checkout/components/error-message'
 import PaymentContainer from '@modules/checkout/components/payment-container'
 import { StripeContext } from '@modules/checkout/components/payment-wrapper'
-import Divider from '@modules/common/components/divider'
+import { Box } from '@modules/common/components/box'
+import { Button } from '@modules/common/components/button'
+import { Heading } from '@modules/common/components/heading'
+import { Stepper } from '@modules/common/components/stepper'
+import { Text } from '@modules/common/components/text'
 import { CardElement } from '@stripe/react-stripe-js'
 import { StripeCardElementOptions } from '@stripe/stripe-js'
 
@@ -82,26 +91,31 @@ const Payment = ({
     })
   }
 
-  const handleSubmit = async () => {
+  const handlePaymentMethodChange = async (value: string) => {
+    setSelectedPaymentMethod(value)
+    await handleSubmit(value)
+  }
+
+  const handleSubmit = async (paymentMethodId: string) => {
     setIsLoading(true)
     try {
-      const shouldInputCard =
-        isStripeFunc(selectedPaymentMethod) && !activeSession
+      // const shouldInputCard =
+      //   isStripeFunc(selectedPaymentMethod) && !activeSession
 
       if (!activeSession) {
         await initiatePaymentSession(cart, {
-          provider_id: selectedPaymentMethod,
+          provider_id: paymentMethodId,
         })
       }
 
-      if (!shouldInputCard) {
-        return router.push(
-          pathname + '?' + createQueryString('step', 'review'),
-          {
-            scroll: false,
-          }
-        )
-      }
+      // if (!shouldInputCard) {
+      //   return router.push(
+      //     pathname + '?' + createQueryString('step', 'review'),
+      //     {
+      //       scroll: false,
+      //     }
+      //   )
+      // }
     } catch (err: any) {
       setError(err.message)
     } finally {
@@ -114,40 +128,45 @@ const Payment = ({
   }, [isOpen])
 
   return (
-    <div className="bg-white">
-      <div className="mb-6 flex flex-row items-center justify-between">
+    <Box className="bg-primary p-5">
+      <Box
+        className={cn('flex flex-row items-center justify-between', {
+          'mb-6': isOpen,
+        })}
+      >
         <Heading
-          level="h2"
-          className={clx(
-            'text-3xl-regular flex flex-row items-baseline gap-x-2',
-            {
-              'pointer-events-none select-none opacity-50':
-                !isOpen && !paymentReady,
-            }
-          )}
+          as="h2"
+          className={cn('flex flex-row items-center gap-x-4 text-2xl', {
+            'pointer-events-none select-none': !isOpen && !paymentReady,
+          })}
         >
+          {!isOpen && !paymentReady ? (
+            <Stepper>3</Stepper>
+          ) : !isOpen && paymentReady ? (
+            <Stepper state="completed" />
+          ) : (
+            <Stepper state="focussed">3</Stepper>
+          )}
           Payment
-          {!isOpen && paymentReady && <CheckCircleSolid />}
         </Heading>
         {!isOpen && paymentReady && (
-          <Text>
-            <button
-              onClick={handleEdit}
-              className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
-              data-testid="edit-payment-button"
-            >
-              Edit
-            </button>
-          </Text>
+          <Button
+            variant="tonal"
+            size="sm"
+            onClick={handleEdit}
+            data-testid="edit-payment-button"
+          >
+            Edit
+          </Button>
         )}
-      </div>
-      <div>
-        <div className={isOpen ? 'block' : 'hidden'}>
+      </Box>
+      <Box>
+        <Box className={isOpen ? 'block' : 'hidden'}>
           {!paidByGiftcard && availablePaymentMethods?.length && (
             <>
               <RadioGroup
                 value={selectedPaymentMethod}
-                onChange={(value: string) => setSelectedPaymentMethod(value)}
+                onChange={handlePaymentMethodChange}
               >
                 {availablePaymentMethods
                   .sort((a, b) => {
@@ -187,7 +206,7 @@ const Payment = ({
           )}
 
           {paidByGiftcard && (
-            <div className="flex w-1/3 flex-col">
+            <div className="flex flex-col">
               <Text className="txt-medium-plus mb-1 text-ui-fg-base">
                 Payment method
               </Text>
@@ -205,27 +224,27 @@ const Payment = ({
             data-testid="payment-method-error-message"
           />
 
-          <Button
-            size="large"
-            className="mt-6"
-            onClick={handleSubmit}
-            isLoading={isLoading}
-            disabled={
-              (isStripe && !cardComplete) ||
-              (!selectedPaymentMethod && !paidByGiftcard)
-            }
-            data-testid="submit-payment-button"
-          >
-            {!activeSession && isStripeFunc(selectedPaymentMethod)
-              ? ' Enter card details'
-              : 'Continue to review'}
-          </Button>
-        </div>
-
-        <div className={isOpen ? 'hidden' : 'block'}>
+          {!activeSession && isStripeFunc(selectedPaymentMethod) && (
+            <Button
+              className="mt-6"
+              // TODO: For check
+              onClick={() => handleSubmit(selectedPaymentMethod)}
+              isLoading={isLoading}
+              disabled={
+                (isStripe && !cardComplete) ||
+                (!selectedPaymentMethod && !paidByGiftcard)
+              }
+              data-testid="submit-payment-button"
+            >
+              Enter card details
+            </Button>
+          )}
+        </Box>
+        {/* TODO: For remove after testing */}
+        {/* <Box className={isOpen ? 'hidden' : 'block'}>
           {cart && paymentReady && activeSession ? (
             <div className="flex w-full items-start gap-x-1">
-              <div className="flex w-1/3 flex-col">
+              <div className="flex flex-col">
                 <Text className="txt-medium-plus mb-1 text-ui-fg-base">
                   Payment method
                 </Text>
@@ -237,7 +256,7 @@ const Payment = ({
                     selectedPaymentMethod}
                 </Text>
               </div>
-              <div className="flex w-1/3 flex-col">
+              <div className="flex flex-col">
                 <Text className="txt-medium-plus mb-1 text-ui-fg-base">
                   Payment details
                 </Text>
@@ -245,11 +264,11 @@ const Payment = ({
                   className="txt-medium flex items-center gap-2 text-ui-fg-subtle"
                   data-testid="payment-details-summary"
                 >
-                  <Container className="flex h-7 w-fit items-center bg-ui-button-neutral-hover p-2">
+                  <Box className="flex h-7 w-fit items-center bg-ui-button-neutral-hover p-2">
                     {paymentInfoMap[selectedPaymentMethod]?.icon || (
                       <CreditCard />
                     )}
-                  </Container>
+                  </Box>
                   <Text>
                     {isStripeFunc(selectedPaymentMethod) && cardBrand
                       ? cardBrand
@@ -259,7 +278,7 @@ const Payment = ({
               </div>
             </div>
           ) : paidByGiftcard ? (
-            <div className="flex w-1/3 flex-col">
+            <div className="flex flex-col">
               <Text className="txt-medium-plus mb-1 text-ui-fg-base">
                 Payment method
               </Text>
@@ -271,10 +290,9 @@ const Payment = ({
               </Text>
             </div>
           ) : null}
-        </div>
-      </div>
-      <Divider className="mt-8" />
-    </div>
+        </Box> */}
+      </Box>
+    </Box>
   )
 }
 

@@ -1,6 +1,8 @@
 import { forwardRef, useImperativeHandle, useMemo, useRef } from 'react'
 
 import { HttpTypes } from '@medusajs/types'
+import { Box } from '@modules/common/components/box'
+import { Label } from '@modules/common/components/label'
 import NativeSelect, {
   NativeSelectProps,
 } from '@modules/common/components/native-select'
@@ -30,18 +32,25 @@ const CountrySelect = forwardRef<
   }, [region])
 
   return (
-    <NativeSelect
-      ref={innerRef}
-      placeholder={placeholder}
-      defaultValue={defaultValue}
-      {...props}
-    >
-      {countryOptions?.map(({ value, label }, index) => (
-        <option key={index} value={value}>
-          {label}
-        </option>
-      ))}
-    </NativeSelect>
+    <Box className="flex flex-col gap-2">
+      {props.label && (
+        <Label size="sm" htmlFor={props.name} className="text-secondary">
+          {props.label}
+        </Label>
+      )}
+      <NativeSelect
+        ref={innerRef}
+        placeholder={placeholder}
+        defaultValue={defaultValue}
+        {...props}
+      >
+        {countryOptions?.map(({ value, label }, index) => (
+          <option key={index} value={value}>
+            {label}
+          </option>
+        ))}
+      </NativeSelect>
+    </Box>
   )
 })
 

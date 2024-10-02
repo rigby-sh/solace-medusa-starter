@@ -3,6 +3,7 @@
 import { useState } from 'react'
 
 import { updateLineItem } from '@lib/data/cart'
+import { cn } from '@lib/util/cn'
 import { HttpTypes } from '@medusajs/types'
 import ErrorMessage from '@modules/checkout/components/error-message'
 import { Box } from '@modules/common/components/box'
@@ -17,6 +18,7 @@ import {
   SelectItem,
   SelectTrigger,
 } from '@modules/common/components/select'
+import { Text } from '@modules/common/components/text'
 import { Spinner } from '@modules/common/icons'
 import Thumbnail from '@modules/products/components/thumbnail'
 
@@ -77,39 +79,49 @@ const Item = ({ item, type = 'full' }: ItemProps) => {
           <Box className="block w-max small:hidden">
             <LineItemPrice item={item} style="tight" />
           </Box>
-          <Box className="flex items-center gap-2">
-            <Box className="flex w-[108px] flex-col gap-2">
-              <Select
-                value={null}
-                onValueChange={(quantity) => {
-                  changeQuantity(+quantity)
-                }}
-              >
-                <SelectTrigger>{item.quantity}</SelectTrigger>
-                <SelectContent>
-                  {Array.from(
-                    {
-                      length: Math.min(maxQuantity, 10),
-                    },
-                    (_, i) => (
-                      <SelectItem
-                        key={i}
-                        value={String(i + 1)}
-                        className="w-[108px]"
-                      >
-                        {i + 1}
-                      </SelectItem>
-                    )
-                  )}
-                </SelectContent>
-              </Select>
-              <ErrorMessage error={error} />
+          {type === 'full' ? (
+            <Box className="flex items-center gap-2">
+              <Box className="flex w-[108px] flex-col gap-2">
+                <Select
+                  value={null}
+                  onValueChange={(quantity) => {
+                    changeQuantity(+quantity)
+                  }}
+                >
+                  <SelectTrigger>{item.quantity}</SelectTrigger>
+                  <SelectContent>
+                    {Array.from(
+                      {
+                        length: Math.min(maxQuantity, 10),
+                      },
+                      (_, i) => (
+                        <SelectItem
+                          key={i}
+                          value={String(i + 1)}
+                          className="w-[108px]"
+                        >
+                          {i + 1}
+                        </SelectItem>
+                      )
+                    )}
+                  </SelectContent>
+                </Select>
+                <ErrorMessage error={error} />
+              </Box>
+              {updating && <Spinner />}
             </Box>
-            {updating && <Spinner />}
-          </Box>
+          ) : (
+            <Text>{item.quantity} item</Text>
+          )}
         </Box>
-        <Box className="flex flex-col items-end justify-between">
-          <DeleteButton id={item.id} className="w-12 hover:bg-transparent" />
+        <Box
+          className={cn('flex flex-col items-end justify-between', {
+            'justify-end': type === 'preview',
+          })}
+        >
+          {type === 'full' && (
+            <DeleteButton id={item.id} className="w-12 hover:bg-transparent" />
+          )}
           <Box className="hidden small:block">
             <LineItemPrice item={item} style="tight" />
           </Box>

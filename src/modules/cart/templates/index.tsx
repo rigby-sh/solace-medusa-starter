@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { HttpTypes } from '@medusajs/types'
 import { Container } from '@modules/common/components/container'
 

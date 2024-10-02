@@ -1,28 +1,53 @@
-import { Heading } from '@medusajs/ui'
+'use client'
+
 import ItemsPreviewTemplate from '@modules/cart/templates/preview'
 import DiscountCode from '@modules/checkout/components/discount-code'
+import PaymentButton from '@modules/checkout/components/payment-button'
+import { Box } from '@modules/common/components/box'
 import CartTotals from '@modules/common/components/cart-totals'
-import Divider from '@modules/common/components/divider'
+import LocalizedClientLink from '@modules/common/components/localized-client-link'
+import { Text } from '@modules/common/components/text'
 
-const CheckoutSummary = ({ cart }: { cart: any }) => {
+const CheckoutSummary = ({
+  cart,
+  searchParams,
+}: {
+  cart: any
+  searchParams: { [key: string]: string | string[] | undefined }
+}) => {
   return (
-    <div className="sticky top-0 flex flex-col-reverse gap-y-8 py-8 small:flex-col small:py-0">
-      <div className="flex w-full flex-col bg-white">
-        <Divider className="my-6 small:hidden" />
-        <Heading
-          level="h2"
-          className="text-3xl-regular flex flex-row items-baseline"
-        >
-          In your Cart
-        </Heading>
-        <Divider className="my-6" />
-        <CartTotals totals={cart} />
+    <Box className="relative">
+      <Box className="sticky top-8 flex flex-col gap-y-4">
         <ItemsPreviewTemplate items={cart?.items} />
-        <div className="my-6">
-          <DiscountCode cart={cart} />
-        </div>
-      </div>
-    </div>
+        <DiscountCode cart={cart} />
+        <Box className="flex flex-col gap-5 bg-primary p-5">
+          <CartTotals totals={cart} />
+          {searchParams.step === 'payment' && (
+            <Box className="flex flex-col gap-5">
+              <PaymentButton cart={cart} data-testid="submit-order-button" />
+              <Box className="flex w-full">
+                <Text className="text-center text-sm text-secondary">
+                  By clicking the Place order button, you confirm that you have
+                  read, understand and accept our{' '}
+                  <LocalizedClientLink href="#" className="underline">
+                    Terms of Use
+                  </LocalizedClientLink>
+                  ,{' '}
+                  <LocalizedClientLink href="#" className="underline">
+                    Terms of Sale
+                  </LocalizedClientLink>{' '}
+                  and{' '}
+                  <LocalizedClientLink href="#" className="underline">
+                    Returns Policy
+                  </LocalizedClientLink>
+                  .
+                </Text>
+              </Box>
+            </Box>
+          )}
+        </Box>
+      </Box>
+    </Box>
   )
 }
 

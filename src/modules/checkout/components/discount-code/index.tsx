@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
 
 import { applyPromotions, submitPromotionForm } from '@lib/data/cart'
 import { HttpTypes } from '@medusajs/types'
@@ -108,16 +108,20 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
                     )
                   })}
                 <div className="flex flex-col gap-2">
-                  <Box className="flex gap-3">
-                    <Input
-                      name="code"
-                      placeholder="Enter promo code"
-                      value={codeValue}
-                      onChange={(e) => setCodeValue(e.target.value)}
-                    />
-                    <Button variant="tonal" type="submit" className="min-w-max">
-                      Activate
-                    </Button>
+                  <Box className="flex w-full justify-between gap-3">
+                    <Box className="w-3/4">
+                      <Input
+                        name="code"
+                        placeholder="Enter promo code"
+                        value={codeValue}
+                        onChange={(e) => setCodeValue(e.target.value)}
+                      />
+                    </Box>
+                    <Box className="w-1/4">
+                      <Button variant="tonal" type="submit" className="w-full">
+                        Activate
+                      </Button>
+                    </Box>
                   </Box>
                   {message && (
                     <Box className="text-sm text-ui-fg-error">
