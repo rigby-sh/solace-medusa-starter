@@ -1,7 +1,7 @@
 import { Box } from '@modules/common/components/box'
 import { Chips } from '@modules/common/components/chips'
 import { Label } from '@modules/common/components/label'
-import X from '@modules/common/icons/x'
+import { XIcon } from '@modules/common/icons/x'
 
 type ActiveFilterItemProps = {
   label: string
@@ -30,7 +30,7 @@ export default function ActiveFilterItem({
           .map((option, id) => (
             <Chips
               key={id}
-              rightIcon={<X />}
+              rightIcon={<XIcon />}
               className="cursor-inherit"
               selected
               onClick={() => handleRemoveFilter(filterKey, option.handle)}
