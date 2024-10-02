@@ -33,7 +33,11 @@ const DeleteButton = ({
       className={clx('bg-primary', className)}
       onClick={() => handleDelete(id)}
     >
-      {isDeleting ? <Spinner className="animate-spin" /> : <TrashIcon />}
+      {isDeleting ? (
+        <Spinner className="animate-spin" />
+      ) : (
+        <TrashIcon className="h-5 w-5" />
+      )}
       {children && <span>{children}</span>}
     </Button>
   )
