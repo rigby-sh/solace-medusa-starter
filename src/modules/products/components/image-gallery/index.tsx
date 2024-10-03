@@ -31,9 +31,7 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
               alt={`Product image`}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 992px) 780px"
-              style={{
-                objectFit: 'cover',
-              }}
+              className="object-cover"
             />
           </div>
         ))}
