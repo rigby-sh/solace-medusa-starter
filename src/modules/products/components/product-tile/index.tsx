@@ -2,7 +2,9 @@
 
 import { useMemo } from 'react'
 import Image from 'next/image'
+import { useParams } from 'next/navigation'
 
+import { addToCart } from '@lib/data/cart'
 import { getProductPrice } from '@lib/util/get-product-price'
 import { StoreProduct } from '@medusajs/types'
 import { Badge } from '@modules/common/components/badge'
@@ -15,6 +17,7 @@ import { BasketIcon } from '@modules/common/icons'
 import ProductPrice from './price'
 
 export default function ProductTile({ product }: { product: StoreProduct }) {
+  const countryCode = useParams().countryCode as string
   const { cheapestPrice } = getProductPrice({
     product,
   })
@@ -28,9 +31,25 @@ export default function ProductTile({ product }: { product: StoreProduct }) {
     return differenceInDays <= 7
   }, [product.created_at])
 
-  // TODO: Add logic to add product to cart
-  const handleAddToCart = () => {
-    console.log('Added to cart!')
+  const handleAddToCart = async () => {
+    if (!product.id) return null
+
+    const { id: variantId } = product.variants.reduce(
+      (cheaperVariant, currentVariant) => {
+        const { original_amount: cheaperPrice } =
+          cheaperVariant.calculated_price
+        const { original_amount: currentPrice } =
+          currentVariant.calculated_price
+
+        return cheaperPrice < currentPrice ? cheaperVariant : currentVariant
+      }
+    )
+
+    await addToCart({
+      variantId,
+      quantity: 1,
+      countryCode,
+    })
   }
 
   return (
