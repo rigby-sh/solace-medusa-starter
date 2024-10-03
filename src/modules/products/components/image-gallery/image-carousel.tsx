@@ -10,28 +10,26 @@ type ImageCarouselProps = {
 }
 
 const ImageCarousel = ({ images }: ImageCarouselProps) => {
-  const [scrollProgress, setScrollProgress] = useState(0)
+  const [currentIndex, setCurrentIndex] = useState(0)
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true })
 
-  const onScroll = useCallback(() => {
+  const onSelect = useCallback(() => {
     if (!emblaApi) return
-    const progress = Math.max(0, Math.min(1, emblaApi.scrollProgress())) * 100
-
-    setScrollProgress(progress)
+    setCurrentIndex(emblaApi.selectedScrollSnap())
   }, [emblaApi])
 
   useEffect(() => {
     if (!emblaApi) return
 
-    onScroll()
-    emblaApi.on('scroll', onScroll)
-    emblaApi.on('reInit', onScroll)
+    onSelect()
+    emblaApi.on('select', onSelect)
+    emblaApi.on('reInit', onSelect)
 
     return () => {
-      emblaApi.off('scroll', onScroll)
-      emblaApi.off('reInit', onScroll)
+      emblaApi.off('select', onSelect)
+      emblaApi.off('reInit', onSelect)
     }
-  }, [emblaApi, onScroll])
+  }, [emblaApi, onSelect])
 
   const slideWidth = 100 / images.length
   const isOnlyOneImage = images.length === 1
@@ -67,7 +65,7 @@ const ImageCarousel = ({ images }: ImageCarouselProps) => {
             className="absolute h-full bg-primary transition-all duration-200 ease-out"
             style={{
               width: `${slideWidth}%`,
-              left: `${scrollProgress * (1 - 1 / images.length)}%`,
+              left: `${currentIndex * slideWidth}%`,
             }}
           />
         </div>
