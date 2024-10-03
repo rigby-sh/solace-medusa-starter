@@ -31,14 +31,14 @@ const Item = ({ item }: ItemProps) => {
         <LineItemPrice
           item={item}
           style="tight"
-          className="mt-3 flex-col gap-0 medium:hidden"
+          className="mt-3 flex-col items-start gap-0 medium:hidden"
         />
       </Box>
       <Box className="flex items-center justify-center">
         <LineItemPrice
           item={item}
           style="tight"
-          className="hidden flex-col gap-0 medium:block"
+          className="hidden flex-col items-start gap-0 medium:block"
         />
       </Box>
     </Box>

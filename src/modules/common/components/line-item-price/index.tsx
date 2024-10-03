@@ -36,7 +36,7 @@ const LineItemPrice = ({
   return (
     <div
       className={cn(
-        'flex flex-row-reverse gap-2',
+        'flex flex-row-reverse items-center gap-2',
         className,
         isInCartDropdown
           ? 'small:flex-row-reverse'
