@@ -60,7 +60,7 @@ const ImageCarousel = ({ images }: ImageCarouselProps) => {
       </div>
 
       {!isOnlyOneImage && (
-        <div className="absolute bottom-4 left-4 right-4 h-1 bg-primary/30 medium:hidden">
+        <div className="absolute bottom-3 left-3 right-3 h-1 bg-primary/30 medium:hidden">
           <div
             className="absolute h-full bg-primary transition-all duration-200 ease-out"
             style={{
