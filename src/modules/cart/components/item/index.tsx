@@ -12,15 +12,11 @@ import { Heading } from '@modules/common/components/heading'
 import LineItemOptions from '@modules/common/components/line-item-options'
 import LineItemPrice from '@modules/common/components/line-item-price'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-} from '@modules/common/components/select'
 import { Text } from '@modules/common/components/text'
 import { Spinner } from '@modules/common/icons'
 import Thumbnail from '@modules/products/components/thumbnail'
+
+import ItemQtySelect from '../item-qty-select'
 
 type ItemProps = {
   item: HttpTypes.StoreCartLineItem
@@ -82,30 +78,11 @@ const Item = ({ item, type = 'full' }: ItemProps) => {
           {type === 'full' ? (
             <Box className="flex items-center gap-2">
               <Box className="flex w-[108px] flex-col gap-2">
-                <Select
-                  value={null}
-                  onValueChange={(quantity) => {
-                    changeQuantity(+quantity)
-                  }}
-                >
-                  <SelectTrigger>{item.quantity}</SelectTrigger>
-                  <SelectContent>
-                    {Array.from(
-                      {
-                        length: Math.min(maxQuantity, 10),
-                      },
-                      (_, i) => (
-                        <SelectItem
-                          key={i}
-                          value={String(i + 1)}
-                          className="w-[108px]"
-                        >
-                          {i + 1}
-                        </SelectItem>
-                      )
-                    )}
-                  </SelectContent>
-                </Select>
+                <ItemQtySelect
+                  qty={item.quantity}
+                  maxQuantity={maxQuantity}
+                  action={changeQuantity}
+                />
                 <ErrorMessage error={error} />
               </Box>
               {updating && <Spinner />}

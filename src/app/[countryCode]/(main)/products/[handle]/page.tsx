@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
+import { retrieveCart } from '@lib/data/cart'
 import { getProductByHandle, getProductsList } from '@lib/data/products'
 import { getRegion, listRegions } from '@lib/data/regions'
 import ProductTemplate from '@modules/products/templates'
@@ -68,6 +69,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ProductPage({ params }: Props) {
+  const cart = await retrieveCart()
   const region = await getRegion(params.countryCode)
 
   if (!region) {
@@ -83,6 +85,7 @@ export default async function ProductPage({ params }: Props) {
     <ProductTemplate
       product={pricedProduct}
       region={region}
+      cartItems={cart?.items}
       countryCode={params.countryCode}
     />
   )

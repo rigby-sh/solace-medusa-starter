@@ -69,3 +69,19 @@ export type Collection = {
 export type CollectionsData = {
   data: Collection[]
 }
+
+export type VariantColor = {
+  id: number
+  Name: string
+  Type: {
+    Color?: string
+    Image?: {
+      url: string
+      alternativeText?: string
+    }
+  }[]
+}
+
+export type VariantColorData = {
+  data: VariantColor[]
+}

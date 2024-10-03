@@ -3,6 +3,7 @@ import {
   CollectionsData,
   HeroBannerData,
   MidBannerData,
+  VariantColorData,
 } from 'types/strapi'
 
 export const fetchStrapiClient = async (
@@ -62,6 +63,18 @@ export const getExploreBlogData = async (): Promise<BlogData> => {
     `/api/blogs?populate[1]=FeaturedImage&sort=createdAt:desc&pagination[start]=0&pagination[limit]=3`,
     {
       next: { tags: ['explore-blog'] },
+    }
+  )
+
+  return res.json()
+}
+
+// Products
+export const getProductVariantsColors = async (): Promise<VariantColorData> => {
+  const res = await fetchStrapiClient(
+    `/api/product-variants-colors?populate[1]=Type&populate[2]=Type.Image&pagination[start]=0&pagination[limit]=100`,
+    {
+      next: { tags: ['variants-colors'] },
     }
   )
 

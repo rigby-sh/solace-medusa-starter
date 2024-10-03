@@ -4,19 +4,22 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useParams } from 'next/navigation'
 
 import { addToCart } from '@lib/data/cart'
-import { useIntersection } from '@lib/hooks/use-in-view'
 import { HttpTypes } from '@medusajs/types'
-import { Button } from '@medusajs/ui'
+import ItemQtySelect from '@modules/cart/components/item-qty-select'
+import { Box } from '@modules/common/components/box'
+import { Button } from '@modules/common/components/button'
 import Divider from '@modules/common/components/divider'
+import { Text } from '@modules/common/components/text'
 import OptionSelect from '@modules/products/components/product-actions/option-select'
 import { isEqual } from 'lodash'
+import { VariantColor } from 'types/strapi'
 
 import ProductPrice from '../product-price'
 
-// import MobileActions from './mobile-actions'
-
 type ProductActionsProps = {
   product: HttpTypes.StoreProduct
+  cartItems: HttpTypes.StoreCartLineItem[]
+  colors: VariantColor[]
   region: HttpTypes.StoreRegion
   disabled?: boolean
 }
@@ -30,19 +33,39 @@ const optionsAsKeymap = (variantOptions: any) => {
 
 export default function ProductActions({
   product,
+  cartItems,
+  colors,
   disabled,
 }: ProductActionsProps) {
+  const actionsRef = useRef<HTMLDivElement>(null)
+  const [qty, setQty] = useState(1)
   const [options, setOptions] = useState<Record<string, string | undefined>>({})
   const [isAdding, setIsAdding] = useState(false)
   const countryCode = useParams().countryCode as string
 
-  // If there is only 1 variant, preselect the options
-  useEffect(() => {
-    if (product.variants?.length === 1) {
-      const variantOptions = optionsAsKeymap(product.variants[0].options)
-      setOptions(variantOptions ?? {})
-    }
-  }, [product.variants])
+  // update the options when a variant is selected
+  const setOptionValue = (title: string, value: string) => {
+    setOptions((prev) => ({
+      ...prev,
+      [title]: value,
+    }))
+  }
+
+  // add the selected variant to the cart
+  const handleAddToCart = async () => {
+    if (!selectedVariant?.id) return null
+
+    setIsAdding(true)
+
+    await addToCart({
+      variantId: selectedVariant.id,
+      quantity: qty,
+      countryCode,
+    })
+
+    setQty(1)
+    setIsAdding(false)
+  }
 
   const selectedVariant = useMemo(() => {
     if (!product.variants || product.variants.length === 0) {
@@ -54,14 +77,6 @@ export default function ProductActions({
       return isEqual(variantOptions, options)
     })
   }, [product.variants, options])
-
-  // update the options when a variant is selected
-  const setOptionValue = (title: string, value: string) => {
-    setOptions((prev) => ({
-      ...prev,
-      [title]: value,
-    }))
-  }
 
   // check if the selected variant is in stock
   const inStock = useMemo(() => {
@@ -87,28 +102,50 @@ export default function ProductActions({
     return false
   }, [selectedVariant])
 
-  const actionsRef = useRef<HTMLDivElement>(null)
+  // Get the max quantity
+  const maxQuantity = useMemo(() => {
+    if (!selectedVariant) return 10
 
-  const inView = useIntersection(actionsRef, '0px')
+    const cartQuantity =
+      cartItems.reduce((sum, item) => {
+        if (item.variant_id === selectedVariant?.id) {
+          return sum + item.quantity
+        }
+        return sum
+      }, 0) || 0
 
-  // add the selected variant to the cart
-  const handleAddToCart = async () => {
-    if (!selectedVariant?.id) return null
+    if (
+      selectedVariant?.inventory_quantity !== null &&
+      selectedVariant?.inventory_quantity !== undefined
+    ) {
+      return Math.max(0, selectedVariant.inventory_quantity - cartQuantity)
+    }
 
-    setIsAdding(true)
+    return 10 - cartQuantity
+  }, [selectedVariant, cartItems])
 
-    await addToCart({
-      variantId: selectedVariant.id,
-      quantity: 1,
-      countryCode,
-    })
-
-    setIsAdding(false)
-  }
+  // Preselect the options
+  useEffect(() => {
+    if (product.variants?.length === 1) {
+      const variantOptions = optionsAsKeymap(product.variants[0].options)
+      setOptions(variantOptions ?? {})
+    } else if (product.variants && product.variants.length > 1) {
+      const sortedVariants = [...product.variants].sort((a, b) =>
+        (a.title || '').localeCompare(b.title || '')
+      )
+      const firstAlphabeticalVariant = sortedVariants[0]
+      if (firstAlphabeticalVariant) {
+        const variantOptions = optionsAsKeymap(firstAlphabeticalVariant.options)
+        setOptions(variantOptions ?? {})
+      }
+    }
+  }, [product.variants])
 
   return (
     <>
-      <div className="flex flex-col gap-y-2" ref={actionsRef}>
+      <div className="flex flex-col gap-y-6" ref={actionsRef}>
+        <ProductPrice product={product} variant={selectedVariant} />
+        <Divider />
         <div>
           {(product.variants?.length ?? 0) > 1 && (
             <div className="flex flex-col gap-y-4">
@@ -119,6 +156,7 @@ export default function ProductActions({
                       option={option}
                       current={options[option.title ?? '']}
                       updateOption={setOptionValue}
+                      variantsColors={colors}
                       title={option.title ?? ''}
                       data-testid="product-options"
                       disabled={!!disabled || isAdding}
@@ -126,38 +164,43 @@ export default function ProductActions({
                   </div>
                 )
               })}
-              <Divider />
             </div>
           )}
         </div>
-
-        <ProductPrice product={product} variant={selectedVariant} />
-
-        <Button
-          onClick={handleAddToCart}
-          disabled={!inStock || !selectedVariant || !!disabled || isAdding}
-          variant="primary"
-          className="h-10 w-full"
-          isLoading={isAdding}
-          data-testid="add-product-button"
-        >
-          {!selectedVariant
-            ? 'Select variant'
-            : !inStock
-              ? 'Out of stock'
-              : 'Add to cart'}
-        </Button>
-        {/* <MobileActions
-          product={product}
-          variant={selectedVariant}
-          options={options}
-          updateOptions={setOptionValue}
-          inStock={inStock}
-          handleAddToCart={handleAddToCart}
-          isAdding={isAdding}
-          show={!inView}
-          optionsDisabled={!!disabled || isAdding}
-        /> */}
+        <Box className="flex items-center gap-x-3">
+          <Box className="min-w-[96px]">
+            <ItemQtySelect
+              qty={qty}
+              maxQuantity={maxQuantity}
+              action={setQty}
+            />
+          </Box>
+          <Button
+            onClick={handleAddToCart}
+            disabled={
+              !inStock ||
+              !selectedVariant ||
+              !!disabled ||
+              isAdding ||
+              maxQuantity === 0
+            }
+            className="w-full"
+            isLoading={isAdding}
+            data-testid="add-product-button"
+          >
+            {!selectedVariant
+              ? 'Select variant'
+              : !inStock
+                ? 'Out of stock'
+                : 'Add to cart'}
+          </Button>
+        </Box>
+        {maxQuantity === 0 && (
+          <Text size="sm" className="text-negative">
+            You cannot add more items to your cart - you already have the
+            maximum number in cart.
+          </Text>
+        )}
       </div>
     </>
   )

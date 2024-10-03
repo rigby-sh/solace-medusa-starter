@@ -1,123 +1,163 @@
 'use client'
 
+import { useMemo } from 'react'
+
 import { HttpTypes } from '@medusajs/types'
 import {
-  ArrowLeftIcon,
-  FastDeliveryIcon,
-  RefreshIcon,
-} from '@modules/common/icons'
-
-import Accordion from './accordion'
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@modules/common/components/accordion'
+import { Box } from '@modules/common/components/box'
+import { Heading } from '@modules/common/components/heading'
+import { Text } from '@modules/common/components/text'
+import { MinusThinIcon, PlusIcon } from '@modules/common/icons'
 
 type ProductTabsProps = {
   product: HttpTypes.StoreProduct
 }
 
-const ProductTabs = ({ product }: ProductTabsProps) => {
+export default function ProductTabs({ product }: ProductTabsProps) {
+  const dimensions = useMemo(() => {
+    return Object.entries(product?.metadata || {})
+      .filter(([key]) => key.startsWith('dim_'))
+      .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {})
+  }, [product?.metadata])
+
+  const design = useMemo(() => {
+    return Object.entries(product?.metadata || {})
+      .filter(([key]) => key.startsWith('des_'))
+      .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {})
+  }, [product?.metadata])
+
   const tabs = [
     {
-      label: 'Product Information',
-      component: <ProductInfoTab product={product} />,
+      label: 'Description',
+      component: <ProductDescriptionTab description={product.description} />,
+    },
+    Object.entries(dimensions).length > 0 && {
+      label: 'Dimensions',
+      component: <ProductDimensionsTab dimensions={dimensions} />,
+    },
+    Object.entries(design).length > 0 && {
+      label: 'Design',
+      component: <ProductDesignTab design={design} />,
     },
     {
       label: 'Shipping & Returns',
       component: <ShippingInfoTab />,
     },
-  ]
+  ].filter(Boolean)
 
   return (
     <div className="w-full">
-      <Accordion type="multiple">
-        {tabs.map((tab, i) => (
-          <Accordion.Item
-            key={i}
-            title={tab.label}
-            headingSize="medium"
-            value={tab.label}
-          >
-            {tab.component}
-          </Accordion.Item>
-        ))}
+      <Accordion type="single" collapsible className="flex w-full flex-col">
+        {tabs.map((tab, id) => {
+          return (
+            <AccordionItem
+              key={id}
+              value={`item-${id}`}
+              className="!rounded-none !border-b !border-l-0 !border-r-0 !border-t-0 border-basic-primary"
+            >
+              <AccordionTrigger className="!rounded-none !py-2 transition-all duration-200 ease-in-out [&[data-state=closed]>#minusIconSvg]:hidden [&[data-state=open]>#plusIconSvg]:hidden">
+                <Heading
+                  className="text-lg font-medium text-basic-primary"
+                  as="h3"
+                >
+                  {tab.label}
+                </Heading>
+                <div
+                  id="plusIconSvg"
+                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-action-primary hover:text-action-primary-hover active:text-action-primary-pressed"
+                >
+                  <PlusIcon />
+                </div>
+                <div
+                  id="minusIconSvg"
+                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-action-primary hover:text-action-primary-hover active:text-action-primary-pressed"
+                >
+                  <MinusThinIcon />
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="flex flex-col gap-3 !pb-4">
+                {tab.component}
+              </AccordionContent>
+            </AccordionItem>
+          )
+        })}
       </Accordion>
     </div>
   )
 }
 
-const ProductInfoTab = ({ product }: ProductTabsProps) => {
+const ProductDescriptionTab = ({ description }: { description: string }) => {
   return (
-    <div className="text-small-regular py-8">
-      <div className="grid grid-cols-2 gap-x-8">
-        <div className="flex flex-col gap-y-4">
-          <div>
-            <span className="font-semibold">Material</span>
-            <p>{product.material ? product.material : '-'}</p>
-          </div>
-          <div>
-            <span className="font-semibold">Country of origin</span>
-            <p>{product.origin_country ? product.origin_country : '-'}</p>
-          </div>
-          <div>
-            <span className="font-semibold">Type</span>
-            <p>{product.type ? product.type.value : '-'}</p>
-          </div>
+    <Text size="md" className="text-secondary">
+      {description}
+    </Text>
+  )
+}
+
+const ProductDimensionsTab = ({
+  dimensions,
+}: {
+  dimensions: Record<string, unknown>
+}) => {
+  return (
+    <Box>
+      {Object.entries(dimensions).map(([key, value]) => (
+        <div key={key}>
+          <Text as="span" className="font-medium text-basic-primary">
+            {formatKey(key, 'dim_')}:
+          </Text>{' '}
+          <Text as="span" className="text-secondary">
+            {value as string}
+          </Text>
         </div>
-        <div className="flex flex-col gap-y-4">
-          <div>
-            <span className="font-semibold">Weight</span>
-            <p>{product.weight ? `${product.weight} g` : '-'}</p>
-          </div>
-          <div>
-            <span className="font-semibold">Dimensions</span>
-            <p>
-              {product.length && product.width && product.height
-                ? `${product.length}L x ${product.width}W x ${product.height}H`
-                : '-'}
-            </p>
-          </div>
+      ))}
+    </Box>
+  )
+}
+
+const ProductDesignTab = ({ design }: { design: Record<string, unknown> }) => {
+  return (
+    <Box>
+      {Object.entries(design).map(([key, value]) => (
+        <div key={key}>
+          <Text as="span" className="font-medium text-basic-primary">
+            {formatKey(key, 'des_')}:
+          </Text>{' '}
+          <Text as="span" className="text-secondary">
+            {value as string}
+          </Text>
         </div>
-      </div>
-    </div>
+      ))}
+    </Box>
   )
 }
 
 const ShippingInfoTab = () => {
   return (
-    <div className="text-small-regular py-8">
-      <div className="grid grid-cols-1 gap-y-8">
-        <div className="flex items-start gap-x-2">
-          <FastDeliveryIcon />
-          <div>
-            <span className="font-semibold">Fast delivery</span>
-            <p className="max-w-sm">
-              Your package will arrive in 3-5 business days at your pick up
-              location or in the comfort of your home.
-            </p>
-          </div>
-        </div>
-        <div className="flex items-start gap-x-2">
-          <RefreshIcon />
-          <div>
-            <span className="font-semibold">Simple exchanges</span>
-            <p className="max-w-sm">
-              Is the fit not quite right? No worries - we&apos;ll exchange your
-              product for a new one.
-            </p>
-          </div>
-        </div>
-        <div className="flex items-start gap-x-2">
-          <ArrowLeftIcon />
-          <div>
-            <span className="font-semibold">Easy returns</span>
-            <p className="max-w-sm">
-              Just return your product and we&apos;ll refund your money. No
-              questions asked – we&apos;ll do our best to make sure your return
-              is hassle-free.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <ul className="list-disc pl-4 text-md text-secondary">
+      <li>
+        Free standard shipping on all orders within the continental U.S.
+        Expedited shipping options are available at an additional cost. Orders
+        typically ship within 3-5 business days.
+      </li>
+      <li>
+        We offer a 30-day return policy. If you are not completely satisfied
+        with your purchase, you can return the chair for a full refund or
+        exchange, provided it is in its original condition and packaging.
+      </li>
+    </ul>
   )
 }
 
-export default ProductTabs
+const formatKey = (key: string, prefix: string): string => {
+  return key
+    .replace(prefix, '')
+    .split('_')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
+}
