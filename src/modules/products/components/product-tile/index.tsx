@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 
@@ -12,11 +12,13 @@ import { Box } from '@modules/common/components/box'
 import { Button } from '@modules/common/components/button'
 import { Heading } from '@modules/common/components/heading'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
-import { BasketIcon } from '@modules/common/icons'
+import { BasketIcon, Spinner } from '@modules/common/icons'
 
 import ProductPrice from './price'
 
 export default function ProductTile({ product }: { product: StoreProduct }) {
+  const [isAddingToCart, setIsAddingToCart] = useState(false)
+
   const countryCode = useParams().countryCode as string
   const { cheapestPrice } = getProductPrice({
     product,
@@ -34,22 +36,29 @@ export default function ProductTile({ product }: { product: StoreProduct }) {
   const handleAddToCart = async () => {
     if (!product.id) return null
 
-    const { id: variantId } = product.variants.reduce(
-      (cheaperVariant, currentVariant) => {
-        const { original_amount: cheaperPrice } =
-          cheaperVariant.calculated_price
-        const { original_amount: currentPrice } =
-          currentVariant.calculated_price
+    setIsAddingToCart(true)
+    try {
+      const { id: variantId } = product.variants.reduce(
+        (cheaperVariant, currentVariant) => {
+          const { original_amount: cheaperPrice } =
+            cheaperVariant.calculated_price
+          const { original_amount: currentPrice } =
+            currentVariant.calculated_price
 
-        return cheaperPrice < currentPrice ? cheaperVariant : currentVariant
-      }
-    )
+          return cheaperPrice < currentPrice ? cheaperVariant : currentVariant
+        }
+      )
 
-    await addToCart({
-      variantId,
-      quantity: 1,
-      countryCode,
-    })
+      await addToCart({
+        variantId,
+        quantity: 1,
+        countryCode,
+      })
+    } catch (error) {
+      console.error('Failed to add to cart:', error)
+    } finally {
+      setIsAddingToCart(false)
+    }
   }
 
   return (
@@ -72,10 +81,11 @@ export default function ProductTile({ product }: { product: StoreProduct }) {
         </LocalizedClientLink>
         <Button
           withIcon
+          disabled={isAddingToCart}
           className="absolute bottom-3 right-3 opacity-100 transition-opacity duration-300 group-hover:opacity-100 small:bottom-5 small:right-5 large:opacity-0"
           onClick={handleAddToCart}
         >
-          <BasketIcon />
+          {isAddingToCart ? <Spinner /> : <BasketIcon />}
         </Button>
       </Box>
       <ProductInfo product={product} cheapestPrice={cheapestPrice} />
