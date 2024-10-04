@@ -139,7 +139,7 @@ const ProductDesignTab = ({ design }: { design: Record<string, unknown> }) => {
 
 const ShippingInfoTab = () => {
   return (
-    <ul className="list-disc pl-4 text-md text-secondary">
+    <ul className="list-disc pl-4 text-md text-secondary 2xl:pl-5">
       <li>
         Free standard shipping on all orders within the continental U.S.
         Expedited shipping options are available at an additional cost. Orders

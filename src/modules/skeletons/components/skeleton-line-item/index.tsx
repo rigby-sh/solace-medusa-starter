@@ -1,34 +1,21 @@
-import { Table } from '@medusajs/ui'
-
 const SkeletonLineItem = () => {
   return (
-    <Table.Row className="m-4 w-full">
-      <Table.Cell className="w-24 p-4">
-        <div className="flex h-24 w-24 animate-pulse bg-gray-200 p-4" />
-      </Table.Cell>
-      <Table.Cell className="text-left">
-        <div className="flex flex-col gap-y-2">
-          <div className="h-4 w-32 animate-pulse bg-gray-200" />
-          <div className="h-4 w-24 animate-pulse bg-gray-200" />
+    <div className="flex bg-gray-50 small:h-[172px]">
+      <div className="h-[92px] w-[92px] shrink-0 animate-pulse bg-gray-100 small:h-full small:w-[146px]" />
+      <div className="flex w-full justify-between p-5">
+        <div className="flex h-full flex-col gap-3 small:justify-between small:gap-0">
+          <div>
+            <div className="mb-2 h-11 w-[100px] animate-pulse bg-gray-100 small:h-[22px] small:w-[200px]" />
+            <div className="h-[22px] w-10 animate-pulse bg-gray-100" />
+          </div>
+          <div className="h-12 w-24 animate-pulse bg-gray-100" />
         </div>
-      </Table.Cell>
-      <Table.Cell>
-        <div className="flex items-center gap-2">
-          <div className="h-8 w-6 animate-pulse bg-gray-200" />
-          <div className="h-10 w-14 animate-pulse bg-gray-200" />
+        <div className="flex flex-col items-end justify-between">
+          <div className="h-12 w-12 animate-pulse bg-gray-100" />
+          <div className="h-12 w-24 animate-pulse bg-gray-100" />
         </div>
-      </Table.Cell>
-      <Table.Cell>
-        <div className="flex gap-2">
-          <div className="h-6 w-12 animate-pulse bg-gray-200" />
-        </div>
-      </Table.Cell>
-      <Table.Cell>
-        <div className="flex justify-end gap-2">
-          <div className="h-6 w-12 animate-pulse bg-gray-200" />
-        </div>
-      </Table.Cell>
-    </Table.Row>
+      </div>
+    </div>
   )
 }
 

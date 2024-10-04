@@ -10,12 +10,14 @@ import { Text } from '../text'
 
 type LineItemPriceProps = {
   item: HttpTypes.StoreCartLineItem | HttpTypes.StoreOrderLineItem
+  className?: string
   style?: 'default' | 'tight'
   isInCartDropdown?: boolean
 }
 
 const LineItemPrice = ({
   item,
+  className,
   style = 'default',
   isInCartDropdown = false,
 }: LineItemPriceProps) => {
@@ -32,49 +34,45 @@ const LineItemPrice = ({
   const hasReducedPrice = currentPrice < originalPrice
 
   return (
-    <div className="flex flex-col items-end gap-x-2 text-basic-primary">
-      <div
-        className={cn(
-          'flex flex-row-reverse items-center gap-2',
-          isInCartDropdown
-            ? 'small:flex-row-reverse'
-            : 'small:flex-col small:items-end small:gap-0'
-        )}
-      >
-        {hasReducedPrice && (
-          <>
-            <p>
-              {style === 'default' && (
-                <span className="text-basic-primary">Original: </span>
-              )}
-              <Text
-                size="md"
-                className="text-secondary line-through"
-                data-testid="product-original-price"
-              >
-                {convertToLocale({
-                  amount: originalPrice,
-                  currency_code,
-                })}
-              </Text>
-            </p>
+    <div
+      className={cn(
+        'flex flex-row-reverse items-center gap-2',
+        className,
+        isInCartDropdown
+          ? 'small:flex-row-reverse'
+          : 'small:flex-col small:items-end small:gap-0'
+      )}
+    >
+      {hasReducedPrice && (
+        <>
+          <div>
             {style === 'default' && (
-              <span className="text-ui-fg-interactive">
-                -{getPercentageDiff(originalPrice, currentPrice || 0)}%
-              </span>
+              <span className="text-basic-primary">Original: </span>
             )}
-          </>
-        )}
-        <span
-          className="text-lg text-basic-primary"
-          data-testid="product-price"
-        >
-          {convertToLocale({
-            amount: currentPrice,
-            currency_code,
-          })}
-        </span>
-      </div>
+            <Text
+              size="md"
+              className="text-secondary line-through"
+              data-testid="product-original-price"
+            >
+              {convertToLocale({
+                amount: originalPrice,
+                currency_code,
+              })}
+            </Text>
+          </div>
+          {style === 'default' && (
+            <span className="text-ui-fg-interactive">
+              -{getPercentageDiff(originalPrice, currentPrice || 0)}%
+            </span>
+          )}
+        </>
+      )}
+      <span className="text-lg text-basic-primary" data-testid="product-price">
+        {convertToLocale({
+          amount: currentPrice,
+          currency_code,
+        })}
+      </span>
     </div>
   )
 }

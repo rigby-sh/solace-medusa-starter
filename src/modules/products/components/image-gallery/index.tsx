@@ -1,7 +1,11 @@
 import Image from 'next/image'
 
+import { cn } from '@lib/util/cn'
 import { HttpTypes } from '@medusajs/types'
-import { Container } from '@medusajs/ui'
+
+import { MAX_INITIAL_IMAGES } from './consts'
+import { GalleryOpenButton } from './gallery-open-button'
+import ImageCarousel from './image-carousel'
 
 type ImageGalleryProps = {
   images: HttpTypes.StoreProductImage[]
@@ -9,32 +13,32 @@ type ImageGalleryProps = {
 
 const ImageGallery = ({ images }: ImageGalleryProps) => {
   return (
-    <div className="relative flex items-start">
-      <div className="flex flex-1 flex-col gap-y-4">
-        {images.map((image, index) => {
-          return (
-            <Container
-              key={image.id}
-              className="relative aspect-[29/34] w-full overflow-hidden bg-ui-bg-subtle"
-              id={image.id}
-            >
-              {!!image.url && (
-                <Image
-                  src={image.url}
-                  priority={index <= 2 ? true : false}
-                  className="rounded-rounded absolute inset-0"
-                  alt={`Product image ${index + 1}`}
-                  fill
-                  sizes="(max-width: 576px) 280px, (max-width: 768px) 360px, (max-width: 992px) 480px, 800px"
-                  style={{
-                    objectFit: 'cover',
-                  }}
-                />
-              )}
-            </Container>
-          )
-        })}
+    <div className="flex flex-col justify-center gap-4">
+      <div className="hidden grid-cols-2 gap-1 medium:grid">
+        {images.slice(0, MAX_INITIAL_IMAGES).map((image, index) => (
+          <div
+            className={cn(
+              'relative w-full shrink-0',
+              index === 0
+                ? 'col-span-2 aspect-[29/20] max-h-[540px]'
+                : 'col-span-1 aspect-[29/34] max-h-[440px]'
+            )}
+            key={image.id}
+          >
+            <Image
+              src={image.url}
+              priority
+              alt={`Product image`}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 992px) 780px"
+              className="object-cover"
+            />
+          </div>
+        ))}
       </div>
+
+      <GalleryOpenButton totalImages={images.length} />
+      <ImageCarousel images={images} />
     </div>
   )
 }

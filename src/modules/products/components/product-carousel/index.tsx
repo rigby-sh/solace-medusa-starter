@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 
+import { cn } from '@lib/util/cn'
 import { StoreProduct } from '@medusajs/types'
 import { Box } from '@modules/common/components/box'
 import { Button } from '@modules/common/components/button'
@@ -56,6 +57,10 @@ export function ProductCarousel({
     emblaApi?.scrollNext()
   }, [emblaApi])
 
+  const isLessThanFourProducts = products.length < 4
+  const isLessThanThreeProducts = products.length < 3
+  const isLessThanTwoProducts = products.length < 2
+
   return (
     <Container className="overflow-hidden">
       <Box className="flex flex-col gap-6 small:gap-12">
@@ -66,7 +71,13 @@ export function ProductCarousel({
           >
             {title}
           </Heading>
-          <Box className="hidden gap-2 small:flex">
+          <Box
+            className={cn('hidden gap-2 small:flex', {
+              'xl:hidden': isLessThanFourProducts,
+              'medium:hidden': isLessThanThreeProducts,
+              'small:hidden': isLessThanTwoProducts,
+            })}
+          >
             <Button
               withIcon
               variant="icon"

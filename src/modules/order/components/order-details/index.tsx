@@ -1,57 +1,40 @@
 import { HttpTypes } from '@medusajs/types'
 import { Text } from '@medusajs/ui'
+import { Box } from '@modules/common/components/box'
+import Divider from '@modules/common/components/divider'
 
 type OrderDetailsProps = {
   order: HttpTypes.StoreOrder
-  showStatus?: boolean
 }
 
-const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
-  return (
-    <div>
-      <Text>
-        We have sent the order confirmation details to{' '}
-        <span
-          className="text-ui-fg-medium-plus font-semibold"
-          data-testid="order-email"
-        >
-          {order.email}
-        </span>
-        .
-      </Text>
-      <Text className="mt-2">
-        Order date:{' '}
-        <span data-testid="order-date">
-          {new Date(order.created_at).toDateString()}
-        </span>
-      </Text>
-      <Text className="mt-2 text-ui-fg-interactive">
-        Order number: <span data-testid="order-id">{order.display_id}</span>
-      </Text>
+const OrderDetails = ({ order }: OrderDetailsProps) => {
+  const formattedOrderDate = new Date(order.created_at).toLocaleDateString(
+    'en-US',
+    {
+      month: 'short',
+      day: '2-digit',
+      year: 'numeric',
+    }
+  )
 
-      <div className="text-compact-small mt-4 flex items-center gap-x-4">
-        {showStatus && (
-          <>
-            <Text>
-              Order status:{' '}
-              <span className="text-ui-fg-subtle" data-testid="order-status">
-                {/* TODO: Check where the statuses should come from */}
-                {/* {formatStatus(order.fulfillment_status)} */}
-              </span>
-            </Text>
-            <Text>
-              Payment status:{' '}
-              <span
-                className="text-ui-fg-subtle"
-                sata-testid="order-payment-status"
-              >
-                {/* {formatStatus(order.payment_status)} */}
-              </span>
-            </Text>
-          </>
-        )}
-      </div>
-    </div>
+  return (
+    <Box className="rounded-xl bg-primary p-2 medium:grid medium:grid-cols-[1fr,auto,1fr]">
+      <Box className="p-4">
+        <Text size="large">Order number</Text>
+        <Text size="base" className="text-secondary">
+          #{order.display_id}
+        </Text>
+      </Box>
+      <Box className="p-4">
+        <Divider alignment="vertical" />
+      </Box>
+      <Box className="p-4">
+        <Text size="large">Order date</Text>
+        <Text size="base" className="text-secondary">
+          {formattedOrderDate}
+        </Text>
+      </Box>
+    </Box>
   )
 }
 

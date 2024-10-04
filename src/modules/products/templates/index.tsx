@@ -2,6 +2,7 @@ import React, { Suspense } from 'react'
 import { notFound } from 'next/navigation'
 
 import { getProductVariantsColors } from '@lib/data/fetch'
+import { getProductsListByCollectionId } from '@lib/data/products'
 import { HttpTypes } from '@medusajs/types'
 import { Box } from '@modules/common/components/box'
 import { Container } from '@modules/common/components/container'
@@ -10,6 +11,7 @@ import ProductActions from '@modules/products/components/product-actions'
 import ProductTabs from '@modules/products/components/product-tabs'
 import ProductInfo from '@modules/products/templates/product-info'
 
+import { ProductCarousel } from '../components/product-carousel'
 import ProductBreadcrumbs from './breadcrumbs'
 import ProductActionsWrapper from './product-actions-wrapper'
 
@@ -20,17 +22,23 @@ type ProductTemplateProps = {
   countryCode: string
 }
 
-export default async function ProductTemplate({
+const ProductTemplate: React.FC<ProductTemplateProps> = async ({
   product,
   region,
   cartItems,
   countryCode,
-}: ProductTemplateProps) {
+}: ProductTemplateProps) => {
   const variantsColors = await getProductVariantsColors()
 
   if (!product || !product.id) {
     return notFound()
   }
+
+  const { response: productsList } = await getProductsListByCollectionId({
+    collectionId: product.collection_id,
+    countryCode,
+    excludeProductId: product.id,
+  })
 
   return (
     <>
@@ -67,6 +75,14 @@ export default async function ProductTemplate({
           </Box>
         </Box>
       </Container>
+      {productsList.products.length > 0 && (
+        <ProductCarousel
+          products={productsList.products}
+          title="Complete the look"
+        />
+      )}
     </>
   )
 }
+
+export default ProductTemplate
