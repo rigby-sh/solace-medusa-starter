@@ -65,10 +65,12 @@ const ProductTemplate: React.FC<ProductTemplateProps> = async ({
           </div>
         </Box>
       </Container>
-      <ProductCarousel
-        products={productsList.products}
-        title="Complete the look"
-      />
+      {productsList.products.length > 0 && (
+        <ProductCarousel
+          products={productsList.products}
+          title="Complete the look"
+        />
+      )}
     </>
   )
 }
