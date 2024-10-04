@@ -123,6 +123,21 @@ const Payment = ({
     }
   }
 
+  // Set payment method if there is only one available
+  useEffect(() => {
+    setError(null)
+
+    if (
+      isOpen &&
+      availablePaymentMethods.length === 1 &&
+      !selectedPaymentMethod
+    ) {
+      const singlePaymentMethod = availablePaymentMethods[0].id
+      handlePaymentMethodChange(singlePaymentMethod)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, availablePaymentMethods, selectedPaymentMethod])
+
   useEffect(() => {
     setError(null)
   }, [isOpen])

@@ -18,6 +18,7 @@ const AddAddress = ({ region }: { region: HttpTypes.StoreRegion }) => {
   const { state, open, close: closeModal } = useToggleState(false)
 
   const [formState, formAction] = useFormState(addCustomerAddress, {
+    addressName: 'shipping_address',
     success: false,
     error: null,
   })
@@ -55,17 +56,19 @@ const AddAddress = ({ region }: { region: HttpTypes.StoreRegion }) => {
         <Modal.Title>
           <Heading className="mb-2">Add address</Heading>
         </Modal.Title>
-        <form action={formAction}>
+        <form action={formAction} className="overflow-y-auto">
           <Modal.Body>
             <div className="flex flex-col gap-y-2">
               <div className="grid grid-cols-2 gap-x-2">
                 <Input
+                  label="First name"
                   name="first_name"
                   required
                   autoComplete="given-name"
                   data-testid="first-name-input"
                 />
                 <Input
+                  label="Last name"
                   name="last_name"
                   required
                   autoComplete="family-name"
@@ -73,29 +76,34 @@ const AddAddress = ({ region }: { region: HttpTypes.StoreRegion }) => {
                 />
               </div>
               <Input
+                label="Company"
                 name="company"
                 autoComplete="organization"
                 data-testid="company-input"
               />
               <Input
+                label="Address"
                 name="address_1"
                 required
                 autoComplete="address-line1"
                 data-testid="address-1-input"
               />
               <Input
+                label="Address 2"
                 name="address_2"
                 autoComplete="address-line2"
                 data-testid="address-2-input"
               />
               <div className="grid grid-cols-[144px_1fr] gap-x-2">
                 <Input
+                  label="Postal code"
                   name="postal_code"
                   required
                   autoComplete="postal-code"
                   data-testid="postal-code-input"
                 />
                 <Input
+                  label="City"
                   name="city"
                   required
                   autoComplete="locality"
@@ -103,6 +111,7 @@ const AddAddress = ({ region }: { region: HttpTypes.StoreRegion }) => {
                 />
               </div>
               <Input
+                label="State / Province"
                 name="province"
                 autoComplete="address-level1"
                 data-testid="state-input"
@@ -115,6 +124,7 @@ const AddAddress = ({ region }: { region: HttpTypes.StoreRegion }) => {
                 data-testid="country-select"
               />
               <Input
+                label="Phone"
                 name="phone"
                 autoComplete="phone"
                 data-testid="phone-input"

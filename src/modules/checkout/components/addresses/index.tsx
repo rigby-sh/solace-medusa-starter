@@ -4,7 +4,7 @@ import React from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 import { setAddresses } from '@lib/data/cart'
-import compareAddresses from '@lib/util/compare-addresses'
+import compareAddresses from '@lib/util/addresses'
 import { HttpTypes } from '@medusajs/types'
 import { useToggleState } from '@medusajs/ui'
 import { Box } from '@modules/common/components/box'
@@ -79,7 +79,6 @@ const Addresses = ({
               checked={sameAsBilling}
               onChange={toggleSameAsBilling}
             />
-
             {!sameAsBilling && (
               <div>
                 <Divider className="my-6" />
@@ -115,12 +114,13 @@ const Addresses = ({
                     </Text>
                     <Text className="text-secondary">
                       {cart.billing_address?.address_1}{' '}
-                      {cart.billing_address?.address_2}
-                    </Text>
-                    <Text className="text-secondary">
+                      {cart.billing_address?.address_2},{' '}
                       {cart.billing_address?.postal_code},{' '}
                       {cart.billing_address?.city},{' '}
                       {cart.billing_address?.country_code?.toUpperCase()}
+                      {cart.billing_address?.province &&
+                        `, ${cart.billing_address.province}`}
+                      ,
                     </Text>
                     <Text className="text-secondary">
                       {cart.email}, {cart.billing_address?.phone}
@@ -146,12 +146,13 @@ const Addresses = ({
                         </Text>
                         <Text className="text-secondary">
                           {cart.shipping_address.address_1}{' '}
-                          {cart.shipping_address.address_2}
-                        </Text>
-                        <Text className="text-secondary">
+                          {cart.shipping_address.address_2},{' '}
                           {cart.shipping_address.postal_code},{' '}
                           {cart.shipping_address.city},{' '}
                           {cart.shipping_address.country_code?.toUpperCase()}
+                          {cart.shipping_address?.province &&
+                            `, ${cart.shipping_address.province}`}
+                          ,
                         </Text>
                         <Text className="text-secondary">
                           {cart.shipping_address?.phone}

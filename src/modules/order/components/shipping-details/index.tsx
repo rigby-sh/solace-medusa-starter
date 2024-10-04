@@ -1,7 +1,9 @@
 'use client'
 
+import React from 'react'
+
 import useToggleState from '@lib/hooks/use-toggle-state'
-import compareAddresses from '@lib/util/compare-addresses'
+import compareAddresses from '@lib/util/addresses'
 import { HttpTypes } from '@medusajs/types'
 import { Text } from '@medusajs/ui'
 import { Box } from '@modules/common/components/box'
@@ -46,7 +48,7 @@ const ShippingDetails = ({ order }: ShippingDetailsProps) => {
               {`${order.shipping_address.first_name} ${order.shipping_address.last_name}`}
             </Text>
             <Text size="base" className="text-secondary">
-              {`${order.shipping_address.address_1} ${order.shipping_address.address_2}, ${order.shipping_address.company}`}
+              {`${order.shipping_address.address_1} ${order.shipping_address.address_2}`}
             </Text>
             <Text size="base" className="text-secondary">
               {`${order.shipping_address.postal_code} ${order.shipping_address.city}, ${order.shipping_address.country_code.toUpperCase()}`}

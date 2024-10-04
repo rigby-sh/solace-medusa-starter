@@ -325,10 +325,10 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
       email: formData.get('email'),
     } as any
 
-    const sameAsShipping = formData.get('same_as_shipping')
-    if (sameAsShipping === 'on') data.shipping_address = data.billing_address
+    const sameAsBilling = formData.get('same_as_billing')
+    if (sameAsBilling === 'on') data.shipping_address = data.billing_address
 
-    if (sameAsShipping !== 'on')
+    if (sameAsBilling !== 'on')
       data.shipping_address = {
         first_name: formData.get('shipping_address.first_name'),
         last_name: formData.get('shipping_address.last_name'),
@@ -347,7 +347,7 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
   }
 
   const redirectCountryCode =
-    formData.get('same_as_shipping') === 'on'
+    formData.get('same_as_billing') === 'on'
       ? formData.get('billing_address.country_code')
       : formData.get('shipping_address.country_code')
 

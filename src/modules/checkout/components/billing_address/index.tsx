@@ -24,21 +24,6 @@ const BillingAddress = ({
     {}
   )
 
-  useEffect(() => {
-    setFormData({
-      'billing_address.first_name': cart?.billing_address?.first_name || '',
-      'billing_address.last_name': cart?.billing_address?.last_name || '',
-      'billing_address.address_1': cart?.billing_address?.address_1 || '',
-      'billing_address.company': cart?.billing_address?.company || '',
-      'billing_address.postal_code': cart?.billing_address?.postal_code || '',
-      'billing_address.city': cart?.billing_address?.city || '',
-      'billing_address.country_code': cart?.billing_address?.country_code || '',
-      'billing_address.province': cart?.billing_address?.province || '',
-      'billing_address.phone': cart?.billing_address?.phone || '',
-      email: cart?.email || '',
-    })
-  }, [cart?.billing_address, cart?.email])
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -60,6 +45,20 @@ const BillingAddress = ({
     })
     validateField(name, formData[name], 'billing', touchedFields, setErrors)
   }
+  useEffect(() => {
+    setFormData({
+      'billing_address.first_name': cart?.billing_address?.first_name || '',
+      'billing_address.last_name': cart?.billing_address?.last_name || '',
+      'billing_address.address_1': cart?.billing_address?.address_1 || '',
+      'billing_address.company': cart?.billing_address?.company || '',
+      'billing_address.postal_code': cart?.billing_address?.postal_code || '',
+      'billing_address.city': cart?.billing_address?.city || '',
+      'billing_address.country_code': cart?.billing_address?.country_code || '',
+      'billing_address.province': cart?.billing_address?.province || '',
+      'billing_address.phone': cart?.billing_address?.phone || '',
+      email: cart?.email || '',
+    })
+  }, [cart?.billing_address, cart?.email])
 
   return (
     <>
@@ -180,13 +179,13 @@ const BillingAddress = ({
       </Box>
       <Box className="my-6 flex items-center gap-x-2">
         <Checkbox
-          id="same_as_shipping"
-          name="same_as_shipping"
+          id="same_as_billing"
+          name="same_as_billing"
           checked={checked}
           onChange={onChange}
           data-testid="billing-address-checkbox"
         />
-        <Label htmlFor="same_as_shipping" className="cursor-pointer !text-md">
+        <Label htmlFor="same_as_billing" className="cursor-pointer !text-md">
           Shipping address same as billing address
         </Label>
       </Box>

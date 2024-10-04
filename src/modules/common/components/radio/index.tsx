@@ -79,7 +79,7 @@ export const RadioGroupItem = forwardRef<
       {...props}
       disabled={disabled}
       ref={forwardedRef}
-      className="group relative flex h-5 w-5 items-center justify-center outline-none"
+      className="group relative m-2.5 flex h-5 w-5 items-center justify-center outline-none"
     >
       <div
         className={cn(RadioGroupItemVariants({ disabled, invalid }), className)}

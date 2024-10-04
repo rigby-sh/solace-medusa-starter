@@ -1,15 +1,16 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
+import { cn } from '@lib/util/cn'
 import { validateField } from '@lib/util/validator'
 import { HttpTypes } from '@medusajs/types'
-import { Container } from '@medusajs/ui'
 import { Box } from '@modules/common/components/box'
 import { Input } from '@modules/common/components/input'
-import { Text } from '@modules/common/components/text'
+import { Spinner } from '@modules/common/icons'
 import { mapKeys } from 'lodash'
 
 import AddressSelect from '../address-select'
 import CountrySelect from '../country-select'
+import SelectedAddress from './selected-address'
 
 const ShippingAddress = ({
   customer,
@@ -63,6 +64,35 @@ const ShippingAddress = ({
       }))
   }
 
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target
+    setFormData({
+      ...formData,
+      [name]: value,
+    })
+    validateField(name, value, 'shipping', touchedFields, setErrors)
+  }
+
+  const handleBlur = (
+    e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name } = e.target
+    setTouchedFields({
+      ...touchedFields,
+      [name]: true,
+    })
+    validateField(name, formData[name], 'shipping', touchedFields, setErrors)
+  }
+
+  // Set first saved address if exists in current region
+  useEffect(() => {
+    if (addressesInRegion && addressesInRegion.length > 0) {
+      setFormAddress(addressesInRegion[0], customer?.email)
+    }
+  }, [addressesInRegion, customer?.email])
+
   useEffect(() => {
     // Ensure cart is not null and has a shipping_address before setting form data
     if (cart && cart.shipping_address) {
@@ -75,37 +105,35 @@ const ShippingAddress = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cart]) // Add cart as a dependency
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target
-    setFormData({
-      ...formData,
-      [name]: value,
-    })
-    validateField(name, value, 'billing', touchedFields, setErrors)
-  }
-
-  const handleBlur = (
-    e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name } = e.target
-    setTouchedFields({
-      ...touchedFields,
-      [name]: true,
-    })
-    validateField(name, formData[name], 'billing', touchedFields, setErrors)
-  }
+  // Set form data based on cart shipping address or first saved address in region
+  useEffect(() => {
+    if (cart?.shipping_address) {
+      setFormAddress(cart.shipping_address, cart.email)
+    } else if (addressesInRegion && addressesInRegion.length > 0) {
+      setFormAddress(addressesInRegion[0], customer?.email)
+    }
+  }, [cart, addressesInRegion, customer?.email])
 
   return (
     <>
       {customer && (addressesInRegion?.length || 0) > 0 && (
-        <Container className="mb-6 flex flex-col gap-y-4 p-5">
-          <Text className="text-sm">
-            {`Hi ${customer.first_name}, do you want to use one of your saved addresses?`}
-          </Text>
+        <Box className="flex items-center justify-between p-6">
+          <Box className="w-1/2 small:w-full">
+            {Object.keys(formData).length === 0 ? (
+              <Spinner />
+            ) : (
+              <SelectedAddress
+                formData={formData}
+                addressesInRegion={addressesInRegion}
+                cart={cart}
+              />
+            )}
+          </Box>
           <AddressSelect
-            addresses={customer.addresses}
+            region={cart?.region}
+            addresses={customer.addresses.filter(
+              (add) => add.address_name === 'shipping_address'
+            )}
             addressInput={
               mapKeys(formData, (_, key) =>
                 key.replace('shipping_address.', '')
@@ -113,9 +141,13 @@ const ShippingAddress = ({
             }
             onSelect={setFormAddress}
           />
-        </Container>
+        </Box>
       )}
-      <Box className="grid grid-cols-1 gap-2 small:gap-4 xl:grid-cols-2">
+      <Box
+        className={cn('grid grid-cols-1 gap-2 small:gap-4 xl:grid-cols-2', {
+          hidden: customer && (addressesInRegion?.length || 0) > 0,
+        })}
+      >
         <Input
           label="First name"
           name="shipping_address.first_name"
@@ -148,14 +180,6 @@ const ShippingAddress = ({
           required
           error={errors['shipping_address.address_1']}
           data-testid="shipping-address-input"
-        />
-        <Input
-          label="Company name"
-          name="shipping_address.company"
-          value={formData['shipping_address.company']}
-          onChange={handleChange}
-          autoComplete="organization"
-          data-testid="shipping-company-input"
         />
         <Input
           label="Postal code"

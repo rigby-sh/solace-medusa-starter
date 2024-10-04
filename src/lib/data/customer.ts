@@ -91,7 +91,11 @@ export async function signout(countryCode: string) {
 }
 
 export const addCustomerAddress = async (
-  _currentState: unknown,
+  currentState: {
+    addressName: string
+    success: boolean
+    error: string | null
+  },
   formData: FormData
 ): Promise<any> => {
   const address = {
@@ -105,6 +109,7 @@ export const addCustomerAddress = async (
     province: formData.get('province') as string,
     country_code: formData.get('country_code') as string,
     phone: formData.get('phone') as string,
+    address_name: currentState.addressName,
   }
 
   return sdk.store.customer
@@ -136,7 +141,8 @@ export const updateCustomerAddress = async (
   currentState: Record<string, unknown>,
   formData: FormData
 ): Promise<any> => {
-  const addressId = currentState.addressId as string
+  const addressId =
+    (currentState.addressId as string) ?? (formData.get('id') as string)
 
   const address = {
     first_name: formData.get('first_name') as string,
