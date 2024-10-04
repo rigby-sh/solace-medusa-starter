@@ -104,7 +104,7 @@ export default function ProductActions({
 
   // Get the max quantity
   const maxQuantity = useMemo(() => {
-    if (!selectedVariant) return 10
+    if (!selectedVariant || !cartItems) return 10
 
     const cartQuantity =
       cartItems.reduce((sum, item) => {
