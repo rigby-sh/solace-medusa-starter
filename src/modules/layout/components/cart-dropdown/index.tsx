@@ -110,7 +110,7 @@ const CartDropdown = ({
             </Box>
             {cartState && cartState.items?.length ? (
               <>
-                <Box className="no-scrollbar grid max-h-[402px] grid-cols-1 gap-y-3 overflow-y-scroll p-5">
+                <Box className="no-scrollbar grid max-h-[402px] grid-cols-1 gap-y-3 overflow-y-scroll overscroll-contain p-5">
                   {cartState.items
                     .sort((a, b) => {
                       return (a.created_at ?? '') > (b.created_at ?? '')
