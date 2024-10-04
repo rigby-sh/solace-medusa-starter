@@ -3,12 +3,12 @@ import { Button } from '@modules/common/components/button'
 import { Heading } from '@modules/common/components/heading'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
 import { Text } from '@modules/common/components/text'
-import { BasketIcon } from '@modules/common/icons'
+import { BagIcon } from '@modules/common/icons'
 
 const EmptyCartMessage = () => {
   return (
     <Box className="flex flex-col items-center gap-6 text-basic-primary">
-      <BasketIcon className="h-14 w-14" />
+      <BagIcon className="h-14 w-14" />
       <Box className="flex flex-col items-center gap-2">
         <Heading as="h2" className="text-xl small:text-2xl">
           Your shopping cart is empty
