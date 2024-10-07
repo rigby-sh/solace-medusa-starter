@@ -6,7 +6,6 @@ import { getCustomer } from '@lib/data/customer'
 import Wrapper from '@modules/checkout/components/payment-wrapper'
 import CheckoutForm from '@modules/checkout/templates/checkout-form'
 import CheckoutSummary from '@modules/checkout/templates/checkout-summary'
-import { Box } from '@modules/common/components/box'
 import { Container } from '@modules/common/components/container'
 
 export const metadata: Metadata = {

@@ -35,6 +35,9 @@ export const getShippingAddressDisplay = (
   addressesInRegion: HttpTypes.StoreCustomerAddress[] | undefined,
   cart: HttpTypes.StoreCart | null
 ): FormData => {
+  // Check if customer has default address
+  const defaultAddress = addressesInRegion?.find((a) => a.is_default_shipping)
+
   // Check if customer has selected address
   const formDataAddress = addressesInRegion?.find(
     (addr) =>
@@ -46,35 +49,28 @@ export const getShippingAddressDisplay = (
       addr.postal_code === formData['shipping_address.postal_code']
   )
 
-  if (formDataAddress) {
-    return formData
-  } else if (cart?.shipping_address) {
-    // If customer has no selected address, use cart shipping address if exist
+  const selectedAddress =
+    formDataAddress ||
+    defaultAddress ||
+    cart?.shipping_address ||
+    (addressesInRegion && addressesInRegion.length > 0
+      ? addressesInRegion[0]
+      : null)
+
+  if (selectedAddress) {
     return {
-      'shipping_address.first_name': cart.shipping_address.first_name || '',
-      'shipping_address.last_name': cart.shipping_address.last_name || '',
-      'shipping_address.address_1': cart.shipping_address.address_1 || '',
-      'shipping_address.address_2': cart.shipping_address.address_2 || '',
-      'shipping_address.postal_code': cart.shipping_address.postal_code || '',
-      'shipping_address.city': cart.shipping_address.city || '',
-      'shipping_address.country_code': cart.shipping_address.country_code || '',
-      'shipping_address.province': cart.shipping_address.province || '',
-      'shipping_address.phone': cart.shipping_address.phone || '',
-    }
-  } else if (addressesInRegion && addressesInRegion.length > 0) {
-    // If customer has no selected address and no cart shipping address, use first address from region
-    const firstAddress = addressesInRegion[0]
-    return {
-      'shipping_address.first_name': firstAddress.first_name || '',
-      'shipping_address.last_name': firstAddress.last_name || '',
-      'shipping_address.address_1': firstAddress.address_1 || '',
-      'shipping_address.address_2': firstAddress.address_2 || '',
-      'shipping_address.postal_code': firstAddress.postal_code || '',
-      'shipping_address.city': firstAddress.city || '',
-      'shipping_address.country_code': firstAddress.country_code || '',
-      'shipping_address.province': firstAddress.province || '',
-      'shipping_address.phone': firstAddress.phone || '',
+      'shipping_address.first_name': selectedAddress.first_name || '',
+      'shipping_address.last_name': selectedAddress.last_name || '',
+      'shipping_address.company': selectedAddress.company || '',
+      'shipping_address.address_1': selectedAddress.address_1 || '',
+      'shipping_address.address_2': selectedAddress.address_2 || '',
+      'shipping_address.postal_code': selectedAddress.postal_code || '',
+      'shipping_address.city': selectedAddress.city || '',
+      'shipping_address.country_code': selectedAddress.country_code || '',
+      'shipping_address.province': selectedAddress.province || '',
+      'shipping_address.phone': selectedAddress.phone || '',
     }
   }
+
   return formData
 }

@@ -4,7 +4,9 @@ import { cn } from '@lib/util/cn'
 import { validateField } from '@lib/util/validator'
 import { HttpTypes } from '@medusajs/types'
 import { Box } from '@modules/common/components/box'
+import { Checkbox } from '@modules/common/components/checkbox'
 import { Input } from '@modules/common/components/input'
+import { Label } from '@modules/common/components/label'
 import { Spinner } from '@modules/common/icons'
 import { mapKeys } from 'lodash'
 
@@ -15,9 +17,13 @@ import SelectedAddress from './selected-address'
 const ShippingAddress = ({
   customer,
   cart,
+  checked,
+  onChange,
 }: {
   customer: HttpTypes.StoreCustomer | null
   cart: HttpTypes.StoreCart | null
+  checked: boolean
+  onChange: () => void
 }) => {
   const [formData, setFormData] = useState<any>({})
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -86,13 +92,6 @@ const ShippingAddress = ({
     validateField(name, formData[name], 'shipping', touchedFields, setErrors)
   }
 
-  // Set first saved address if exists in current region
-  useEffect(() => {
-    if (addressesInRegion && addressesInRegion.length > 0) {
-      setFormAddress(addressesInRegion[0], customer?.email)
-    }
-  }, [addressesInRegion, customer?.email])
-
   useEffect(() => {
     // Ensure cart is not null and has a shipping_address before setting form data
     if (cart && cart.shipping_address) {
@@ -130,7 +129,7 @@ const ShippingAddress = ({
             )}
           </Box>
           <AddressSelect
-            region={cart?.region}
+            cart={cart}
             addresses={customer.addresses.filter(
               (add) => add.address_name === 'shipping_address'
             )}
@@ -169,6 +168,14 @@ const ShippingAddress = ({
           required
           error={errors['shipping_address.last_name']}
           data-testid="shipping-last-name-input"
+        />
+        <Input
+          label="Company name (optional)"
+          name="shipping_address.company"
+          value={formData['shipping_address.company']}
+          onChange={handleChange}
+          autoComplete="organization"
+          data-testid="shipping-company-input"
         />
         <Input
           label="Address"
@@ -222,7 +229,20 @@ const ShippingAddress = ({
           data-testid="shipping-province-input"
         />
         <Input
-          label="Phone"
+          label="Email"
+          name="email"
+          type="email"
+          title="Enter a valid email address."
+          autoComplete="email"
+          value={formData.email}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          required
+          error={errors.email}
+          data-testid="billing-email-input"
+        />
+        <Input
+          label="Phone number"
           name="shipping_address.phone"
           autoComplete="tel"
           onBlur={handleBlur}
@@ -232,6 +252,18 @@ const ShippingAddress = ({
           error={errors['shipping_address.phone']}
           data-testid="shipping-phone-input"
         />
+      </Box>
+      <Box className="my-6 flex items-center gap-x-2">
+        <Checkbox
+          id="same_as_shipping"
+          name="same_as_shipping"
+          checked={checked}
+          onChange={onChange}
+          data-testid="billing-address-checkbox"
+        />
+        <Label htmlFor="same_as_shipping" className="cursor-pointer !text-md">
+          Billing address same as shipping address
+        </Label>
       </Box>
     </>
   )

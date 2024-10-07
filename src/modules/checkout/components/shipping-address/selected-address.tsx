@@ -30,14 +30,17 @@ export default function SelectedAddress({
         }
       </Text>
       <Text className="text-secondary">
+        {getShippingAddressDisplay(formData, addressesInRegion, cart)[
+          'shipping_address.company'
+        ] &&
+          `${
+            getShippingAddressDisplay(formData, addressesInRegion, cart)[
+              'shipping_address.company'
+            ]
+          }, `}
         {
           getShippingAddressDisplay(formData, addressesInRegion, cart)[
             'shipping_address.address_1'
-          ]
-        }{' '}
-        {
-          getShippingAddressDisplay(formData, addressesInRegion, cart)[
-            'shipping_address.address_2'
           ]
         }
         ,{' '}
@@ -66,6 +69,7 @@ export default function SelectedAddress({
           }`}
       </Text>
       <Text className="text-secondary">
+        {cart?.email && `${cart.email}, `}
         {getShippingAddressDisplay(formData, addressesInRegion, cart)[
           'shipping_address.phone'
         ] || ''}

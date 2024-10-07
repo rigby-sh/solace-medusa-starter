@@ -8,6 +8,7 @@ import { useFormState } from 'react-dom'
 export const useAddressSelect = (
   addresses: HttpTypes.StoreCustomerAddress[],
   addressInput: HttpTypes.StoreCartAddress | null,
+  cart: HttpTypes.StoreCart | null,
   onSelect: (
     address: HttpTypes.StoreCartAddress | undefined,
     email?: string
@@ -108,6 +109,20 @@ export const useAddressSelect = (
       )
     )
   }, [addresses, addressInput])
+
+  useEffect(() => {
+    const defaultShippingAddress = addresses.find(
+      (a) => a.is_default_shipping === true
+    )
+
+    if (
+      defaultShippingAddress &&
+      !choosenAddressId &&
+      !cart?.shipping_address?.id
+    ) {
+      setChoosenAddressId(defaultShippingAddress.id)
+    }
+  }, [addresses, cart?.shipping_address?.id, choosenAddressId])
 
   // Close dialog after new address adding / editing success
   useEffect(() => {

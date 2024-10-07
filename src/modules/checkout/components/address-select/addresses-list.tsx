@@ -52,8 +52,9 @@ const AddressesList: React.FC<AddressListProps> = ({
                   {address.first_name} {address.last_name}
                 </Text>
                 <Text className="text-secondary">
-                  {address.address_1} {address.address_2}, {address.postal_code}
-                  , {address.city}, {address.country_code?.toUpperCase()}
+                  {address.company ? `${address.company}, ` : ''}
+                  {address.address_1}, {address.postal_code}, {address.city},{' '}
+                  {address.country_code?.toUpperCase()}
                   {address.province && `, ${address.province}`}
                 </Text>
                 <Text className="text-secondary">{address.phone}</Text>

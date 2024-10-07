@@ -34,11 +34,12 @@ const Addresses = ({
 
   const isOpen = searchParams.get('step') === 'address'
 
-  const { state: sameAsBilling, toggle: toggleSameAsBilling } = useToggleState(
-    cart?.shipping_address && cart?.billing_address
-      ? compareAddresses(cart?.billing_address, cart?.shipping_address)
-      : true
-  )
+  const { state: sameAsShipping, toggle: toggleSameAsShipping } =
+    useToggleState(
+      cart?.shipping_address && cart?.billing_address
+        ? compareAddresses(cart?.billing_address, cart?.shipping_address)
+        : true
+    )
 
   const handleEdit = () => {
     router.push(pathname + '?step=address')
@@ -58,7 +59,7 @@ const Addresses = ({
           ) : (
             <Stepper state="completed" />
           )}
-          Billing address
+          Shipping address
         </Heading>
         {!isOpen && cart?.shipping_address && (
           <Button
@@ -74,18 +75,19 @@ const Addresses = ({
       {isOpen ? (
         <form action={formAction}>
           <Box>
-            <BillingAddress
+            <ShippingAddress
+              customer={customer}
               cart={cart}
-              checked={sameAsBilling}
-              onChange={toggleSameAsBilling}
+              checked={sameAsShipping}
+              onChange={toggleSameAsShipping}
             />
-            {!sameAsBilling && (
+            {!sameAsShipping && (
               <div>
                 <Divider className="my-6" />
                 <Heading as="h2" className="pb-6 text-2xl">
-                  Shipping address
+                  Billing address
                 </Heading>
-                <ShippingAddress customer={customer} cart={cart} />
+                <BillingAddress cart={cart} />
               </div>
             )}
             <SubmitButton className="mt-6" data-testid="submit-address-button">
@@ -100,32 +102,6 @@ const Addresses = ({
             {cart && cart.shipping_address ? (
               <div className="flex items-start gap-x-8">
                 <div className="flex w-full flex-col items-start gap-x-1">
-                  {/* Billing Address */}
-                  <div
-                    className="flex flex-col p-4"
-                    data-testid="billing-address-summary"
-                  >
-                    <Text size="lg" className="text-basic-primary">
-                      Billing Address
-                    </Text>
-                    <Text className="text-secondary">
-                      {cart.billing_address?.first_name}{' '}
-                      {cart.billing_address?.last_name}
-                    </Text>
-                    <Text className="text-secondary">
-                      {cart.billing_address?.address_1}{' '}
-                      {cart.billing_address?.address_2},{' '}
-                      {cart.billing_address?.postal_code},{' '}
-                      {cart.billing_address?.city},{' '}
-                      {cart.billing_address?.country_code?.toUpperCase()}
-                      {cart.billing_address?.province &&
-                        `, ${cart.billing_address.province}`}
-                      ,
-                    </Text>
-                    <Text className="text-secondary">
-                      {cart.email}, {cart.billing_address?.phone}
-                    </Text>
-                  </div>
                   {/* Shipping Address */}
                   <div
                     className="flex flex-col p-4"
@@ -134,28 +110,53 @@ const Addresses = ({
                     <Text size="lg" className="text-basic-primary">
                       Shipping Address
                     </Text>
-                    {sameAsBilling ? (
+                    <Text className="text-secondary">
+                      {cart.shipping_address.first_name}{' '}
+                      {cart.shipping_address.last_name}
+                    </Text>
+                    <Text className="text-secondary">
+                      {cart.shipping_address.company},{' '}
+                      {cart.shipping_address.address_1},{' '}
+                      {cart.shipping_address.postal_code},{' '}
+                      {cart.shipping_address.city},{' '}
+                      {cart.shipping_address.country_code?.toUpperCase()}
+                      {cart.shipping_address?.province &&
+                        `, ${cart.shipping_address.province}`}
+                      ,
+                    </Text>
+                    <Text className="text-secondary">
+                      {cart.email}, {cart.shipping_address?.phone}
+                    </Text>
+                  </div>
+                  {/* Billing Address */}
+                  <div
+                    className="flex flex-col p-4"
+                    data-testid="billing-address-summary"
+                  >
+                    <Text size="lg" className="text-basic-primary">
+                      Billing Address
+                    </Text>
+                    {sameAsShipping ? (
                       <Text className="text-secondary">
-                        Same as billing address
+                        Same as shipping address
                       </Text>
                     ) : (
                       <>
                         <Text className="text-secondary">
-                          {cart.shipping_address.first_name}{' '}
-                          {cart.shipping_address.last_name}
+                          {cart.billing_address.first_name}{' '}
+                          {cart.billing_address.last_name}
                         </Text>
                         <Text className="text-secondary">
-                          {cart.shipping_address.address_1}{' '}
-                          {cart.shipping_address.address_2},{' '}
-                          {cart.shipping_address.postal_code},{' '}
-                          {cart.shipping_address.city},{' '}
-                          {cart.shipping_address.country_code?.toUpperCase()}
-                          {cart.shipping_address?.province &&
+                          {cart.billing_address.address_1},{' '}
+                          {cart.billing_address.postal_code},{' '}
+                          {cart.billing_address.city},{' '}
+                          {cart.billing_address.country_code?.toUpperCase()}
+                          {cart.billing_address?.province &&
                             `, ${cart.shipping_address.province}`}
                           ,
                         </Text>
                         <Text className="text-secondary">
-                          {cart.shipping_address?.phone}
+                          {cart.billing_address?.phone}
                         </Text>
                       </>
                     )}

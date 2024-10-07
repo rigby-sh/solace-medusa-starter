@@ -3,21 +3,11 @@ import React, { useEffect, useState } from 'react'
 import { validateField } from '@lib/util/validator'
 import { HttpTypes } from '@medusajs/types'
 import { Box } from '@modules/common/components/box'
-import { Checkbox } from '@modules/common/components/checkbox'
 import { Input } from '@modules/common/components/input'
-import { Label } from '@modules/common/components/label'
 
 import CountrySelect from '../country-select'
 
-const BillingAddress = ({
-  cart,
-  checked,
-  onChange,
-}: {
-  cart: HttpTypes.StoreCart | null
-  checked: boolean
-  onChange: () => void
-}) => {
+const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
   const [formData, setFormData] = useState<any>({})
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [touchedFields, setTouchedFields] = useState<Record<string, boolean>>(
@@ -56,9 +46,8 @@ const BillingAddress = ({
       'billing_address.country_code': cart?.billing_address?.country_code || '',
       'billing_address.province': cart?.billing_address?.province || '',
       'billing_address.phone': cart?.billing_address?.phone || '',
-      email: cart?.email || '',
     })
-  }, [cart?.billing_address, cart?.email])
+  }, [cart?.billing_address])
 
   return (
     <>
@@ -86,20 +75,13 @@ const BillingAddress = ({
           data-testid="billing-last-name-input"
         />
         <Input
-          label="Company name"
+          label="Company name (optional)"
           name="billing_address.company"
           value={formData['billing_address.company']}
           onChange={handleChange}
           autoComplete="organization"
           data-testid="billing-company-input"
         />
-        {/* TODO: Add logic for saving tax id and display that field */}
-        {/* <Input
-          label="Tax ID"
-          name="billing_address.tax_id"
-          value={formData['billing_address.tax_id']}
-          onChange={handleChange}
-        /> */}
         <Input
           label="Address"
           name="billing_address.address_1"
@@ -153,20 +135,7 @@ const BillingAddress = ({
           data-testid="billing-province-input"
         />
         <Input
-          label="Email"
-          name="email"
-          type="email"
-          title="Enter a valid email address."
-          autoComplete="email"
-          value={formData.email}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          required
-          error={errors.email}
-          data-testid="billing-email-input"
-        />
-        <Input
-          label="Phone"
+          label="Phone number"
           name="billing_address.phone"
           autoComplete="tel"
           value={formData['billing_address.phone']}
@@ -176,18 +145,6 @@ const BillingAddress = ({
           required
           data-testid="billing-phone-input"
         />
-      </Box>
-      <Box className="my-6 flex items-center gap-x-2">
-        <Checkbox
-          id="same_as_billing"
-          name="same_as_billing"
-          checked={checked}
-          onChange={onChange}
-          data-testid="billing-address-checkbox"
-        />
-        <Label htmlFor="same_as_billing" className="cursor-pointer !text-md">
-          Shipping address same as billing address
-        </Label>
       </Box>
     </>
   )

@@ -110,6 +110,8 @@ export const addCustomerAddress = async (
     country_code: formData.get('country_code') as string,
     phone: formData.get('phone') as string,
     address_name: currentState.addressName,
+    is_default_shipping:
+      formData.get('is_default_shipping') === 'on' ? true : false,
   }
 
   return sdk.store.customer
@@ -155,6 +157,8 @@ export const updateCustomerAddress = async (
     province: formData.get('province') as string,
     country_code: formData.get('country_code') as string,
     phone: formData.get('phone') as string,
+    is_default_shipping:
+      formData.get('is_default_shipping') === 'on' ? true : false,
   }
 
   return sdk.store.customer

@@ -9,6 +9,7 @@ import { HttpTypes } from '@medusajs/types'
 import { omit } from 'lodash'
 
 import { getAuthHeaders, getCartId, removeCartId, setCartId } from './cookies'
+import { getCustomer } from './customer'
 import { getProductsById } from './products'
 import { getRegion } from './regions'
 
@@ -310,26 +311,7 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
     }
 
     const data = {
-      billing_address: {
-        first_name: formData.get('billing_address.first_name'),
-        last_name: formData.get('billing_address.last_name'),
-        address_1: formData.get('billing_address.address_1'),
-        address_2: '',
-        company: formData.get('billing_address.company'),
-        postal_code: formData.get('billing_address.postal_code'),
-        city: formData.get('billing_address.city'),
-        country_code: formData.get('billing_address.country_code'),
-        province: formData.get('billing_address.province'),
-        phone: formData.get('billing_address.phone'),
-      },
-      email: formData.get('email'),
-    } as any
-
-    const sameAsBilling = formData.get('same_as_billing')
-    if (sameAsBilling === 'on') data.shipping_address = data.billing_address
-
-    if (sameAsBilling !== 'on')
-      data.shipping_address = {
+      shipping_address: {
         first_name: formData.get('shipping_address.first_name'),
         last_name: formData.get('shipping_address.last_name'),
         address_1: formData.get('shipping_address.address_1'),
@@ -340,18 +322,34 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
         country_code: formData.get('shipping_address.country_code'),
         province: formData.get('shipping_address.province'),
         phone: formData.get('shipping_address.phone'),
+      },
+      email: formData.get('email'),
+    } as any
+
+    const sameAsShipping = formData.get('same_as_shipping')
+    if (sameAsShipping === 'on') data.billing_address = data.shipping_address
+
+    if (sameAsShipping !== 'on')
+      data.billing_address = {
+        first_name: formData.get('billing_address.first_name'),
+        last_name: formData.get('billing_address.last_name'),
+        address_1: formData.get('billing_address.address_1'),
+        address_2: '',
+        company: formData.get('billing_address.company'),
+        postal_code: formData.get('billing_address.postal_code'),
+        city: formData.get('billing_address.city'),
+        country_code: formData.get('billing_address.country_code'),
+        province: formData.get('billing_address.province'),
+        phone: formData.get('billing_address.phone'),
       }
     await updateCart(data)
   } catch (e: any) {
     return e.message
   }
 
-  const redirectCountryCode =
-    formData.get('same_as_billing') === 'on'
-      ? formData.get('billing_address.country_code')
-      : formData.get('shipping_address.country_code')
-
-  redirect(`/${redirectCountryCode as string}/checkout?step=delivery`)
+  redirect(
+    `/${formData.get('shipping_address.country_code') as string}/checkout?step=delivery`
+  )
 }
 
 export async function placeOrder() {

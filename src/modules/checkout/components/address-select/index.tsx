@@ -21,9 +21,9 @@ import NewAddressForm from '../new-address-form'
 import AddressesList from './addresses-list'
 
 type AddressSelectProps = {
-  region: HttpTypes.StoreRegion
   addresses: HttpTypes.StoreCustomerAddress[]
   addressInput: HttpTypes.StoreCartAddress | null
+  cart: HttpTypes.StoreCart | null
   onSelect: (
     address: HttpTypes.StoreCartAddress | undefined,
     email?: string
@@ -31,9 +31,9 @@ type AddressSelectProps = {
 }
 
 const AddressSelect: React.FC<AddressSelectProps> = ({
-  region,
   addresses,
   addressInput,
+  cart,
   onSelect,
 }) => {
   const {
@@ -55,7 +55,7 @@ const AddressSelect: React.FC<AddressSelectProps> = ({
     handleSaveClick,
     handleEditAddress,
     selectedAddress,
-  } = useAddressSelect(addresses, addressInput, onSelect)
+  } = useAddressSelect(addresses, addressInput, cart, onSelect)
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenDialogChange}>
@@ -80,23 +80,23 @@ const AddressSelect: React.FC<AddressSelectProps> = ({
               </Button>
             )}
             {addNewAddress
-              ? 'Add new address'
+              ? 'Add new shipping address'
               : editAddress
-                ? 'Edit address'
+                ? 'Edit shipping address'
                 : 'Select shipping address'}
           </DialogHeader>
           <DialogBody className="flex flex-col gap-6">
             {addNewAddress ? (
               <NewAddressForm
                 ref={formRef}
-                region={region}
+                region={cart?.region}
                 formState={addFormState}
               />
             ) : editAddress ? (
               <EditAddressForm
                 ref={editFormRef}
                 address={editingAddress}
-                region={region}
+                region={cart?.region}
                 formState={updateFormState}
               />
             ) : (

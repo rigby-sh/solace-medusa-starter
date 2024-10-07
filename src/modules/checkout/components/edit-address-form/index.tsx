@@ -1,7 +1,10 @@
 import React, { forwardRef } from 'react'
 
 import { HttpTypes } from '@medusajs/types'
+import { Box } from '@modules/common/components/box'
+import { Checkbox } from '@modules/common/components/checkbox'
 import { Input } from '@modules/common/components/input'
+import { Label } from '@modules/common/components/label'
 
 import CountrySelect from '../country-select'
 
@@ -39,6 +42,13 @@ const EditAddressForm = forwardRef<HTMLFormElement, EditAddressFormProps>(
               autoComplete="family-name"
               defaultValue={address.last_name || undefined}
               data-testid="last-name-input"
+            />
+            <Input
+              label="Company name (optional)"
+              name="company"
+              autoComplete="organization"
+              defaultValue={address.company || undefined}
+              data-testid="company-input"
             />
             <Input
               label="Address"
@@ -81,7 +91,7 @@ const EditAddressForm = forwardRef<HTMLFormElement, EditAddressFormProps>(
               data-testid="state-input"
             />
             <Input
-              label="Phone"
+              label="Phone number"
               name="phone"
               autoComplete="phone"
               defaultValue={address.phone || undefined}
@@ -91,6 +101,19 @@ const EditAddressForm = forwardRef<HTMLFormElement, EditAddressFormProps>(
           {formState.error && (
             <div className="py-2 text-sm text-negative">{formState.error}</div>
           )}
+          <Box className="my-6 flex items-center gap-x-2">
+            <Checkbox
+              id="is_default_shipping"
+              name="is_default_shipping"
+              defaultChecked={address.is_default_shipping}
+            />
+            <Label
+              htmlFor="is_default_shipping"
+              className="cursor-pointer !text-md"
+            >
+              Default shipping address
+            </Label>
+          </Box>
         </form>
       </>
     )
