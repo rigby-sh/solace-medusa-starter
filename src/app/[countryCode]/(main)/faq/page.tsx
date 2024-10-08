@@ -6,6 +6,7 @@ import { Container } from '@modules/common/components/container'
 import { Heading } from '@modules/common/components/heading'
 import { FAQAccordion } from '@modules/content/components/faq-accordion'
 import SidebarBookmarks from '@modules/content/components/sidebar-bookmarks'
+import StoreBreadcrumbs from '@modules/store/templates/breadcrumbs'
 
 export const metadata: Metadata = {
   title: 'FAQs',
@@ -25,10 +26,15 @@ export default async function FAQPage() {
     }
   })
 
+  const breadcrumb = {
+    name: 'Frequently asked questions',
+  }
+
   return (
-    <Container className="!p min-h-screen max-w-full bg-secondary !p-0">
-      <Container>
-        <Heading as="h1" className="text-4xl medium:text-5xl">
+    <Container className="min-h-screen max-w-full bg-secondary !p-0">
+      <Container className="!py-8">
+        <StoreBreadcrumbs breadcrumb={breadcrumb} />
+        <Heading as="h1" className="mt-4 text-4xl medium:text-5xl">
           Frequently asked questions
         </Heading>
         <Box className="mt-6 grid grid-cols-12 medium:mt-12">

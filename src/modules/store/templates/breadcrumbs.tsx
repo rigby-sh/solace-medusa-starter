@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { StoreProductCategory } from '@medusajs/types'
 import {
   Breadcrumbs,
   BreadcrumbsItem,
@@ -11,10 +10,14 @@ import {
 } from '@modules/common/components/breadcrumbs'
 import { ArrowLeftIcon } from '@modules/common/icons'
 
+type Breadcrumb = {
+  name: string
+}
+
 export default function StoreBreadcrumbs({
-  category,
+  breadcrumb,
 }: {
-  category?: StoreProductCategory
+  breadcrumb?: Breadcrumb
 }) {
   return (
     <>
@@ -25,7 +28,7 @@ export default function StoreBreadcrumbs({
           </BreadcrumbsItem>
           <BreadcrumbsSeparator />
           <BreadcrumbsItem>
-            <BreadcrumbsStatic>{category?.name ?? 'Shop'}</BreadcrumbsStatic>
+            <BreadcrumbsStatic>{breadcrumb?.name ?? 'Shop'}</BreadcrumbsStatic>
           </BreadcrumbsItem>
         </BreadcrumbsList>
         <BreadcrumbsList className="flex small:hidden">

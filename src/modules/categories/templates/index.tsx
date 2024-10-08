@@ -42,7 +42,7 @@ export default function CategoryTemplate({
     <>
       <Container className="flex flex-col gap-8 !py-8">
         <Box className="flex flex-col gap-4">
-          <StoreBreadcrumbs category={category} />
+          <StoreBreadcrumbs breadcrumb={category} />
           <Heading
             as="h1"
             className="text-4xl text-basic-primary small:text-5xl"
