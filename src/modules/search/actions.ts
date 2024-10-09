@@ -1,44 +1,51 @@
-'use server'
-
-import { SEARCH_INDEX_NAME, searchClient } from '@lib/search-client'
 import { PRODUCT_LIMIT } from 'app/[countryCode]/(main)/collections/[handle]/page'
 
-import { getDefaultSearchFilters } from './const'
+export const BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL
+export const PUBLISHABLE_API_KEY =
+  process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
 
 type SearchParams = {
-  regionId: string
-  categoryHandle?: string
+  currency_code: string
   page?: number
+  order?: string
+  collection?: string[]
   query?: string
 }
 
 export async function search({
+  currency_code,
   page = 1,
-  regionId,
-  categoryHandle,
+  order = 'created_at',
+  collection,
   query,
 }: SearchParams) {
-  const filterQueries = [getDefaultSearchFilters(regionId)]
-
-  if (categoryHandle) {
-    filterQueries.push(`categories.handle = ${categoryHandle}`)
-  }
-
-  const { results } = await searchClient.search({
-    queries: [
-      {
-        q: query,
-        indexUid: SEARCH_INDEX_NAME,
-        filter: filterQueries.join(' AND '),
-        limit: PRODUCT_LIMIT,
-        offset: (page - 1) * PRODUCT_LIMIT,
-        sort: ['created_at:desc'],
-      },
-    ],
+  console.log('collection', collection)
+  
+  const searchParams = new URLSearchParams({
+    currency_code,
+    order,
+    // offset: ((page - 1) * PRODUCT_LIMIT).toString(),
+    // limit: PRODUCT_LIMIT.toString(),
   })
 
+  if (query) {
+    searchParams.append('q', query)
+  }
+
+  const response = await fetch(
+    `${BACKEND_URL}/store/search?${searchParams.toString()}`,
+    {
+      headers: {
+        'x-publishable-api-key': PUBLISHABLE_API_KEY!,
+      },
+      next: {
+        revalidate: 3600,
+      },
+    }
+  ).then((res) => res.json())
+
   return {
-    ...results[0],
-    estimatedTotalHits: results[0].estimatedTotalHits ?? 0,
+    results: response.products,
+    count: response.count,
   }
 }

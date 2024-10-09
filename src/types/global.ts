@@ -14,3 +14,18 @@ export type VariantPrice = {
   price_type: string
   percentage_diff: string
 }
+
+export type ProductFilters = {
+  collection: {
+    id: string
+    value: string
+  }[]
+  type: {
+    id: string
+    value: string
+  }[]
+  material: {
+    id: string
+    value: string
+  }[]
+}

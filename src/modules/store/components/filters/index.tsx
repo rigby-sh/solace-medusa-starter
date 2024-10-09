@@ -2,7 +2,6 @@
 
 import React from 'react'
 
-import { StoreCollection } from '@medusajs/types'
 import { Box } from '@modules/common/components/box'
 import Divider from '@modules/common/components/divider'
 import {
@@ -11,25 +10,33 @@ import {
   SelectTrigger,
 } from '@modules/common/components/select'
 import { PRICING_OPTIONS } from '@modules/search/const'
+import { ProductFilters as ProductFiltersType } from 'types/global'
 
 import FilterWrapper from './filter-wrapper'
 import { FilterItems } from './filter-wrapper/filter-item'
 
 export default function ProductFilters({
-  collections,
+  filters,
 }: {
-  collections: StoreCollection[]
+  filters: ProductFiltersType
 }) {
-  // TODO: Add rest of filters after meilisearch connection
-  const collectionOptions = collections.map((collection) => ({
-    handle: collection.handle,
-    label: collection.title,
+  const collectionOptions = filters.collection.map((collection) => ({
+    id: collection.id,
+    value: collection.value,
+  }))
+
+  const typeOptions = filters.type.map((type) => ({
+    id: type.id,
+    value: type.value,
+  }))
+
+  const materialOptions = filters.material.map((material) => ({
+    id: material.id,
+    value: material.value,
   }))
 
   const priceOptions = PRICING_OPTIONS.map((po) => ({
     ...po,
-    // For logic
-    // disabled: !priceDistribution?.[po.handle],
   }))
 
   return (
@@ -38,6 +45,16 @@ export default function ProductFilters({
         <FilterWrapper
           title="Collections"
           content={<FilterItems items={collectionOptions} param="collection" />}
+        />
+        <Divider />
+        <FilterWrapper
+          title="Product type"
+          content={<FilterItems items={typeOptions} param="type" />}
+        />
+        <Divider />
+        <FilterWrapper
+          title="Material"
+          content={<FilterItems items={materialOptions} param="material" />}
         />
         <Divider />
         <FilterWrapper
@@ -51,6 +68,22 @@ export default function ProductFilters({
             <SelectTrigger>Collections</SelectTrigger>
             <SelectContent className="w-full">
               <FilterItems items={collectionOptions} param="collection" />
+            </SelectContent>
+          </Select>
+        )}
+        {typeOptions && typeOptions.length > 0 && (
+          <Select value={null} onValueChange={() => {}}>
+            <SelectTrigger>Product type</SelectTrigger>
+            <SelectContent className="w-full">
+              <FilterItems items={typeOptions} param="type" />
+            </SelectContent>
+          </Select>
+        )}
+        {materialOptions && materialOptions.length > 0 && (
+          <Select value={null} onValueChange={() => {}}>
+            <SelectTrigger>Material</SelectTrigger>
+            <SelectContent className="w-full">
+              <FilterItems items={materialOptions} param="material" />
             </SelectContent>
           </Select>
         )}
