@@ -160,7 +160,7 @@ export const createFooterNavigation = (
         links: [
           {
             title: 'About us',
-            href: '#',
+            href: '/about-us',
           },
           {
             title: 'Blog',

@@ -48,7 +48,7 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
 
           return image ? (
             <button
-              onClick={() => updateOption(option.title ?? '', v ?? '')}
+              onClick={() => updateOption(option.id, v)}
               key={v}
               className={cn('border-primary h-12 w-12 border', {
                 'border-action-primary': v === current,
@@ -66,7 +66,7 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
             </button>
           ) : (
             <button
-              onClick={() => updateOption(option.title ?? '', v ?? '')}
+              onClick={() => updateOption(option.id, v)}
               key={v}
               className={cn('border-primary h-12 w-12 border', {
                 'border-action-primary': v === current,

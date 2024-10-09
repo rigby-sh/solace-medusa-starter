@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { useParams } from 'next/navigation'
 
 import { addToCart } from '@lib/data/cart'
+import { cn } from '@lib/util/cn'
 import { getProductPrice } from '@lib/util/get-product-price'
 import { StoreProduct } from '@medusajs/types'
 import { Badge } from '@modules/common/components/badge'
@@ -82,7 +83,10 @@ export default function ProductTile({ product }: { product: StoreProduct }) {
         <Button
           withIcon
           disabled={isAddingToCart}
-          className="absolute bottom-3 right-3 opacity-100 transition-opacity duration-300 group-hover:opacity-100 small:bottom-5 small:right-5 large:opacity-0"
+          className={cn(
+            'absolute bottom-3 right-3 opacity-100 transition-opacity duration-300 group-hover:opacity-100 small:bottom-5 small:right-5 large:opacity-0',
+            { '!px-4': isAddingToCart }
+          )}
           onClick={handleAddToCart}
         >
           {isAddingToCart ? <Spinner /> : <BagIcon />}
