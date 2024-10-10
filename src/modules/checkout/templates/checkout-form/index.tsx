@@ -17,7 +17,6 @@ export default async function CheckoutForm({
     return null
   }
 
-  // TODO: Fetch also pickup methods
   const shippingMethods = await listCartShippingMethods(cart.id)
   const paymentMethods = await listCartPaymentMethods(cart.region?.id ?? '')
 

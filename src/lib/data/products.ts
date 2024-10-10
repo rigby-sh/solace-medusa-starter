@@ -3,7 +3,9 @@ import { cache } from 'react'
 import { sdk } from '@lib/config'
 import { sortProducts } from '@lib/util/sort-products'
 import { HttpTypes } from '@medusajs/types'
+import { BACKEND_URL, PUBLISHABLE_API_KEY } from '@modules/search/actions'
 import { SortOptions } from '@modules/store/components/refinement-list/sort-products'
+import { ProductFilters } from 'types/global'
 
 import { getRegion } from './regions'
 
@@ -195,4 +197,20 @@ export const getProductsListByCollectionId = cache(async function ({
         nextPage,
       }
     })
+})
+
+export const getStoreFilters = cache(async function () {
+  const filters: ProductFilters = await fetch(
+    `${BACKEND_URL}/store/filter-product-attributes`,
+    {
+      headers: {
+        'x-publishable-api-key': PUBLISHABLE_API_KEY!,
+      },
+      next: {
+        revalidate: 3600,
+      },
+    }
+  ).then((res) => res.json())
+
+  return filters
 })

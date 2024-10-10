@@ -12,8 +12,8 @@ import { omit } from 'lodash'
 
 type CheckboxProps = {
   items?: {
-    label: string
-    handle: string
+    id: string
+    value: string
     disabled?: boolean
   }[]
   param: string
@@ -34,18 +34,18 @@ export const FilterItems: React.FC<CheckboxProps> = ({ items, param }) => {
     <ul className="flex flex-col px-2">
       {items
         ?.sort((a, b) =>
-          param !== 'price' ? a.label.localeCompare(b.label) : 0
+          param !== 'price' ? a.value.localeCompare(b.value) : 0
         )
         .map((item) => {
-          const checked = values.includes(item.handle)
+          const checked = values.includes(item.id)
           const DynamicTag = item.disabled ? 'li' : Link
 
           const newValues = checked
             ? values
-                .filter((v) => v !== item.handle)
+                .filter((v) => v !== item.id)
                 .sort()
                 .join(',')
-            : [...values, item.handle].sort().join(',')
+            : [...values, item.id].sort().join(',')
 
           const newSearchParamsObject = newValues.length
             ? { ...searchParamsObj, [param]: newValues }
@@ -60,27 +60,27 @@ export const FilterItems: React.FC<CheckboxProps> = ({ items, param }) => {
             <DynamicTag
               className="flex items-center gap-2 p-1 pr-[90px] text-basic-primary"
               href={href}
-              key={item.handle}
+              key={item.id}
             >
               <div>
                 <Checkbox
-                  id={`${param}-${item.handle}`}
+                  id={`${param}-${item.id}`}
                   role="checkbox"
                   type="button"
                   checked={checked}
                   aria-checked={checked}
-                  name={item.label}
+                  name={item.value}
                   disabled={item.disabled}
                 />
               </div>
               <Label
-                htmlFor={`${param}-${item.handle}`}
+                htmlFor={`${param}-${item.id}`}
                 size="lg"
                 className={clsx('cursor-pointer text-basic-primary', {
-                  'text-disabled': item.disabled,
+                  'pointer-events-none text-disabled': item.disabled,
                 })}
               >
-                {item.label}
+                {item.value}
               </Label>
             </DynamicTag>
           )

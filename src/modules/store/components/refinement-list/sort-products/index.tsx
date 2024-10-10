@@ -15,7 +15,11 @@ import {
 import { Text } from '@modules/common/components/text'
 import { SortIcon } from '@modules/common/icons'
 
-export type SortOptions = 'price_asc' | 'price_desc' | 'created_at'
+export type SortOptions =
+  | 'relevance'
+  | 'price_asc'
+  | 'price_desc'
+  | 'created_at'
 
 type SortProductsProps = {
   sortBy: SortOptions | string
@@ -23,6 +27,10 @@ type SortProductsProps = {
 }
 
 const sortOptions = [
+  {
+    value: 'relevance',
+    label: 'Relevance',
+  },
   {
     value: 'created_at',
     label: 'New in',

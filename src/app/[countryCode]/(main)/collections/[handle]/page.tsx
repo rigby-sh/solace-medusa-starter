@@ -5,6 +5,7 @@ import {
   getCollectionByHandle,
   getCollectionsList,
 } from '@lib/data/collections'
+import { getProductsList, getStoreFilters } from '@lib/data/products'
 import { listRegions } from '@lib/data/regions'
 import { StoreCollection, StoreRegion } from '@medusajs/types'
 import CollectionTemplate from '@modules/collections/templates'
@@ -13,12 +14,13 @@ import { SortOptions } from '@modules/store/components/refinement-list/sort-prod
 type Props = {
   params: { handle: string; countryCode: string }
   searchParams: {
-    page?: string
     sortBy?: SortOptions
+    page?: string
+    type?: string
+    material?: string
+    price?: string
   }
 }
-
-export const PRODUCT_LIMIT = 12
 
 export async function generateStaticParams() {
   const { collections } = await getCollectionsList()
@@ -67,21 +69,38 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function CollectionPage({ params, searchParams }: Props) {
-  const { sortBy, page } = searchParams
+  const { sortBy, page, type, material, price } = searchParams
+  const filters = await getStoreFilters()
 
-  const collection = await getCollectionByHandle(params.handle).then(
+  // TODO: Add logic in future
+  const {
+    response: { products: recommendedProducts },
+  } = await getProductsList({
+    pageParam: 0,
+    queryParams: {
+      limit: 9,
+    },
+    countryCode: params.countryCode,
+  })
+
+  const currentCollection = await getCollectionByHandle(params.handle).then(
     (collection: StoreCollection) => collection
   )
 
-  if (!collection) {
+  if (!currentCollection) {
     notFound()
   }
 
   return (
     <CollectionTemplate
-      collection={collection}
-      page={page}
       sortBy={sortBy}
+      page={page}
+      filters={filters}
+      type={type?.split(',')}
+      material={material?.split(',')}
+      price={price?.split(',')}
+      recommendedProducts={recommendedProducts}
+      currentCollection={currentCollection}
       countryCode={params.countryCode}
     />
   )

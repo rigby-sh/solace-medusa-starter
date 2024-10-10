@@ -26,14 +26,10 @@ export default async function FAQPage() {
     }
   })
 
-  const breadcrumb = {
-    name: 'Frequently asked questions',
-  }
-
   return (
     <Container className="min-h-screen max-w-full bg-secondary !p-0">
       <Container className="!py-8">
-        <StoreBreadcrumbs breadcrumb={breadcrumb} />
+        <StoreBreadcrumbs breadcrumb="Frequently asked questions" />
         <Heading as="h1" className="mt-4 text-4xl medium:text-5xl">
           Frequently asked questions
         </Heading>

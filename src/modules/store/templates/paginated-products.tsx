@@ -1,70 +1,26 @@
-import { getProductsListWithSort } from '@lib/data/products'
 import { getRegion } from '@lib/data/regions'
+import { HttpTypes } from '@medusajs/types'
 import ProductTile from '@modules/products/components/product-tile'
+import { PRODUCT_LIMIT } from '@modules/search/actions'
 import { Pagination } from '@modules/store/components/pagination'
-import { SortOptions } from '@modules/store/components/refinement-list/sort-products'
-
-const PRODUCT_LIMIT = 3
-
-type PaginatedProductsParams = {
-  limit: number
-  collection_id?: string[]
-  category_id?: string[]
-  id?: string[]
-  order?: string
-}
 
 export default async function PaginatedProducts({
-  sortBy,
+  products,
+  total,
   page,
-  collectionId,
-  categoryId,
-  productsIds,
   countryCode,
 }: {
-  sortBy?: SortOptions
+  products: HttpTypes.StoreProduct[]
+  total: number
   page: number
-  collectionId?: string
-  categoryId?: string
-  productsIds?: string[]
   countryCode: string
 }) {
-  const queryParams: PaginatedProductsParams = {
-    limit: PRODUCT_LIMIT,
-  }
-
-  if (collectionId) {
-    queryParams['collection_id'] = [collectionId]
-  }
-
-  if (categoryId) {
-    queryParams['category_id'] = [categoryId]
-  }
-
-  if (productsIds) {
-    queryParams['id'] = productsIds
-  }
-
-  if (sortBy === 'created_at') {
-    queryParams['order'] = 'created_at'
-  }
-
+  const totalPages = Math.ceil(total / PRODUCT_LIMIT)
   const region = await getRegion(countryCode)
 
   if (!region) {
     return null
   }
-
-  const {
-    response: { products, count },
-  } = await getProductsListWithSort({
-    page,
-    queryParams,
-    sortBy,
-    countryCode,
-  })
-
-  const totalPages = Math.ceil(count / PRODUCT_LIMIT)
 
   return (
     <>
@@ -75,7 +31,7 @@ export default async function PaginatedProducts({
         {products.map((p) => {
           return (
             <li key={p.id}>
-              <ProductTile product={p} />
+              <ProductTile product={p} regionId={region.id} />
             </li>
           )
         })}

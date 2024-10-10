@@ -1,6 +1,7 @@
 'use client'
 
 import { PropsWithChildren, useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
 
 import { useClearFiltersUrl } from '@lib/hooks/use-clear-filters-url'
 import { Button } from '@modules/common/components/button'
@@ -15,7 +16,6 @@ import {
   DialogPortal,
   DialogTrigger,
 } from '@modules/common/components/dialog'
-import LocalizedClientLink from '@modules/common/components/localized-client-link'
 import { FilterIcon } from '@modules/common/icons/filter'
 
 export default function ProductFiltersDrawer({ children }: PropsWithChildren) {
@@ -77,9 +77,7 @@ export default function ProductFiltersDrawer({ children }: PropsWithChildren) {
           <DialogBody>{children}</DialogBody>
           <DialogFooter className="grid grid-cols-2 gap-2">
             <Button variant="tonal" onClick={() => setIsOpen(false)} asChild>
-              <LocalizedClientLink href={clearAllUrl}>
-                Clear filters
-              </LocalizedClientLink>
+              <Link href={clearAllUrl}>Clear filters</Link>
             </Button>
             <Button onClick={() => setIsOpen(false)}>View products</Button>
           </DialogFooter>

@@ -10,14 +10,10 @@ import {
 } from '@modules/common/components/breadcrumbs'
 import { ArrowLeftIcon } from '@modules/common/icons'
 
-type Breadcrumb = {
-  name: string
-}
-
 export default function StoreBreadcrumbs({
   breadcrumb,
 }: {
-  breadcrumb?: Breadcrumb
+  breadcrumb?: string
 }) {
   return (
     <>
@@ -28,7 +24,7 @@ export default function StoreBreadcrumbs({
           </BreadcrumbsItem>
           <BreadcrumbsSeparator />
           <BreadcrumbsItem>
-            <BreadcrumbsStatic>{breadcrumb?.name ?? 'Shop'}</BreadcrumbsStatic>
+            <BreadcrumbsStatic>{breadcrumb ?? 'Shop'}</BreadcrumbsStatic>
           </BreadcrumbsItem>
         </BreadcrumbsList>
         <BreadcrumbsList className="flex small:hidden">

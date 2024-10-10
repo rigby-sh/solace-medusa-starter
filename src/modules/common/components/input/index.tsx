@@ -66,7 +66,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             ref={mergeRefs(localRef, forwardedRef)}
             type={inputType}
             placeholder={props.placeholder}
-            className="w-full bg-transparent text-md outline-none placeholder:text-secondary focus-visible:ring-0 focus-visible:ring-offset-0 [.dark_&]:placeholder:text-static"
+            className="w-full !bg-transparent text-md outline-none placeholder:text-secondary focus-visible:ring-0 focus-visible:ring-offset-0 [.dark_&]:placeholder:text-static"
             {...props}
           />
           {props.type === 'password' && (

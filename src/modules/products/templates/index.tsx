@@ -81,6 +81,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = async ({
       {productsList.products.length > 0 && (
         <ProductCarousel
           products={productsList.products}
+          regionId={region.id}
           title="Complete the look"
         />
       )}

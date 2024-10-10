@@ -22,10 +22,6 @@ export default async function PrivacyPolicyPage() {
 
   const mdxSource = await serializeMdx(PageContent)
 
-  const breadcrumb = {
-    name: 'Privacy Policy',
-  }
-
   const bookmarks = mdxSource.frontmatter.headings.map((heading) => {
     return {
       id: heading.id,
@@ -36,7 +32,7 @@ export default async function PrivacyPolicyPage() {
   return (
     <Container className="min-h-screen max-w-full bg-secondary !p-0">
       <Container className="!py-8">
-        <StoreBreadcrumbs breadcrumb={breadcrumb} />
+        <StoreBreadcrumbs breadcrumb="Privacy Policy" />
         <Heading as="h1" className="mt-4 text-4xl medium:text-5xl">
           Privacy Policy
         </Heading>

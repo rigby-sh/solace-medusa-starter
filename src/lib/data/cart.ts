@@ -9,7 +9,6 @@ import { HttpTypes } from '@medusajs/types'
 import { omit } from 'lodash'
 
 import { getAuthHeaders, getCartId, removeCartId, setCartId } from './cookies'
-import { getCustomer } from './customer'
 import { getProductsById } from './products'
 import { getRegion } from './regions'
 
