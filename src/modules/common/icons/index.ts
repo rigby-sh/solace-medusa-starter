@@ -45,3 +45,8 @@ export { XIcon } from './x'
 export { XCircleIcon } from './x-circle'
 export { VerticalDotsIcon } from './vertical-dots'
 export { VisaIcon } from './visa'
+export { DashboardIcon } from './dashboard'
+export { ShippingIcon } from './shipping'
+export { SettingsIcon } from './settings'
+
+export { LogoutIcon } from './logout'
