@@ -1,5 +1,6 @@
 import { StoreProduct } from '@medusajs/types'
 import { Box } from '@modules/common/components/box'
+import { Button } from '@modules/common/components/button'
 import { Container } from '@modules/common/components/container'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
 
@@ -40,12 +41,14 @@ export function ProductCarousel({
           </Box>
         </CarouselWrapper>
         {viewAll && (
-          <LocalizedClientLink
-            href={viewAll.link}
-            className="bg-action-primary text-fg-on-action-primary hover:bg-action-primary-hover mx-auto w-max rounded px-4 py-2"
-          >
-            {viewAll.text || 'View all'}
-          </LocalizedClientLink>
+          <Button asChild>
+            <LocalizedClientLink
+              href={viewAll.link}
+              className="mx-auto w-max !px-5 !py-3"
+            >
+              {viewAll.text || 'View all'}
+            </LocalizedClientLink>
+          </Button>
         )}
       </Box>
     </Container>

@@ -1,87 +1,99 @@
-import { useMemo } from 'react'
-
+import { getFulfillmentStatus } from '@lib/util/format-order'
 import { convertToLocale } from '@lib/util/money'
 import { HttpTypes } from '@medusajs/types'
-import { Button } from '@medusajs/ui'
+import { Box } from '@modules/common/components/box'
+import { Button } from '@modules/common/components/button'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
-import Thumbnail from '@modules/products/components/thumbnail'
+import { Text } from '@modules/common/components/text'
 
-type OrderCardProps = {
+import Thumbnail from './thumbnail'
+
+export default async function OrderCard({
+  order,
+}: {
   order: HttpTypes.StoreOrder
-}
-
-const OrderCard = ({ order }: OrderCardProps) => {
-  const numberOfLines = useMemo(() => {
-    return (
-      order.items?.reduce((acc, item) => {
-        return acc + item.quantity
-      }, 0) ?? 0
-    )
-  }, [order])
-
-  const numberOfProducts = useMemo(() => {
-    return order.items?.length ?? 0
-  }, [order])
+}) {
+  const countryCode = order.shipping_address?.country_code
+  const fulfillmentStatus = getFulfillmentStatus(order.fulfillment_status)
 
   return (
-    <div className="flex flex-col bg-white" data-testid="order-card">
-      <div className="text-large-semi mb-1 uppercase">
-        #<span data-testid="order-display-id">{order.display_id}</span>
-      </div>
-      <div className="text-small-regular flex items-center divide-x divide-gray-200 text-ui-fg-base">
-        <span className="pr-2" data-testid="order-created-at">
-          {new Date(order.created_at).toDateString()}
-        </span>
-        <span className="px-2" data-testid="order-amount">
-          {convertToLocale({
-            amount: order.total,
-            currency_code: order.currency_code,
-          })}
-        </span>
-        <span className="pl-2">{`${numberOfLines} ${
-          numberOfLines > 1 ? 'items' : 'item'
-        }`}</span>
-      </div>
-      <div className="my-4 grid grid-cols-2 gap-4 small:grid-cols-4">
-        {order.items?.slice(0, 3).map((i) => {
-          return (
-            <div
-              key={i.id}
-              className="flex flex-col gap-y-2"
-              data-testid="order-item"
-            >
-              <Thumbnail thumbnail={i.thumbnail} images={[]} size="full" />
-              <div className="text-small-regular flex items-center text-ui-fg-base">
-                <span
-                  className="font-semibold text-ui-fg-base"
-                  data-testid="item-title"
-                >
-                  {i.title}
-                </span>
-                <span className="ml-2">x</span>
-                <span data-testid="item-quantity">{i.quantity}</span>
-              </div>
-            </div>
-          )
-        })}
-        {numberOfProducts > 4 && (
-          <div className="flex h-full w-full flex-col items-center justify-center">
-            <span className="text-small-regular text-ui-fg-base">
-              + {numberOfLines - 4}
-            </span>
-            <span className="text-small-regular text-ui-fg-base">more</span>
+    <Box className="flex flex-col bg-primary large:flex-row">
+      <Box className="flex justify-between p-4 large:p-5 large:pr-0">
+        <Box className="flex min-w-[160px] flex-col gap-4 text-md text-basic-primary">
+          <Text>{fulfillmentStatus}</Text>
+          <div className="flex flex-col gap-1">
+            <Text>
+              {new Date(order.created_at)
+                .toLocaleDateString(countryCode, {
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric',
+                })
+                .replace('.', '')}
+            </Text>
+            <Text className="text-secondary">#{order.display_id}</Text>
           </div>
-        )}
-      </div>
-      <div className="flex justify-end">
-        <LocalizedClientLink href={`/account/orders/details/${order.id}`}>
-          <Button data-testid="order-details-link" variant="secondary">
-            See details
-          </Button>
-        </LocalizedClientLink>
-      </div>
-    </div>
+          <Text className="text-lg">
+            {convertToLocale({
+              amount: order.total,
+              currency_code: order.currency_code,
+            })}
+          </Text>
+        </Box>
+        <Button
+          variant="tonal"
+          size="sm"
+          className="flex justify-end large:hidden"
+        >
+          View order
+        </Button>
+      </Box>
+      <Box className="flex w-full justify-between gap-1 p-4 large:p-5 large:pl-0">
+        <Box className="flex flex-wrap items-center gap-2 large:py-5">
+          {order.items.slice(0, 2).map((item, index) => (
+            <Thumbnail
+              key={index}
+              thumbnail={item.thumbnail}
+              href={`/${countryCode}/products/${item.product_handle}`}
+              size="big"
+              className="xl:hidden"
+            />
+          ))}
+          {order.items.slice(0, 5).map((item, index) => (
+            <Thumbnail
+              key={index}
+              thumbnail={item.thumbnail}
+              href={`/${countryCode}/products/${item.product_handle}`}
+              className="hidden xl:block"
+            />
+          ))}
+          {order.items.length > 2 && (
+            <Thumbnail
+              more={`+${order.items.length - 2}`}
+              href={`/${countryCode}/account/orders/details/${order.id}`}
+              size="big"
+              className="xl:hidden"
+            />
+          )}
+          {order.items.length > 5 && (
+            <Thumbnail
+              more={`+${order.items.length - 5}`}
+              href={`/${countryCode}/account/orders/details/${order.id}`}
+              className="hidden xl:block"
+            />
+          )}
+        </Box>
+        <Button
+          variant="tonal"
+          size="sm"
+          asChild
+          className="hidden w-max justify-end large:flex"
+        >
+          <LocalizedClientLink href={`/account/orders/details/${order.id}`}>
+            View order
+          </LocalizedClientLink>
+        </Button>
+      </Box>
+    </Box>
   )
 }
-
-export default OrderCard
