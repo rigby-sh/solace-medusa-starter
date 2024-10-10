@@ -81,7 +81,7 @@ const AccountMobileNav = () => {
                 </Tab>
               ))}
               <span
-                className="absolute bottom-0 h-[1px] bg-black transition-all duration-300 ease-in-out"
+                className="absolute bottom-0 h-[1px] bg-fg-primary transition-all duration-300 ease-in-out"
                 style={borderStyle}
               />
             </Tab.List>

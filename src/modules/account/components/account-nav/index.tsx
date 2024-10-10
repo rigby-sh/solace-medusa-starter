@@ -32,7 +32,7 @@ const AccountNav = () => {
                     <Button
                       variant="text"
                       onClick={handleLogout}
-                      className="w-full justify-start rounded-none p-0 hover:bg-gray-200"
+                      className="w-full justify-start rounded-none p-0 hover:bg-hover"
                     >
                       <div className="flex items-center gap-2 p-4 text-lg">
                         {item.icon}
@@ -48,7 +48,7 @@ const AccountNav = () => {
               ))}
             </ul>
             {groupIndex < profileNavItemsGroups.length - 1 && (
-              <div className="h-px w-full bg-gray-200" />
+              <div className="h-px w-full bg-hover" />
             )}
           </Fragment>
         ))}
