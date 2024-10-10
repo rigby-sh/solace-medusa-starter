@@ -12,7 +12,7 @@ const buttonVariants = cva({
       ghost: 'bg-transparent hover:bg-hover active:bg-pressed !rounded-xl !p-4',
       tonal:
         'bg-fg-secondary text-action-primary hover:bg-fg-secondary-hover active:bg-fg-secondary-pressed [.dark_&]:bg-fg-tertiary [.dark_&]:hover:bg-fg-tertiary-hover [.dark_&]:active:bg-fg-tertiary-pressed [.dark_&]:text-static',
-      text: 'bg-primary text-action-primary hover:text-action-primary-hover active:text-action-primary-pressed',
+      text: 'bg-transparent text-action-primary hover:text-action-primary-hover active:text-action-primary-pressed',
       destructive:
         'text-static bg-fg-primary-negative hover:bg-fg-primary-negative-hover active:bg-fg-primary-negative-pressed',
       icon: 'bg-transparent hover:bg-fg-secondary-hover active:bg-fg-secondary-pressed text-action-primary hover:text-action-primary-hover active:text-action-primary-pressed',

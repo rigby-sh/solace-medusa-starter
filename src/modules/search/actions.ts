@@ -40,7 +40,7 @@ export async function search({
     currency_code,
     order: sortBy,
     offset: ((page - 1) * PRODUCT_LIMIT).toString(),
-    limit: query ? '6' : PRODUCT_LIMIT.toString(),
+    limit: PRODUCT_LIMIT.toString(),
   })
 
   if (category_id) {

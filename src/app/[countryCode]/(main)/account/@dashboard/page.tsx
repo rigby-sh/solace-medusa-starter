@@ -18,5 +18,5 @@ export default async function OverviewTemplate() {
     notFound()
   }
 
-  return <Overview customer={customer} orders={orders} />
+  return <Overview orders={orders} />
 }

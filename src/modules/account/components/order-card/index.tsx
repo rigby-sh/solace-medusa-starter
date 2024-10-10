@@ -43,9 +43,12 @@ export default async function OrderCard({
         <Button
           variant="tonal"
           size="sm"
+          asChild
           className="flex justify-end large:hidden"
         >
-          View order
+          <LocalizedClientLink href={`/account/orders/details/${order.id}`}>
+            View order
+          </LocalizedClientLink>
         </Button>
       </Box>
       <Box className="flex w-full justify-between gap-1 p-4 large:p-5 large:pl-0">
