@@ -1,8 +1,10 @@
-import { DashboardIcon } from '@modules/common/icons/dashboard'
-import { LogoutIcon } from '@modules/common/icons/logout'
-import { OrderIcon } from '@modules/common/icons/order'
-import { SettingsIcon } from '@modules/common/icons/settings'
-import { ShippingIcon } from '@modules/common/icons/shipping'
+import {
+  BoxIcon,
+  DashboardIcon,
+  LogoutIcon,
+  SettingsIcon,
+  ShippingIcon,
+} from '@modules/common/icons'
 
 export const profileNavItemsGroups = [
   [
@@ -14,7 +16,7 @@ export const profileNavItemsGroups = [
     },
     {
       href: '/account/orders',
-      icon: <OrderIcon className="h-6 w-6" />,
+      icon: <BoxIcon className="h-6 w-6" />,
       label: 'Order history',
       type: 'link',
     },

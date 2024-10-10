@@ -1,6 +1,6 @@
 import { IconProps } from 'types/icon'
 
-export const OrderIcon = (props: IconProps) => {
+export const BoxIcon = (props: IconProps) => {
   return (
     <svg
       width="24"
