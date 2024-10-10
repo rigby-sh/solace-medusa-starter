@@ -7,9 +7,10 @@ import useEmblaCarousel from 'embla-carousel-react'
 
 type ImageCarouselProps = {
   images: { id: string; url: string }[]
+  openDialog: (index: number | null) => void
 }
 
-const ImageCarousel = ({ images }: ImageCarouselProps) => {
+const ImageCarousel = ({ images, openDialog }: ImageCarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true })
 
@@ -47,6 +48,7 @@ const ImageCarousel = ({ images }: ImageCarouselProps) => {
               key={image.id}
             >
               <Image
+                onClick={() => openDialog(index)}
                 src={image.url}
                 alt={`Product image ${index + 1}`}
                 fill

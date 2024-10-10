@@ -11,25 +11,22 @@ export const Dialog = RadixDialog.Root
 export const DialogTrigger = RadixDialog.Trigger
 
 export const DialogPortal = RadixDialog.Portal
+export const DialogTitle = RadixDialog.Title
 
 export const DialogClose = forwardRef<
   ElementRef<typeof RadixDialog.Close>,
   React.ComponentPropsWithoutRef<typeof RadixDialog.Close>
 >(({ className, children, ...props }, forwardedRef) => {
   const inner = children ?? (
-    <Button withIcon variant="icon" size="sm">
+    <Button withIcon variant="tonal" className="bg-transparent outline-none">
       <XIcon />
     </Button>
   )
-
   return (
     <RadixDialog.Close
-      ref={forwardedRef}
-      className={cn(
-        className,
-        'absolute right-4 top-2.5 small:right-4 small:top-4'
-      )}
       asChild
+      ref={forwardedRef}
+      className={cn(className, 'absolute h-12 w-12')}
       {...props}
     >
       {inner}
@@ -61,7 +58,7 @@ export const DialogContent = forwardRef<
       ref={forwardedRef}
       className={cn(
         className,
-        'fixed left-[50%] top-[50%] z-50 flex h-full max-h-full w-full max-w-[600px] translate-x-[-50%] translate-y-[-50%] flex-col bg-primary shadow-black-basic small:max-h-[654px] small:rounded-[20px]'
+        'fixed left-[50%] top-[50%] z-50 flex h-full w-full translate-x-[-50%] translate-y-[-50%] flex-col overflow-y-auto overflow-x-hidden bg-primary shadow-black-basic'
       )}
       {...props}
     >
@@ -80,7 +77,7 @@ export function DialogFooter({
     <div
       className={cn(
         className,
-        'w-full text-wrap border-t-[.5px] border-basic-primary p-4 small:p-5'
+        'w-full text-wrap border-t-[.5px] border-basic-primary p-5'
       )}
       {...props}
     >
@@ -96,15 +93,15 @@ export function DialogHeader({
   ...props
 }: HTMLAttributes<HTMLDivElement>) {
   return (
-    <RadixDialog.Title
+    <div
       className={cn(
         className,
-        'w-full border-b-[.5px] border-basic-primary p-4 pr-16 small:p-5'
+        'relative w-full border-b-[.5px] border-basic-primary p-5 pr-16'
       )}
       {...props}
     >
       {children}
-    </RadixDialog.Title>
+    </div>
   )
 }
 DialogHeader.displayName = 'DialogHeader'
@@ -115,13 +112,7 @@ export function DialogBody({
   ...props
 }: HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
-      className={cn(
-        className,
-        'h-full overflow-y-auto text-wrap p-4 small:p-5'
-      )}
-      {...props}
-    >
+    <div className={cn(className, 'h-full w-full text-wrap')} {...props}>
       {children}
     </div>
   )

@@ -13,6 +13,7 @@ import {
   DialogHeader,
   DialogOverlay,
   DialogPortal,
+  DialogTitle,
   DialogTrigger,
 } from '@modules/common/components/dialog'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
@@ -21,6 +22,7 @@ import {
   BarsIcon,
   ChevronRightIcon,
 } from '@modules/common/icons'
+import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
 
 interface CategoryItem {
   name: string
@@ -127,7 +129,10 @@ const SideMenu = (props: any) => {
       </DialogTrigger>
       <DialogPortal>
         <DialogOverlay />
-        <DialogContent className="!max-h-full !max-w-full !rounded-none">
+        <DialogContent
+          className="!max-h-full !max-w-full !rounded-none"
+          aria-describedby={undefined}
+        >
           <DialogHeader className="flex items-center gap-4 text-xl text-basic-primary small:text-2xl">
             {currentCategory && (
               <Button variant="tonal" withIcon size="sm" onClick={handleBack}>
@@ -135,8 +140,12 @@ const SideMenu = (props: any) => {
               </Button>
             )}
             {currentCategory?.name || 'Menu'}
+            <DialogClose className="right-4" />
           </DialogHeader>
-          <DialogBody>
+          <VisuallyHidden.Root>
+            <DialogTitle>Menu modal</DialogTitle>
+          </VisuallyHidden.Root>
+          <DialogBody className="p-4 small:p-5">
             <Box className="flex flex-col">
               {currentCategory && (
                 <Button
@@ -157,7 +166,6 @@ const SideMenu = (props: any) => {
               {renderCategories(getActiveCategories())}
             </Box>
           </DialogBody>
-          <DialogClose />
         </DialogContent>
       </DialogPortal>
     </Dialog>
