@@ -77,7 +77,7 @@ export const FilterItems: React.FC<CheckboxProps> = ({ items, param }) => {
                 htmlFor={`${param}-${item.id}`}
                 size="lg"
                 className={clsx('cursor-pointer text-basic-primary', {
-                  'text-disabled': item.disabled,
+                  'pointer-events-none text-disabled': item.disabled,
                 })}
               >
                 {item.value}

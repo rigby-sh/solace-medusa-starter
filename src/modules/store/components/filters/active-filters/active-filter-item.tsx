@@ -7,8 +7,8 @@ type ActiveFilterItemProps = {
   label: string
   filterKey: string
   options: {
-    label: string
-    handle: string
+    id: string
+    value: string
   }[]
   handleRemoveFilter: (filterKey: string, handle: string) => void
 }
@@ -25,7 +25,7 @@ export default function ActiveFilterItem({
       <Box className="flex flex-wrap gap-2">
         {options
           ?.sort((a, b) =>
-            label !== 'Price' ? a.label.localeCompare(b.label) : 0
+            label !== 'Price' ? a.value.localeCompare(b.value) : 0
           )
           .map((option, id) => (
             <Chips
@@ -33,9 +33,9 @@ export default function ActiveFilterItem({
               rightIcon={<XIcon />}
               className="cursor-inherit"
               selected
-              onClick={() => handleRemoveFilter(filterKey, option.handle)}
+              onClick={() => handleRemoveFilter(filterKey, option.id)}
             >
-              <p className="text-center">{option.label}</p>
+              <p className="text-center">{option.value}</p>
             </Chips>
           ))}
       </Box>

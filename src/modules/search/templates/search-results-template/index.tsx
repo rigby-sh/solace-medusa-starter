@@ -1,63 +1,122 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 
-import { Heading, Text } from '@medusajs/ui'
-import LocalizedClientLink from '@modules/common/components/localized-client-link'
+import { getRegion } from '@lib/data/regions'
+import { StoreProduct } from '@medusajs/types'
+import { Box } from '@modules/common/components/box'
+import { Container } from '@modules/common/components/container'
+import { Heading } from '@modules/common/components/heading'
+import { Text } from '@modules/common/components/text'
+import { SearchResultsIcon } from '@modules/common/icons'
+import { ProductCarousel } from '@modules/products/components/product-carousel'
+import { search } from '@modules/search/actions'
+import SkeletonProductGrid from '@modules/skeletons/templates/skeleton-product-grid'
+import ProductFilters from '@modules/store/components/filters'
+import ActiveProductFilters from '@modules/store/components/filters/active-filters'
+import ProductFiltersDrawer from '@modules/store/components/filters/filters-drawer'
 import RefinementList from '@modules/store/components/refinement-list'
 import { SortOptions } from '@modules/store/components/refinement-list/sort-products'
+import StoreBreadcrumbs from '@modules/store/templates/breadcrumbs'
 import PaginatedProducts from '@modules/store/templates/paginated-products'
+import { ProductFilters as ProductFiltersType } from 'types/global'
 
 type SearchResultsTemplateProps = {
   query: string
-  ids: string[]
   sortBy?: SortOptions
   page?: string
+  collection?: string[]
+  type?: string[]
+  material?: string[]
+  price?: string[]
+  filters: ProductFiltersType
   countryCode: string
+  recommendedProducts: StoreProduct[]
 }
 
-const SearchResultsTemplate = ({
+export default async function SearchResultsTemplate({
   query,
-  ids,
   sortBy,
   page,
+  collection,
+  type,
+  material,
+  price,
+  filters,
   countryCode,
-}: SearchResultsTemplateProps) => {
+  recommendedProducts,
+}: SearchResultsTemplateProps) {
+  const region = await getRegion(countryCode)
   const pageNumber = page ? parseInt(page) : 1
+
+  const { results, count } = await search({
+    currency_code: region.currency_code,
+    query,
+    order: sortBy,
+    page: pageNumber,
+    collection,
+    type,
+    material,
+    price,
+  })
 
   return (
     <>
-      <div className="flex w-full items-center justify-between border-b px-8 py-6 small:px-14">
-        <div className="flex flex-col items-start">
-          <Text className="text-ui-fg-muted">Search Results for:</Text>
-          <Heading>
-            {decodeURI(query)} ({ids.length})
-          </Heading>
-        </div>
-        <LocalizedClientLink
-          href="/shop"
-          className="txt-medium text-ui-fg-subtle hover:text-ui-fg-base"
-        >
-          Clear
-        </LocalizedClientLink>
-      </div>
-      <div className="flex flex-col p-6 small:flex-row small:items-start">
-        {ids.length > 0 ? (
+      <Container className="flex flex-col gap-8 !py-8">
+        {results && results.length > 0 ? (
           <>
-            <RefinementList sortBy={sortBy || 'created_at'} search />
-            <div className="content-container">
+            <Box className="flex flex-col gap-4">
+              <StoreBreadcrumbs breadcrumb={`"${query}"`} />
+              <Heading
+                as="h1"
+                className="text-4xl text-basic-primary small:text-5xl"
+              >
+                &quot;{query}&quot;
+              </Heading>
+              <Text className="text-md text-secondary">
+                {count === 1 ? `${count} product` : `${count} products`}
+              </Text>
+              <Box className="grid w-full grid-cols-2 items-center justify-between gap-2 small:flex small:flex-wrap">
+                <Box className="hidden small:flex">
+                  <ProductFilters filters={filters} />
+                </Box>
+                <ProductFiltersDrawer>
+                  <ProductFilters filters={filters} />
+                </ProductFiltersDrawer>
+                <RefinementList sortBy={sortBy || 'relevance'} />
+              </Box>
+            </Box>
+            <ActiveProductFilters
+              filters={filters}
+              currentQuery={query}
+              countryCode={countryCode}
+            />
+            <Suspense fallback={<SkeletonProductGrid />}>
               <PaginatedProducts
-                productsIds={ids}
-                sortBy={sortBy}
+                products={results}
                 page={pageNumber}
+                total={count}
                 countryCode={countryCode}
               />
-            </div>
+            </Suspense>
           </>
         ) : (
-          <Text className="ml-8 mt-3 small:ml-14">No results.</Text>
+          <Box className="flex flex-col items-center gap-6 p-0 small:pb-14 small:pt-6">
+            <SearchResultsIcon />
+            <Box className="flex flex-col items-center gap-2">
+              <Heading as="h3" className="text-xl small:text-2xl">
+                No results for {`"${query}"`}
+              </Heading>
+              <p className="text-center text-md text-secondary">
+                Please try again using a different spelling or phrase
+              </p>
+            </Box>
+          </Box>
         )}
-      </div>
+      </Container>
+      <ProductCarousel
+        products={recommendedProducts}
+        regionId={region.id}
+        title="Recommended products"
+      />
     </>
   )
 }
-
-export default SearchResultsTemplate

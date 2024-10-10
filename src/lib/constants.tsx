@@ -7,18 +7,17 @@ import { BancontactIcon, IdealIcon, PayPalIcon } from '@modules/common/icons'
 // Product filters
 export const FILTER_KEYS = {
   ORDER_BY_KEY: 'sort_by',
-  SEARCH_KEY: 'q',
-  PAGE_KEY: 'p',
   PRICE_KEY: 'price',
   MATERIAL_KEY: 'material',
+  TYPE_KEY: 'type',
   COLLECTION_KEY: 'collection',
-  ACTIVE: 'active',
 }
 
 export const PRODUCT_LIST_PATHNAMES = {
   CATEGORY: '/categories',
+  COLLECTION: '/collections',
   EXPLORE: '/shop',
-  SEARCH: '/search',
+  SEARCH: '/results',
 } as const
 
 /* Map of payment provider_id to their title and icon. Add in any payment providers you want to use. */

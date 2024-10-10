@@ -1,12 +1,19 @@
-import React, { FormEvent } from 'react'
+import React, { ChangeEvent, FormEvent, RefObject } from 'react'
 
 import { XMarkMini } from '@medusajs/icons'
+import { Box } from '@modules/common/components/box'
+import { Input } from '@modules/common/components/input'
 
-import SearchBoxWrapper, {
-  ControlledSearchBoxProps,
-} from '../search-box-wrapper'
+export type ControlledSearchBoxProps = React.ComponentProps<'div'> & {
+  inputRef: RefObject<HTMLInputElement>
+  onChange(event: ChangeEvent): void
+  onReset(event: FormEvent): void
+  onSubmit?(event: FormEvent): void
+  placeholder?: string
+  value: string
+}
 
-const ControlledSearchBox = ({
+export const ControlledSearchBox = ({
   inputRef,
   onChange,
   onReset,
@@ -40,10 +47,10 @@ const ControlledSearchBox = ({
   }
 
   return (
-    <div {...props} className="w-full">
+    <Box {...props} className="w-full bg-primary">
       <form action="" noValidate onSubmit={handleSubmit} onReset={handleReset}>
-        <div className="flex items-center justify-between">
-          <input
+        <Box className="flex items-center justify-between border border-action-primary p-1 pr-2 small:p-2 small:pr-4">
+          <Input
             ref={inputRef}
             data-testid="search-input"
             autoComplete="off"
@@ -54,36 +61,20 @@ const ControlledSearchBox = ({
             type="search"
             value={value}
             onChange={onChange}
-            className="txt-compact-large h-6 flex-1 bg-transparent placeholder:text-ui-fg-on-color placeholder:transition-colors focus:outline-none"
+            className="min-w-[80px] !border-none bg-transparent text-lg placeholder:text-basic-primary focus:outline-none xsmall:min-w-[170px] small:min-w-[400px]"
           />
           {value && (
             <button
               onClick={handleReset}
               type="button"
-              className="txt-compact-large flex items-center justify-center gap-x-2 px-2 text-ui-fg-on-color focus:outline-none"
+              className="flex items-center justify-center gap-x-2 px-2 text-lg text-basic-primary focus:outline-none"
             >
               <XMarkMini />
-              Cancel
+              <span className="hidden small:inline">Cancel</span>
             </button>
           )}
-        </div>
+        </Box>
       </form>
-    </div>
+    </Box>
   )
 }
-
-const SearchBox = () => {
-  return (
-    <SearchBoxWrapper>
-      {(props) => {
-        return (
-          <>
-            <ControlledSearchBox {...props} />
-          </>
-        )
-      }}
-    </SearchBoxWrapper>
-  )
-}
-
-export default SearchBox

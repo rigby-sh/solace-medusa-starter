@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 
-import { getStoreFilters } from '@lib/data/products'
+import { getProductsList, getStoreFilters } from '@lib/data/products'
 import { SortOptions } from '@modules/store/components/refinement-list/sort-products'
 import StoreTemplate from '@modules/store/templates'
 
@@ -27,6 +27,17 @@ export default async function StorePage({ searchParams, params }: Params) {
   const { sortBy, page, collection, type, material, price } = searchParams
   const filters = await getStoreFilters()
 
+  // TODO: Add logic in future
+  const {
+    response: { products: recommendedProducts },
+  } = await getProductsList({
+    pageParam: 0,
+    queryParams: {
+      limit: 9,
+    },
+    countryCode: params.countryCode,
+  })
+
   return (
     <StoreTemplate
       sortBy={sortBy}
@@ -37,6 +48,7 @@ export default async function StorePage({ searchParams, params }: Params) {
       price={price?.split(',')}
       filters={filters}
       countryCode={params.countryCode}
+      recommendedProducts={recommendedProducts}
     />
   )
 }

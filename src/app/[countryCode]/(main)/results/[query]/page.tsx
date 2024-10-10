@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 
-import { search } from '@modules/search/actions'
+import { getProductsList, getStoreFilters } from '@lib/data/products'
 import SearchResultsTemplate from '@modules/search/templates/search-results-template'
 import { SortOptions } from '@modules/store/components/refinement-list/sort-products'
 
@@ -14,31 +14,41 @@ type Params = {
   searchParams: {
     sortBy?: SortOptions
     page?: string
+    collection?: string
+    type?: string
+    material?: string
+    price?: string
   }
 }
 
 export default async function SearchResults({ params, searchParams }: Params) {
   const { query } = params
-  const { sortBy, page } = searchParams
+  const { sortBy, page, collection, type, material, price } = searchParams
+  const filters = await getStoreFilters()
 
-  const hits = await search({
-    query,
-    regionId: params.countryCode,
-  }).then((data) => data)
-
-  const ids = hits
-    .map((h) => h.objectID || h.id)
-    .filter((id): id is string => {
-      return typeof id === 'string'
-    })
+  // TODO: Add logic in future
+  const {
+    response: { products: recommendedProducts },
+  } = await getProductsList({
+    pageParam: 0,
+    queryParams: {
+      limit: 9,
+    },
+    countryCode: params.countryCode,
+  })
 
   return (
     <SearchResultsTemplate
       query={query}
-      ids={ids}
       sortBy={sortBy}
       page={page}
+      filters={filters}
+      collection={collection?.split(',')}
+      type={type?.split(',')}
+      material={material?.split(',')}
+      price={price?.split(',')}
       countryCode={params.countryCode}
+      recommendedProducts={recommendedProducts}
     />
   )
 }

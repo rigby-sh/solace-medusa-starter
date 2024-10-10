@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { usePathname, useSearchParams } from 'next/navigation'
 
 import { Box } from '@modules/common/components/box'
 import Divider from '@modules/common/components/divider'
@@ -20,6 +21,11 @@ export default function ProductFilters({
 }: {
   filters: ProductFiltersType
 }) {
+  const pathname = usePathname()
+  const isCollection = pathname.includes('collections')
+  const searchParams = useSearchParams()
+  const currentPrice = searchParams.get('price')
+
   const collectionOptions = filters.collection.map((collection) => ({
     id: collection.id,
     value: collection.value,
@@ -37,16 +43,23 @@ export default function ProductFilters({
 
   const priceOptions = PRICING_OPTIONS.map((po) => ({
     ...po,
+    disabled: currentPrice !== null && currentPrice !== po.id,
   }))
 
   return (
     <>
       <Box className="flex flex-col gap-4 small:hidden">
-        <FilterWrapper
-          title="Collections"
-          content={<FilterItems items={collectionOptions} param="collection" />}
-        />
-        <Divider />
+        {!isCollection && (
+          <>
+            <FilterWrapper
+              title="Collections"
+              content={
+                <FilterItems items={collectionOptions} param="collection" />
+              }
+            />
+            <Divider />
+          </>
+        )}
         <FilterWrapper
           title="Product type"
           content={<FilterItems items={typeOptions} param="type" />}
@@ -63,7 +76,7 @@ export default function ProductFilters({
         />
       </Box>
       <Box className="hidden items-center gap-2 small:flex">
-        {collectionOptions && collectionOptions.length > 0 && (
+        {!isCollection && collectionOptions && collectionOptions.length > 0 && (
           <Select value={null} onValueChange={() => {}}>
             <SelectTrigger>Collections</SelectTrigger>
             <SelectContent className="w-full">

@@ -13,7 +13,7 @@ export default function NavActions() {
         asChild
         className="h-auto !p-2 xsmall:!p-3.5"
       >
-        <LocalizedClientLink href="/account">
+        <LocalizedClientLink href="/search">
           <SearchIcon />
         </LocalizedClientLink>
       </Button>

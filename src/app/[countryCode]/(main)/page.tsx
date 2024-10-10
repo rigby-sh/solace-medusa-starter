@@ -67,6 +67,7 @@ export default async function Home({
       />
       <ProductCarousel
         products={products}
+        regionId={region.id}
         title="Our bestsellers"
         viewAll={{
           link: '/shop',

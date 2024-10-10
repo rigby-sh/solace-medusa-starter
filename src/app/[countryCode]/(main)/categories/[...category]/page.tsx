@@ -2,8 +2,7 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import { getCategoryByHandle, listCategories } from '@lib/data/categories'
-import { getCollectionsList } from '@lib/data/collections'
-import { getProductsList } from '@lib/data/products'
+import { getProductsList, getStoreFilters } from '@lib/data/products'
 import { listRegions } from '@lib/data/regions'
 import { StoreProductCategory, StoreRegion } from '@medusajs/types'
 import CategoryTemplate from '@modules/categories/templates'
@@ -14,6 +13,10 @@ type Props = {
   searchParams: {
     sortBy?: SortOptions
     page?: string
+    collection?: string
+    type?: string
+    material?: string
+    price?: string
   }
 }
 
@@ -69,9 +72,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function CategoryPage({ params, searchParams }: Props) {
-  const { sortBy, page } = searchParams
+  const { sortBy, page, collection, type, material, price } = searchParams
+  const filters = await getStoreFilters()
 
   const { product_categories } = await getCategoryByHandle(params.category)
+
+  // TODO: Add logic in future
   const {
     response: { products: recommendedProducts },
   } = await getProductsList({
@@ -81,7 +87,6 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     },
     countryCode: params.countryCode,
   })
-  const collections = await getCollectionsList()
 
   if (!product_categories) {
     notFound()
@@ -93,8 +98,12 @@ export default async function CategoryPage({ params, searchParams }: Props) {
       sortBy={sortBy}
       page={page}
       countryCode={params.countryCode}
+      filters={filters}
+      collection={collection?.split(',')}
+      type={type?.split(',')}
+      material={material?.split(',')}
+      price={price?.split(',')}
       recommendedProducts={recommendedProducts}
-      collections={collections.collections}
     />
   )
 }
