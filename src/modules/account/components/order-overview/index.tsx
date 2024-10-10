@@ -4,7 +4,7 @@ import { HttpTypes } from '@medusajs/types'
 import { Box } from '@modules/common/components/box'
 import { Heading } from '@modules/common/components/heading'
 import { Text } from '@modules/common/components/text'
-import { BoxIcon } from '@modules/common/icons/box'
+import { BoxIcon } from '@modules/common/icons'
 
 import OrderCard from '../order-card'
 
