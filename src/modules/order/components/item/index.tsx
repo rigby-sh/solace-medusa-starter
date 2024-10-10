@@ -10,14 +10,10 @@ type ItemProps = {
 
 const Item = ({ item }: ItemProps) => {
   return (
-    <Box
-      className="flex w-full rounded-lg bg-primary p-4"
-      data-testid="product-row"
-    >
+    <Box className="flex w-full bg-primary p-4" data-testid="product-row">
       <div className="flex h-[90px] w-[90px]">
         <Thumbnail thumbnail={item.thumbnail} size="square" />
       </div>
-
       <Box className="px-4 medium:flex-grow">
         <Text size="base" className="text-secondary">
           {item.product_collection}

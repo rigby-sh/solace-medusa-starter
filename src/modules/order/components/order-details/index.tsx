@@ -1,13 +1,15 @@
+import { getOrderStatus } from '@lib/util/format-order'
 import { HttpTypes } from '@medusajs/types'
 import { Text } from '@medusajs/ui'
 import { Box } from '@modules/common/components/box'
 import Divider from '@modules/common/components/divider'
 
 type OrderDetailsProps = {
-  order: HttpTypes.StoreOrder
+  order: HttpTypes.StoreOrder & { status: string }
 }
 
 const OrderDetails = ({ order }: OrderDetailsProps) => {
+  const orderStatus = getOrderStatus(order.status)
   const formattedOrderDate = new Date(order.created_at).toLocaleDateString(
     'en-US',
     {
@@ -18,11 +20,11 @@ const OrderDetails = ({ order }: OrderDetailsProps) => {
   )
 
   return (
-    <Box className="rounded-xl bg-primary p-2 medium:grid medium:grid-cols-[1fr,auto,1fr]">
+    <Box className="bg-primary p-2 medium:grid medium:grid-cols-[1fr,auto,1fr]">
       <Box className="p-4">
-        <Text size="large">Order number</Text>
+        <Text size="large">Order status</Text>
         <Text size="base" className="text-secondary">
-          #{order.display_id}
+          {orderStatus}
         </Text>
       </Box>
       <Box className="p-4">

@@ -11,7 +11,7 @@ const PaymentDetails = ({ order }: PaymentDetailsProps) => {
   const payment = order.payment_collections?.[0].payments?.[0]
 
   return (
-    <Box className="rounded-xl bg-primary p-2">
+    <Box className="bg-primary p-2">
       <Box className="p-4">
         <Text size="large">Delivery method</Text>
         <Text size="base" className="text-secondary">

@@ -1,4 +1,4 @@
-import { getFulfillmentStatus } from '@lib/util/format-order'
+import { getOrderStatus } from '@lib/util/format-order'
 import { convertToLocale } from '@lib/util/money'
 import { HttpTypes } from '@medusajs/types'
 import { Box } from '@modules/common/components/box'
@@ -11,20 +11,20 @@ import Thumbnail from './thumbnail'
 export default async function OrderCard({
   order,
 }: {
-  order: HttpTypes.StoreOrder
+  order: HttpTypes.StoreOrder & { status: string }
 }) {
   const countryCode = order.shipping_address?.country_code
-  const fulfillmentStatus = getFulfillmentStatus(order.fulfillment_status)
+  const orderStatus = getOrderStatus(order.status)
 
   return (
     <Box className="flex flex-col bg-primary large:flex-row">
       <Box className="flex justify-between p-4 large:p-5 large:pr-0">
         <Box className="flex min-w-[160px] flex-col gap-4 text-md text-basic-primary">
-          <Text>{fulfillmentStatus}</Text>
+          <Text>{orderStatus}</Text>
           <div className="flex flex-col gap-1">
             <Text>
               {new Date(order.created_at)
-                .toLocaleDateString(countryCode, {
+                .toLocaleDateString('en-US', {
                   day: 'numeric',
                   month: 'short',
                   year: 'numeric',

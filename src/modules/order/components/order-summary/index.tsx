@@ -1,5 +1,7 @@
 import { convertToLocale } from '@lib/util/money'
 import { HttpTypes } from '@medusajs/types'
+import { Box } from '@modules/common/components/box'
+import Divider from '@modules/common/components/divider'
 
 type OrderSummaryProps = {
   order: HttpTypes.StoreOrder
@@ -18,42 +20,47 @@ const OrderSummary = ({ order }: OrderSummaryProps) => {
   }
 
   return (
-    <div>
-      <h2 className="text-base-semi">Order Summary</h2>
-      <div className="text-small-regular my-2 text-ui-fg-base">
-        <div className="text-base-regular mb-2 flex items-center justify-between text-ui-fg-base">
-          <span>Subtotal</span>
-          <span>{getAmount(order.subtotal)}</span>
-        </div>
-        <div className="flex flex-col gap-y-1">
+    <Box className="flex flex-col gap-5 bg-primary p-5 text-md">
+      <Box className="flex flex-col gap-2">
+        <Box className="flex items-center justify-between">
+          <span className="text-secondary">Items</span>
+          <span className="text-lg text-basic-primary">
+            {getAmount(order.item_total)}
+          </span>
+        </Box>
+        <Box className="flex flex-col gap-2">
           {order.discount_total > 0 && (
-            <div className="flex items-center justify-between">
-              <span>Discount</span>
-              <span>- {getAmount(order.discount_total)}</span>
-            </div>
+            <Box className="flex items-center justify-between">
+              <span className="text-secondary">Discount</span>
+              <span className="text-negative">
+                - {getAmount(order.discount_total)}
+              </span>
+            </Box>
           )}
           {order.gift_card_total > 0 && (
-            <div className="flex items-center justify-between">
-              <span>Discount</span>
-              <span>- {getAmount(order.gift_card_total)}</span>
-            </div>
+            <Box className="flex items-center justify-between">
+              <span className="text-secondary">Discount</span>
+              <span className="text-negative">
+                - {getAmount(order.gift_card_total)}
+              </span>
+            </Box>
           )}
-          <div className="flex items-center justify-between">
-            <span>Shipping</span>
-            <span>{getAmount(order.shipping_total)}</span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span>Taxes</span>
-            <span>{getAmount(order.tax_total)}</span>
-          </div>
-        </div>
-        <div className="my-4 h-px w-full border-b border-dashed border-gray-200" />
-        <div className="text-base-regular mb-2 flex items-center justify-between text-ui-fg-base">
-          <span>Total</span>
-          <span>{getAmount(order.total)}</span>
-        </div>
-      </div>
-    </div>
+          <Box className="flex items-center justify-between">
+            <span className="text-secondary">Shipping</span>
+            <span className="text-basic-primary">
+              {getAmount(order.shipping_total)}
+            </span>
+          </Box>
+        </Box>
+      </Box>
+      <Divider />
+      <Box className="flex items-center justify-between">
+        <span className="text-secondary">Total</span>
+        <span className="text-xl font-medium text-basic-primary">
+          {getAmount(order.total)}
+        </span>
+      </Box>
+    </Box>
   )
 }
 

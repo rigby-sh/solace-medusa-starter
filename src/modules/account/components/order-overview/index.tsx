@@ -8,11 +8,15 @@ import { ORDERS_LIMIT } from 'app/[countryCode]/(main)/account/@dashboard/orders
 
 import OrderCard from '../order-card'
 
+export interface OrderType extends HttpTypes.StoreOrder {
+  status: string
+}
+
 const OrderOverview = ({
   orders,
   page,
 }: {
-  orders: HttpTypes.StoreOrder[]
+  orders: OrderType[]
   page: string
 }) => {
   const totalPages = Math.ceil(orders.length / ORDERS_LIMIT)

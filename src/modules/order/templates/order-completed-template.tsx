@@ -10,7 +10,7 @@ import PaymentDetails from '@modules/order/components/payment-details'
 import ShippingDetails from '@modules/order/components/shipping-details'
 
 type OrderCompletedTemplateProps = {
-  order: HttpTypes.StoreOrder
+  order: HttpTypes.StoreOrder & { status: string }
 }
 
 export default function OrderCompletedTemplate({

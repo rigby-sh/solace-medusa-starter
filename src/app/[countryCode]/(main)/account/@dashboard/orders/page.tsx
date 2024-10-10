@@ -2,7 +2,9 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import { listOrders } from '@lib/data/orders'
-import OrderOverview from '@modules/account/components/order-overview'
+import OrderOverview, {
+  OrderType,
+} from '@modules/account/components/order-overview'
 import { SortOptions } from '@modules/store/components/refinement-list/sort-products'
 
 export const metadata: Metadata = {
@@ -34,7 +36,7 @@ export default async function Orders({ searchParams }: Props) {
 
   return (
     <div className="w-full" data-testid="orders-page-wrapper">
-      <OrderOverview orders={orders} page={page} />
+      <OrderOverview orders={orders as OrderType[]} page={page} />
     </div>
   )
 }

@@ -20,7 +20,7 @@ const ShippingDetails = ({ order }: ShippingDetailsProps) => {
   )
 
   return (
-    <Box className="rounded-xl bg-primary p-2">
+    <Box className="bg-primary p-2">
       <Box className="p-4">
         <Text size="large">Shipping address</Text>
         <Text size="base" className="text-secondary">
