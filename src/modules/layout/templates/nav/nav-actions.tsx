@@ -3,6 +3,7 @@ import { Button } from '@modules/common/components/button'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
 import { SearchIcon, UserIcon } from '@modules/common/icons'
 import CartButton from '@modules/layout/components/cart-button'
+import ProfileButton from '@modules/layout/components/profile-button'
 
 export default function NavActions() {
   return (
@@ -17,16 +18,7 @@ export default function NavActions() {
           <SearchIcon />
         </LocalizedClientLink>
       </Button>
-      <Button
-        variant="icon"
-        withIcon
-        asChild
-        className="h-auto !p-2 xsmall:!p-3.5"
-      >
-        <LocalizedClientLink href="/account">
-          <UserIcon />
-        </LocalizedClientLink>
-      </Button>
+      <ProfileButton />
       <CartButton />
     </Box>
   )

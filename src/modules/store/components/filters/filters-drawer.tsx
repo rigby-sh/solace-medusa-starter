@@ -14,9 +14,11 @@ import {
   DialogHeader,
   DialogOverlay,
   DialogPortal,
+  DialogTitle,
   DialogTrigger,
 } from '@modules/common/components/dialog'
 import { FilterIcon } from '@modules/common/icons/filter'
+import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
 
 export default function ProductFiltersDrawer({ children }: PropsWithChildren) {
   const [isOpen, setIsOpen] = useState(false)
@@ -73,15 +75,18 @@ export default function ProductFiltersDrawer({ children }: PropsWithChildren) {
         >
           <DialogHeader className="flex items-center gap-4 text-xl text-basic-primary small:text-2xl">
             Filters
+            <DialogClose className="right-4" />
           </DialogHeader>
-          <DialogBody>{children}</DialogBody>
+          <VisuallyHidden.Root>
+            <DialogTitle>Filters Modal</DialogTitle>
+          </VisuallyHidden.Root>
+          <DialogBody className="overflow-y-auto p-5">{children}</DialogBody>
           <DialogFooter className="grid grid-cols-2 gap-2">
             <Button variant="tonal" onClick={() => setIsOpen(false)} asChild>
               <Link href={clearAllUrl}>Clear filters</Link>
             </Button>
             <Button onClick={() => setIsOpen(false)}>View products</Button>
           </DialogFooter>
-          <DialogClose />
         </DialogContent>
       </DialogPortal>
     </Dialog>

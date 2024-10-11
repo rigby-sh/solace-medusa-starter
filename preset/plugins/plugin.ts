@@ -7,11 +7,12 @@ const uiPlugin = plugin(function ({ addBase, theme }) {
     ':root': {
       ...rootColors,
     },
-    '@media (prefers-color-scheme: dark)': {
-      '.dark': {
-        ...darkMode,
-      },
-    },
+    // TODO: uncomment when dark mode is ready
+    // '@media (prefers-color-scheme: dark)': {
+    //   ':root': {
+    //     ...darkMode,
+    //   },
+    // },
     h1: {
       fontSize: theme('fontSize.5xl'),
       fontWeight: theme('fontWeight.font-normal'),
