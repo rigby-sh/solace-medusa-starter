@@ -51,7 +51,7 @@ const AddressBook: React.FC<AddressBookProps> = ({ customer, region }) => {
         isAddingNewAddress={isAddingNewAddress}
       />
 
-      <div className="grid w-full grid-cols-1 gap-4 medium:gap-6 xl:ml-auto xl:max-w-[833px]">
+      <div className="grid w-full grid-cols-1 gap-4 medium:gap-6 xl:ml-auto xl:max-w-[900px]">
         <div className="items-center justify-between medium:flex">
           <h1 className="text-xl medium:text-2xl">Shipping Addresses</h1>
           <Button
