@@ -122,7 +122,7 @@ const SideMenu = (props: any) => {
         <Button
           variant="icon"
           withIcon
-          className="flex h-auto !p-2.5 xsmall:!p-4 large:hidden"
+          className="flex h-auto !p-2 xsmall:!p-3.5 large:hidden"
         >
           <BarsIcon />
         </Button>

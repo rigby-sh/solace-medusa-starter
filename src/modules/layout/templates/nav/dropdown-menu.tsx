@@ -1,7 +1,9 @@
 import React from 'react'
 
+import { cn } from '@lib/util/cn'
 import { Box } from '@modules/common/components/box'
 import { Button } from '@modules/common/components/button'
+import { Container } from '@modules/common/components/container'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
 import { NavigationItem } from '@modules/common/components/navigation-item'
 
@@ -18,6 +20,7 @@ interface DropdownMenuProps {
     handle: string
   }
   children: React.ReactNode
+  customContent?: React.ReactNode
   isOpen: boolean
   onOpenChange: (open: boolean) => void
 }
@@ -26,32 +29,31 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
   item,
   activeItem,
   children,
+  customContent,
   isOpen,
   onOpenChange,
 }) => {
   const renderSubcategories = (categories: CategoryItem[]) => (
-    <div className="flex flex-col gap-6 px-14 py-5">
-      {activeItem && (
-        <Button
-          variant="tonal"
-          className="w-max !px-3 !py-2"
-          onClick={() => onOpenChange(false)}
-          asChild
-        >
-          <LocalizedClientLink href={`${activeItem.handle}`}>
-            Shop all{' '}
-            {activeItem.name === 'Shop' || activeItem.name === 'Collections'
-              ? ''
-              : activeItem.name}
-          </LocalizedClientLink>
-        </Button>
-      )}
+    <Container className="flex flex-col gap-6 !px-14 !pb-8 !pt-5">
+      <Button
+        variant="tonal"
+        className="w-max !px-3 !py-2"
+        onClick={() => onOpenChange(false)}
+        asChild
+      >
+        <LocalizedClientLink href={`${activeItem?.handle ?? '/'}`}>
+          Shop all{' '}
+          {activeItem?.name === 'Shop' || activeItem?.name === 'Collections'
+            ? ''
+            : activeItem?.name}
+        </LocalizedClientLink>
+      </Button>
       <div className="grid grid-cols-4 gap-8">
         {categories.map((subItem, index) => (
-          <div key={index} className="flex flex-col">
+          <div key={index} className="flex flex-col gap-2">
             <NavigationItem
               href={subItem.handle}
-              className="py-2 text-lg text-basic-primary"
+              className="w-max py-2 text-lg text-basic-primary !duration-150 hover:border-b hover:border-action-primary"
             >
               {subItem.name}
             </NavigationItem>
@@ -71,7 +73,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
           </div>
         ))}
       </div>
-    </div>
+    </Container>
   )
 
   return (
@@ -81,9 +83,16 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
       onMouseLeave={() => onOpenChange(false)}
     >
       {children}
-      {item.category_children && isOpen && (
-        <Box className="absolute left-0 top-full z-50 w-screen bg-white shadow-lg">
-          {renderSubcategories(item.category_children)}
+      {item.category_children && (
+        <Box
+          className={cn(
+            'absolute left-0 top-full z-50 w-full translate-y-0 bg-primary shadow-lg transition-all duration-300',
+            isOpen
+              ? 'pointer-events-auto opacity-100'
+              : 'pointer-events-none invisible opacity-0'
+          )}
+        >
+          {customContent ?? renderSubcategories(item.category_children)}
         </Box>
       )}
     </div>

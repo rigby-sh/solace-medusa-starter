@@ -1,5 +1,6 @@
 import { listCategories } from '@lib/data/categories'
 import { getCollectionsList } from '@lib/data/collections'
+import { getCollectionsData } from '@lib/data/fetch'
 import { Box } from '@modules/common/components/box'
 import { Container } from '@modules/common/components/container'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
@@ -11,7 +12,9 @@ import Navigation from './navigation'
 
 export default async function NavWrapper(props: any) {
   const productCategories = await listCategories()
+
   const { collections } = await getCollectionsList()
+  const strapiCollections = await getCollectionsData()
 
   return (
     <Container
@@ -29,6 +32,7 @@ export default async function NavWrapper(props: any) {
           countryCode={props.countryCode}
           productCategories={productCategories}
           collections={collections}
+          strapiCollections={strapiCollections}
         />
         <Box className="relative block medium:absolute medium:left-1/2 medium:top-1/2 medium:-translate-x-1/2 medium:-translate-y-1/2">
           <LocalizedClientLink href="/">
