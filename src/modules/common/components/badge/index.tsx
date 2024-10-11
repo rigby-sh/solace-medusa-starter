@@ -13,6 +13,8 @@ const badgeVariants = cva({
         'bg-fg-primary text-inverse-primary [.dark_&]:bg-fg-tertiary [.dark_&]:text-static',
       green: 'bg-fg-positive text-positive',
       red: 'bg-fg-secondary-negative text-negative',
+      outline:
+        'bg-primary border-[0.5px] border-basic-primary text-basic-primary',
     },
   },
   defaultVariants: {

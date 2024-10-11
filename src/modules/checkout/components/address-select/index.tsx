@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { useAddressSelect } from '@lib/hooks/usa-address-select'
+import { useAddressSelect } from '@lib/hooks/use-address-select'
 import { HttpTypes } from '@medusajs/types'
 import { Button } from '@modules/common/components/button'
 import {
