@@ -82,6 +82,13 @@ export const noDivisionCurrencies = [
   'xau',
 ]
 
+export const passwordRequirements = [
+  'At least 8 characters',
+  'One lowercase letter',
+  'One uppercase letter',
+  'One number or symbol',
+]
+
 export const createNavigation = (
   productCategories: StoreProductCategory[],
   collections?: StoreCollection[]

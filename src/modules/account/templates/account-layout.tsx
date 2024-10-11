@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { HttpTypes } from '@medusajs/types'
+import { Box } from '@modules/common/components/box'
 import { Container } from '@modules/common/components/container'
 
 import AccountNav from '../components/account-nav'
@@ -17,26 +18,26 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({
 }) => {
   if (!customer) {
     return (
-      <div className="flex justify-center">
-        <Container>
+      <Box className="flex justify-center bg-secondary">
+        <Container className="w-full !max-w-[660px] !pb-16 !pt-8">
           <div className="flex items-center justify-center">{children}</div>
         </Container>
-      </div>
+      </Box>
     )
   }
 
   return (
-    <div className="bg-secondary">
+    <Box className="bg-secondary">
       <AccountMobileNav />
       <Container>
-        <div className="gap grid grid-cols-12 gap-6">
-          <div className="hidden xl:col-span-3 xl:block">
+        <Box className="gap grid grid-cols-12 gap-6">
+          <Box className="hidden xl:col-span-3 xl:block">
             <AccountNav />
-          </div>
+          </Box>
           <div className="col-span-12 xl:col-span-9">{children}</div>
-        </div>
+        </Box>
       </Container>
-    </div>
+    </Box>
   )
 }
 

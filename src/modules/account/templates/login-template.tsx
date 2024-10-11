@@ -1,10 +1,11 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useParams, useRouter, useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 import Login from '@modules/account/components/login'
 import Register from '@modules/account/components/register'
+import { Box } from '@modules/common/components/box'
 
 export enum LOGIN_VIEW {
   SIGN_IN = 'sign-in',
@@ -27,13 +28,13 @@ const LoginTemplate = () => {
   }, [mode, router])
 
   return (
-    <div className="flex w-full justify-start px-8 py-8">
+    <Box className="flex w-full">
       {currentView === 'sign-in' ? (
         <Login setCurrentView={setCurrentView} />
       ) : (
         <Register setCurrentView={setCurrentView} />
       )}
-    </div>
+    </Box>
   )
 }
 

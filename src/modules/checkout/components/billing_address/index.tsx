@@ -35,6 +35,7 @@ const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
     })
     validateField(name, formData[name], 'billing', touchedFields, setErrors)
   }
+  
   useEffect(() => {
     setFormData({
       'billing_address.first_name': cart?.billing_address?.first_name || '',

@@ -16,41 +16,41 @@ type InputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> & {
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  (props, forwardedRef) => {
+  ({ type, name, label, touched, required, ...props }, ref) => {
     const localRef = useRef<HTMLInputElement>(null)
     const [showPassword, setShowPassword] = useState(false)
-    const [inputType, setInputType] = useState(props.type)
+    const [inputType, setInputType] = useState(type)
 
     const handleClick = () => {
       localRef.current?.focus()
     }
 
     useEffect(() => {
-      if (props.type === 'password' && showPassword) {
+      if (type === 'password' && showPassword) {
         setInputType('text')
       }
 
-      if (props.type === 'password' && !showPassword) {
+      if (type === 'password' && !showPassword) {
         setInputType('password')
       }
-    }, [props.type, showPassword])
+    }, [type, showPassword])
 
     return (
       <Box className="flex flex-col gap-2">
-        {props.label && (
+        {label && (
           <Label
             size="sm"
-            htmlFor={props.name}
+            htmlFor={name}
             className={cn('text-secondary', {
               'text-negative': props.error,
             })}
           >
-            {props.label}
+            {label}
           </Label>
         )}
         <Box
           className={cn(
-            'border-primary focus-within:ring-action-primary [.dark_&]:focus-within:ring-action-primary focus-within:ring-offset-action-primary [.dark_&]:focus-within:ring-offset-action-primary flex h-12 w-full items-center border bg-secondary px-4 py-3.5 outline-none file:border-0 file:bg-transparent file:pt-1 file:text-md file:font-medium focus-within:border focus-within:border-action-primary focus-within:ring-0 focus-within:ring-offset-0 [.dark_&:focus-within]:border-action-primary [.dark_&]:border-transparent [.dark_&]:bg-fg-tertiary',
+            'border-primary focus-within:ring-action-primary [.dark_&]:focus-within:ring-action-primary focus-within:ring-offset-action-primary [.dark_&]:focus-within:ring-offset-action-primary relative flex h-12 w-full items-center border bg-secondary px-4 py-3.5 outline-none file:border-0 file:bg-transparent file:pt-1 file:text-md file:font-medium focus-within:border focus-within:border-action-primary focus-within:ring-0 focus-within:ring-offset-0 [.dark_&:focus-within]:border-action-primary [.dark_&]:border-transparent [.dark_&]:bg-fg-tertiary',
             {
               'cursor-not-allowed border-transparent bg-disabled text-disabled':
                 props.disabled,
@@ -60,28 +60,29 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           )}
           onClick={handleClick}
         >
-          {props.type === 'search' && <SearchIcon className="mr-2 h-5 w-5" />}
+          {type === 'search' && <SearchIcon className="mr-2 h-5 w-5" />}
           <input
-            id={props.name}
-            ref={mergeRefs(localRef, forwardedRef)}
             type={inputType}
+            name={name}
+            id={name}
+            ref={mergeRefs(localRef, ref)}
             placeholder={props.placeholder}
             className="w-full !bg-transparent text-md outline-none placeholder:text-secondary focus-visible:ring-0 focus-visible:ring-offset-0 [.dark_&]:placeholder:text-static"
             {...props}
           />
-          {props.type === 'password' && (
+          {type === 'password' && (
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-0 top-3 px-4 text-ui-fg-subtle outline-none transition-all duration-150 focus:text-ui-fg-base focus:outline-none"
+              className="absolute right-0 top-3.5 px-4 text-basic-primary outline-none transition-all duration-150 focus:text-basic-primary focus:outline-none"
             >
-              {showPassword ? <EyeIcon /> : <EyeOffIcon />}
+              {showPassword ? <EyeIcon /> : <EyeOffIcon className="h-5 w-5" />}
             </button>
           )}
         </Box>
         {props.error && (
           <p className="text-sm font-medium text-negative">
-            {props.error} {props?.label?.toLowerCase() ?? 'a value'}
+            {props.error} {label?.toLowerCase() ?? 'a value'}
           </p>
         )}
       </Box>
