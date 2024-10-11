@@ -1,14 +1,13 @@
-import { HttpTypes } from '@medusajs/types'
 import { Box } from '@modules/common/components/box'
 import { Button } from '@modules/common/components/button'
 import { Heading } from '@modules/common/components/heading'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
 
 import OrderCard from '../order-card'
-import { NoOrders } from '../order-overview'
+import { NoOrders, OrderType } from '../order-overview'
 
 type OverviewProps = {
-  orders: HttpTypes.StoreOrder[] | null
+  orders: OrderType[] | null
 }
 
 const Overview = ({ orders }: OverviewProps) => {
