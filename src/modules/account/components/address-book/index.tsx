@@ -39,7 +39,7 @@ const AddressBook: React.FC<AddressBookProps> = ({ customer, region }) => {
     openDialog()
   }
 
-  const isAddressesEmpty = customer.addresses.length === 0
+  const hasNoAddresses = customer.addresses.length === 0
 
   return (
     <>
@@ -58,7 +58,7 @@ const AddressBook: React.FC<AddressBookProps> = ({ customer, region }) => {
             variant="tonal"
             className={cn(
               'hidden medium:flex',
-              isAddressesEmpty && 'medium:hidden'
+              hasNoAddresses && 'medium:hidden'
             )}
             size="sm"
             leftIcon={<PlusIcon />}
@@ -67,7 +67,7 @@ const AddressBook: React.FC<AddressBookProps> = ({ customer, region }) => {
             Add new address
           </Button>
         </div>
-        {isAddressesEmpty ? (
+        {hasNoAddresses ? (
           <div className="mx-auto py-6 text-center medium:max-w-[450px]">
             <p className="text-xl text-basic-primary">
               No saved shipping addresses
@@ -101,7 +101,7 @@ const AddressBook: React.FC<AddressBookProps> = ({ customer, region }) => {
 
         <Button
           variant="tonal"
-          className={cn('w-fit medium:hidden', isAddressesEmpty && 'hidden')}
+          className={cn('w-fit medium:hidden', hasNoAddresses && 'hidden')}
           size="sm"
           leftIcon={<PlusIcon />}
           onClick={handleAddNewAddress}
