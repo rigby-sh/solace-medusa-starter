@@ -1,5 +1,7 @@
 'use client'
 
+import { useMemo } from 'react'
+
 import { HttpTypes } from '@medusajs/types'
 import AddressActions from '@modules/checkout/components/address-actions'
 import { Badge } from '@modules/common/components/badge'
@@ -8,13 +10,19 @@ type AddressListProps = {
   address: HttpTypes.StoreCustomerAddress
   openDialog: (open: boolean) => void
   setAddressToEdit: (address: HttpTypes.StoreCustomerAddress) => void
+  region: HttpTypes.StoreRegion
 }
 
 const AddressList: React.FC<AddressListProps> = ({
   address,
   openDialog,
   setAddressToEdit,
+  region,
 }) => {
+  const country = useMemo(() => {
+    return region.countries?.find((c) => c.iso_2 === address.country_code)
+  }, [address.country_code, region.countries])
+
   return (
     <>
       <div className="bg-primary p-2">
@@ -29,7 +37,7 @@ const AddressList: React.FC<AddressListProps> = ({
                 {address.address_1}, {address.postal_code}
               </p>
               <p className="text-md text-secondary">
-                {address.city}, {address.country_code}
+                {address.city}, {country?.display_name}
               </p>
               <p className="text-md text-secondary">{address.phone}</p>
             </div>

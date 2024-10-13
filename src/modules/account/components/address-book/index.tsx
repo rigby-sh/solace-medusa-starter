@@ -9,7 +9,7 @@ import { Button } from '@modules/common/components/button'
 import { PlusIcon } from '@modules/common/icons'
 
 import AddressList from '../address-list'
-import AddressModal from '../address-modal'
+import AddressModalForm from '../address-modal-form'
 
 type AddressBookProps = {
   customer: HttpTypes.StoreCustomer
@@ -43,7 +43,7 @@ const AddressBook: React.FC<AddressBookProps> = ({ customer, region }) => {
 
   return (
     <>
-      <AddressModal
+      <AddressModalForm
         region={region}
         closeDialog={closeDialog}
         isOpenDialog={isDialogOpen}
@@ -93,6 +93,7 @@ const AddressBook: React.FC<AddressBookProps> = ({ customer, region }) => {
                 openDialog={() => handleEditAddress(address)}
                 key={address.id}
                 setAddressToEdit={setAddressToEdit}
+                region={region}
               />
             )
           })
