@@ -5,8 +5,6 @@ import { revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
 
 import { sdk } from '@lib/config'
-import medusaError from '@lib/util/medusa-error'
-import { HttpTypes } from '@medusajs/types'
 
 import { getAuthHeaders, removeAuthToken, setAuthToken } from './cookies'
 
@@ -18,15 +16,27 @@ export const getCustomer = cache(async function () {
 })
 
 export const updateCustomer = cache(async function (
-  body: HttpTypes.StoreUpdateCustomer
+  _currentState: {
+    success: boolean
+    error: string | null
+  },
+  formData: FormData
 ) {
-  const updateRes = await sdk.store.customer
-    .update(body, {}, getAuthHeaders())
-    .then(({ customer }) => customer)
-    .catch(medusaError)
+  const body = {
+    first_name: formData.get('first_name') as string,
+    last_name: formData.get('last_name') as string,
+    phone: formData.get('phone') as string,
+  }
 
-  revalidateTag('customer')
-  return updateRes
+  return await sdk.store.customer
+    .update(body, {}, getAuthHeaders())
+    .then(()=> {
+      revalidateTag('customer')
+      return { success: true, error: null }
+    })
+    .catch((err) => {
+      return { success: false, error: err.toString() }
+    })
 })
 
 export async function signup(_currentState: unknown, formData: FormData) {
