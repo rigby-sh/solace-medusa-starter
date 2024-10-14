@@ -8,6 +8,7 @@ import {
   IdealIcon,
   PayPalIcon,
   Przelewy24Icon,
+  StripeIcon,
 } from '@modules/common/icons'
 
 // Product filters
@@ -33,7 +34,7 @@ export const paymentInfoMap: Record<
 > = {
   pp_stripe_stripe: {
     title: 'Credit card',
-    icon: <CreditCard />,
+    icon: <StripeIcon />,
   },
   'pp_stripe-blik_stripe': {
     title: 'BLIK',
@@ -163,15 +164,15 @@ export const createFooterNavigation = (
         links: [
           {
             title: 'Orders and delivery',
-            href: '/account/orders',
+            href: '/terms-and-conditions',
           },
           {
             title: 'Returns and refunds',
-            href: '#',
+            href: '/terms-and-conditions',
           },
           {
             title: 'Payment and pricing',
-            href: '#',
+            href: '/terms-and-conditions',
           },
         ],
       },

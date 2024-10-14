@@ -176,6 +176,7 @@ const StripePaymentButton = ({
           return
         })
     } else {
+      // TODO: Adjust for another Stripe methods
       const countryCode = cart.shipping_address?.country_code
 
       await stripe
@@ -199,7 +200,9 @@ const StripePaymentButton = ({
 
   return (
     <>
-      {clientSecret && <PaymentElement key={clientSecret} />}
+      {clientSecret && providerId !== 'pp_stripe_stripe' && (
+        <PaymentElement key={clientSecret} />
+      )}
       <Button
         disabled={disabled || notReady}
         onClick={handlePayment}

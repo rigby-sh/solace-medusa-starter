@@ -37,7 +37,6 @@ const Payment = ({
 
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [cardBrand, setCardBrand] = useState<string | null>(null)
   const [cardComplete, setCardComplete] = useState(false)
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(
     activeSession?.provider_id ?? ''
@@ -194,10 +193,6 @@ const Payment = ({
                   <CardElement
                     options={useOptions}
                     onChange={(e) => {
-                      setCardBrand(
-                        e.brand &&
-                          e.brand.charAt(0).toUpperCase() + e.brand.slice(1)
-                      )
                       setError(e.error?.message || null)
                       setCardComplete(e.complete)
                     }}
@@ -226,10 +221,9 @@ const Payment = ({
             data-testid="payment-method-error-message"
           />
 
-          {/* {!activeSession && isStripeFunc(selectedPaymentMethod) && (
+          {!activeSession && isStripeFunc(selectedPaymentMethod) && (
             <Button
               className="mt-6"
-              // TODO: For check
               onClick={() => handleSubmit(selectedPaymentMethod)}
               isLoading={isLoading}
               disabled={
@@ -240,7 +234,7 @@ const Payment = ({
             >
               Enter card details
             </Button>
-          )} */}
+          )}
         </Box>
       </Box>
     </Box>
