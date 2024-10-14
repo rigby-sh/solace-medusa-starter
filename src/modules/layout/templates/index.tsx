@@ -9,7 +9,7 @@ const Layout: React.FC<{
 }> = ({ params, children }) => {
   return (
     <div>
-      <NavWrapper />
+      <NavWrapper countryCode={params.countryCode} />
       <main className="relative">{children}</main>
       <Footer countryCode={params.countryCode} />
     </div>
