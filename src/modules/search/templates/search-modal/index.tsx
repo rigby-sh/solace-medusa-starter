@@ -11,6 +11,7 @@ export default function SearchModal({ countryCode }: { countryCode: string }) {
   const [query, setQuery] = useState<string | undefined>('')
   const router = useRouter()
   const searchRef = useRef(null)
+  const inputRef = useRef(null)
 
   const handleSubmit = () => {
     if (query) {
@@ -68,19 +69,21 @@ export default function SearchModal({ countryCode }: { countryCode: string }) {
             data-testid="search-modal-container"
           >
             <ControlledSearchBox
-              inputRef={searchRef}
+              inputRef={inputRef}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onSubmit={handleSubmit}
               onReset={() => setQuery('')}
               placeholder="Search products..."
             />
-            <LocalizedClientLink
-              href={`/results/${query}`}
-              className="border border-action-primary bg-primary p-3 text-center small:p-4"
-            >
-              Search
-            </LocalizedClientLink>
+            {query && (
+              <LocalizedClientLink
+                href={`/results/${query}`}
+                className="border border-action-primary bg-primary p-3 text-center small:p-4"
+              >
+                Search
+              </LocalizedClientLink>
+            )}
           </Box>
         </Box>
       </div>

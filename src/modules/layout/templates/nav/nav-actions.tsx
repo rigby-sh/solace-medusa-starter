@@ -1,7 +1,7 @@
 import { Box } from '@modules/common/components/box'
 import { Button } from '@modules/common/components/button'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
-import { SearchIcon, UserIcon } from '@modules/common/icons'
+import { SearchIcon } from '@modules/common/icons'
 import CartButton from '@modules/layout/components/cart-button'
 import ProfileButton from '@modules/layout/components/profile-button'
 
