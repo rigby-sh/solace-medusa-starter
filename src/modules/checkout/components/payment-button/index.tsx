@@ -9,7 +9,7 @@ import { Button } from '@modules/common/components/button'
 import { Spinner } from '@modules/common/icons'
 import { OnApproveActions, OnApproveData } from '@paypal/paypal-js'
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js'
-import { useElements, useStripe } from '@stripe/react-stripe-js'
+import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
 
 import ErrorMessage from '../error-message'
 
@@ -45,6 +45,7 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
         <StripePaymentButton
           notReady={notReady}
           cart={cart}
+          providerId={paymentSession?.provider_id}
           data-testid={dataTestId}
         />
       )
@@ -86,10 +87,12 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
 
 const StripePaymentButton = ({
   cart,
+  providerId,
   notReady,
   'data-testid': dataTestId,
 }: {
   cart: HttpTypes.StoreCart
+  providerId: string
   notReady: boolean
   'data-testid'?: string
 }) => {
@@ -115,6 +118,7 @@ const StripePaymentButton = ({
   )
 
   const disabled = !stripe || !elements ? true : false
+  const clientSecret = session.data.client_secret as string
 
   const handlePayment = async () => {
     setSubmitting(true)
@@ -124,56 +128,78 @@ const StripePaymentButton = ({
       return
     }
 
-    await stripe
-      .confirmCardPayment(session?.data.client_secret as string, {
-        payment_method: {
-          card: card,
-          billing_details: {
-            name:
-              cart.billing_address?.first_name +
-              ' ' +
-              cart.billing_address?.last_name,
-            address: {
-              city: cart.billing_address?.city ?? undefined,
-              country: cart.billing_address?.country_code ?? undefined,
-              line1: cart.billing_address?.address_1 ?? undefined,
-              line2: cart.billing_address?.address_2 ?? undefined,
-              postal_code: cart.billing_address?.postal_code ?? undefined,
-              state: cart.billing_address?.province ?? undefined,
+    if (providerId === 'pp_stripe_stripe') {
+      await stripe
+        .confirmCardPayment(session?.data.client_secret as string, {
+          payment_method: {
+            card: card,
+            billing_details: {
+              name:
+                cart.billing_address?.first_name +
+                ' ' +
+                cart.billing_address?.last_name,
+              address: {
+                city: cart.billing_address?.city ?? undefined,
+                country: cart.billing_address?.country_code ?? undefined,
+                line1: cart.billing_address?.address_1 ?? undefined,
+                line2: cart.billing_address?.address_2 ?? undefined,
+                postal_code: cart.billing_address?.postal_code ?? undefined,
+                state: cart.billing_address?.province ?? undefined,
+              },
+              email: cart.email,
+              phone: cart.billing_address?.phone ?? undefined,
             },
-            email: cart.email,
-            phone: cart.billing_address?.phone ?? undefined,
           },
-        },
-      })
-      .then(({ error, paymentIntent }) => {
-        if (error) {
-          const pi = error.payment_intent
+        })
+        .then(({ error, paymentIntent }) => {
+          if (error) {
+            const pi = error.payment_intent
 
-          if (
-            (pi && pi.status === 'requires_capture') ||
-            (pi && pi.status === 'succeeded')
-          ) {
-            onPaymentCompleted()
+            if (
+              (pi && pi.status === 'requires_capture') ||
+              (pi && pi.status === 'succeeded')
+            ) {
+              onPaymentCompleted()
+            }
+
+            setErrorMessage(error.message || null)
+            return
           }
 
-          setErrorMessage(error.message || null)
+          if (
+            (paymentIntent && paymentIntent.status === 'requires_capture') ||
+            paymentIntent.status === 'succeeded'
+          ) {
+            return onPaymentCompleted()
+          }
+
           return
-        }
+        })
+    } else {
+      const countryCode = cart.shipping_address?.country_code
 
-        if (
-          (paymentIntent && paymentIntent.status === 'requires_capture') ||
-          paymentIntent.status === 'succeeded'
-        ) {
-          return onPaymentCompleted()
-        }
-
-        return
-      })
+      await stripe
+        .confirmPayment({
+          clientSecret,
+          elements,
+          redirect: 'if_required',
+          confirmParams: {
+            return_url: `${window.location.origin}/${countryCode}/order/confirmed/${cart.id}`,
+          },
+        })
+        .then(async ({ error }) => {
+          if (error) {
+            setErrorMessage(error.message || null)
+            return
+          }
+          onPaymentCompleted()
+        })
+    }
   }
 
   return (
     <>
+      {clientSecret && <PaymentElement key={clientSecret} />}
       <Button
         disabled={disabled || notReady}
         onClick={handlePayment}

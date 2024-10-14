@@ -37,10 +37,10 @@ export default async function Checkout({
   return (
     <Container className="mx-0 max-w-full bg-secondary">
       <Container className="grid grid-cols-1 gap-y-4 !p-0 large:grid-cols-[1fr_416px] large:gap-x-10 2xl:gap-x-40">
+        <CheckoutForm cart={cart} customer={customer} />
         <Wrapper cart={cart}>
-          <CheckoutForm cart={cart} customer={customer} />
+          <CheckoutSummary cart={cart} searchParams={searchParams} />
         </Wrapper>
-        <CheckoutSummary cart={cart} searchParams={searchParams} />
       </Container>
     </Container>
   )

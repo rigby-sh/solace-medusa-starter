@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation'
 import { sdk } from '@lib/config'
 import medusaError from '@lib/util/medusa-error'
 import { HttpTypes } from '@medusajs/types'
+import { BACKEND_URL, PUBLISHABLE_API_KEY } from '@modules/search/actions'
 import { omit } from 'lodash'
 
 import { getAuthHeaders, getCartId, removeCartId, setCartId } from './cookies'

@@ -98,24 +98,11 @@ const Payment = ({
 
   const handleSubmit = async (paymentMethodId: string) => {
     setIsLoading(true)
+
     try {
-      // const shouldInputCard =
-      //   isStripeFunc(selectedPaymentMethod) && !activeSession
-
-      if (!activeSession) {
-        await initiatePaymentSession(cart, {
-          provider_id: paymentMethodId,
-        })
-      }
-
-      // if (!shouldInputCard) {
-      //   return router.push(
-      //     pathname + '?' + createQueryString('step', 'review'),
-      //     {
-      //       scroll: false,
-      //     }
-      //   )
-      // }
+      await initiatePaymentSession(cart, {
+        provider_id: paymentMethodId,
+      })
     } catch (err: any) {
       setError(err.message)
     } finally {
@@ -200,7 +187,7 @@ const Payment = ({
               </RadioGroup>
               {isStripe && stripeReady && (
                 <div className="mt-5 transition-all duration-150 ease-in-out">
-                  <Text className="txt-medium-plus mb-1 text-ui-fg-base">
+                  <Text className="mb-3 text-md text-basic-primary">
                     Enter your card details:
                   </Text>
 
@@ -239,7 +226,7 @@ const Payment = ({
             data-testid="payment-method-error-message"
           />
 
-          {!activeSession && isStripeFunc(selectedPaymentMethod) && (
+          {/* {!activeSession && isStripeFunc(selectedPaymentMethod) && (
             <Button
               className="mt-6"
               // TODO: For check
@@ -253,59 +240,8 @@ const Payment = ({
             >
               Enter card details
             </Button>
-          )}
+          )} */}
         </Box>
-        {/* TODO: For remove after testing */}
-        {/* <Box className={isOpen ? 'hidden' : 'block'}>
-          {cart && paymentReady && activeSession ? (
-            <div className="flex w-full items-start gap-x-1">
-              <div className="flex flex-col">
-                <Text className="txt-medium-plus mb-1 text-ui-fg-base">
-                  Payment method
-                </Text>
-                <Text
-                  className="txt-medium text-ui-fg-subtle"
-                  data-testid="payment-method-summary"
-                >
-                  {paymentInfoMap[selectedPaymentMethod]?.title ||
-                    selectedPaymentMethod}
-                </Text>
-              </div>
-              <div className="flex flex-col">
-                <Text className="txt-medium-plus mb-1 text-ui-fg-base">
-                  Payment details
-                </Text>
-                <div
-                  className="txt-medium flex items-center gap-2 text-ui-fg-subtle"
-                  data-testid="payment-details-summary"
-                >
-                  <Box className="flex h-7 w-fit items-center bg-ui-button-neutral-hover p-2">
-                    {paymentInfoMap[selectedPaymentMethod]?.icon || (
-                      <CreditCard />
-                    )}
-                  </Box>
-                  <Text>
-                    {isStripeFunc(selectedPaymentMethod) && cardBrand
-                      ? cardBrand
-                      : 'Another step will appear'}
-                  </Text>
-                </div>
-              </div>
-            </div>
-          ) : paidByGiftcard ? (
-            <div className="flex flex-col">
-              <Text className="txt-medium-plus mb-1 text-ui-fg-base">
-                Payment method
-              </Text>
-              <Text
-                className="txt-medium text-ui-fg-subtle"
-                data-testid="payment-method-summary"
-              >
-                Gift card
-              </Text>
-            </div>
-          ) : null}
-        </Box> */}
       </Box>
     </Box>
   )
