@@ -1,7 +1,6 @@
 'use client'
 
 import { HttpTypes } from '@medusajs/types'
-import { Container } from '@modules/common/components/container'
 import { Elements } from '@stripe/react-stripe-js'
 import { Stripe, StripeElementsOptions } from '@stripe/stripe-js'
 
@@ -42,9 +41,7 @@ const StripeWrapper: React.FC<StripeWrapperProps> = ({
 
   return (
     <Elements options={options} stripe={stripePromise}>
-      <Container className="grid grid-cols-1 gap-y-4 !p-0 large:grid-cols-[1fr_416px] large:gap-x-10 2xl:gap-x-40">
-        {children}
-      </Container>
+      {children}
     </Elements>
   )
 }

@@ -4,6 +4,7 @@ import React, { createContext } from 'react'
 
 import { isPaypal, isStripe } from '@lib/constants'
 import { HttpTypes } from '@medusajs/types'
+import { Container } from '@modules/common/components/container'
 import { PayPalScriptProvider } from '@paypal/react-paypal-js'
 import { loadStripe } from '@stripe/stripe-js'
 
@@ -63,7 +64,11 @@ const Wrapper: React.FC<WrapperProps> = ({ cart, children }) => {
     )
   }
 
-  return <div>{children}</div>
+  return (
+    <Container className="grid grid-cols-1 gap-y-4 !p-0 large:grid-cols-[1fr_416px] large:gap-x-10 2xl:gap-x-40">
+      {children}
+    </Container>
+  )
 }
 
 export default Wrapper
