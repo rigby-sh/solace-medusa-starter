@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 
 import { addCustomerAddress, updateCustomerAddress } from '@lib/data/customer'
 import { HttpTypes } from '@medusajs/types'
+import { SubmitButton } from '@modules/checkout/components/submit-button'
 import { Box } from '@modules/common/components/box'
 import { Checkbox } from '@modules/common/components/checkbox'
 import {
@@ -22,7 +23,6 @@ import { toast } from '@modules/common/components/toast'
 import { useFormState } from 'react-dom'
 
 import AddressFormFields from './address-form-fields'
-import { ButtonSubmit } from './button-submit'
 
 type AddressModalFormProps = {
   region: HttpTypes.StoreRegion
@@ -124,7 +124,7 @@ const AddressModalForm: React.FC<AddressModalFormProps> = ({
               </Box>
             </DialogBody>
             <DialogFooter>
-              <ButtonSubmit />
+              <SubmitButton className="w-full">Save</SubmitButton>
             </DialogFooter>
           </DialogContent>
         </form>
