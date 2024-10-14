@@ -30,7 +30,7 @@ export const updateCustomer = cache(async function (
 
   return await sdk.store.customer
     .update(body, {}, getAuthHeaders())
-    .then(()=> {
+    .then(() => {
       revalidateTag('customer')
       return { success: true, error: null }
     })
