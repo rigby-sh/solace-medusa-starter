@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { Metadata } from 'next'
 
 import { getCollectionsList } from '@lib/data/collections'
@@ -14,6 +15,7 @@ import Collections from '@modules/home/components/collections'
 import { ExploreBlog } from '@modules/home/components/explore-blog'
 import Hero from '@modules/home/components/hero'
 import { ProductCarousel } from '@modules/products/components/product-carousel'
+import SkeletonProductsCarousel from '@modules/skeletons/templates/skeleton-products-carousel'
 
 export const metadata: Metadata = {
   title: 'Solace Medusa Starter Template',
@@ -65,15 +67,17 @@ export default async function Home({
         cmsCollections={strapiCollections}
         medusaCollections={collectionsList}
       />
-      <ProductCarousel
-        products={products}
-        regionId={region.id}
-        title="Our bestsellers"
-        viewAll={{
-          link: '/shop',
-          text: 'View all',
-        }}
-      />
+      <Suspense fallback={<SkeletonProductsCarousel />}>
+        <ProductCarousel
+          products={products}
+          regionId={region.id}
+          title="Our bestsellers"
+          viewAll={{
+            link: '/shop',
+            text: 'View all',
+          }}
+        />
+      </Suspense>
       {MidBanner && <Banner data={MidBanner} />}
       {posts && posts.length > 0 && <ExploreBlog posts={posts} />}
     </>

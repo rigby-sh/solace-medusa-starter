@@ -14,6 +14,7 @@ import { Text } from '@modules/common/components/text'
 import { SearchResultsIcon } from '@modules/common/icons'
 import { ProductCarousel } from '@modules/products/components/product-carousel'
 import SkeletonBlogPosts from '@modules/skeletons/templates/skeleton-post-tile'
+import SkeletonProductsCarousel from '@modules/skeletons/templates/skeleton-products-carousel'
 import { Pagination } from '@modules/store/components/pagination'
 import StoreBreadcrumbs from '@modules/store/templates/breadcrumbs'
 
@@ -112,11 +113,13 @@ export default async function BlogTemplate({
           </Box>
         </Box>
       </Container>
-      <ProductCarousel
-        products={recommendedProducts}
-        regionId={region.id}
-        title="Recommended products"
-      />
+      <Suspense fallback={<SkeletonProductsCarousel />}>
+        <ProductCarousel
+          products={recommendedProducts}
+          regionId={region.id}
+          title="Recommended products"
+        />
+      </Suspense>
     </Container>
   )
 }

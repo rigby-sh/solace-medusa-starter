@@ -11,6 +11,7 @@ import { Text } from '@modules/common/components/text'
 import { ProductCarousel } from '@modules/products/components/product-carousel'
 import { search } from '@modules/search/actions'
 import SkeletonProductGrid from '@modules/skeletons/templates/skeleton-product-grid'
+import SkeletonProductsCarousel from '@modules/skeletons/templates/skeleton-products-carousel'
 
 import ProductFilters from '../components/filters'
 import ActiveProductFilters from '../components/filters/active-filters'
@@ -93,11 +94,13 @@ export default async function StoreTemplate({
         </Suspense>
       </Container>
       {recommendedProducts && (
-        <ProductCarousel
-          products={recommendedProducts}
-          regionId={region.id}
-          title="Recommended products"
-        />
+        <Suspense fallback={<SkeletonProductsCarousel />}>
+          <ProductCarousel
+            products={recommendedProducts}
+            regionId={region.id}
+            title="Recommended products"
+          />
+        </Suspense>
       )}
     </>
   )

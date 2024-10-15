@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { Metadata } from 'next'
 
 import { enrichLineItems, retrieveCart } from '@lib/data/cart'
@@ -7,6 +8,7 @@ import { getRegion } from '@lib/data/regions'
 import CartTemplate from '@modules/cart/templates'
 import { Container } from '@modules/common/components/container'
 import { ProductCarousel } from '@modules/products/components/product-carousel'
+import SkeletonProductsCarousel from '@modules/skeletons/templates/skeleton-products-carousel'
 
 export const metadata: Metadata = {
   title: 'Cart',
@@ -49,11 +51,13 @@ export default async function Cart({
   return (
     <Container className="max-w-full bg-secondary !p-0">
       <CartTemplate cart={cart} customer={customer} />
-      <ProductCarousel
-        products={products}
-        title="You may also like"
-        regionId={region.id}
-      />
+      <Suspense fallback={<SkeletonProductsCarousel />}>
+        <ProductCarousel
+          products={products}
+          title="You may also like"
+          regionId={region.id}
+        />
+      </Suspense>
     </Container>
   )
 }

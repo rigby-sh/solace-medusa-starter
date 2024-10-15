@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react'
+import React, { Suspense } from 'react'
 
 import { getProductVariantsColors } from '@lib/data/fetch'
 import { getProductsListByCollectionId } from '@lib/data/products'
@@ -9,8 +9,9 @@ import ImageGallery from '@modules/products/components/image-gallery'
 import ProductActions from '@modules/products/components/product-actions'
 import ProductTabs from '@modules/products/components/product-tabs'
 import ProductInfo from '@modules/products/templates/product-info'
-import SkeletonProductGrid from '@modules/skeletons/templates/skeleton-product-grid'
+import SkeletonProductsCarousel from '@modules/skeletons/templates/skeleton-products-carousel'
 
+import { ProductCarousel } from '../components/product-carousel'
 import ProductBreadcrumbs from './breadcrumbs'
 import ProductActionsWrapper from './product-actions-wrapper'
 
@@ -20,12 +21,6 @@ type ProductTemplateProps = {
   cartItems?: HttpTypes.StoreCartLineItem[]
   countryCode: string
 }
-
-const LazyProductCarousel = lazy(() =>
-  import('../components/product-carousel').then((module) => ({
-    default: module.ProductCarousel,
-  }))
-)
 
 const ProductTemplate: React.FC<ProductTemplateProps> = async ({
   product,
@@ -80,8 +75,8 @@ const ProductTemplate: React.FC<ProductTemplateProps> = async ({
         </Box>
       </Container>
       {productsList.products.length > 0 && (
-        <Suspense fallback={<SkeletonProductGrid />}>
-          <LazyProductCarousel
+        <Suspense fallback={<SkeletonProductsCarousel />}>
+          <ProductCarousel
             products={productsList.products}
             regionId={region.id}
             title="Complete the look"

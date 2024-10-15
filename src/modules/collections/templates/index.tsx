@@ -13,6 +13,7 @@ import { Text } from '@modules/common/components/text'
 import { ProductCarousel } from '@modules/products/components/product-carousel'
 import { search } from '@modules/search/actions'
 import SkeletonProductGrid from '@modules/skeletons/templates/skeleton-product-grid'
+import SkeletonProductsCarousel from '@modules/skeletons/templates/skeleton-products-carousel'
 import ProductFilters from '@modules/store/components/filters'
 import ActiveProductFilters from '@modules/store/components/filters/active-filters'
 import ProductFiltersDrawer from '@modules/store/components/filters/filters-drawer'
@@ -99,11 +100,13 @@ export default async function CollectionTemplate({
         </Suspense>
       </Container>
       {recommendedProducts && (
-        <ProductCarousel
-          products={recommendedProducts}
-          regionId={region.id}
-          title="Recommended products"
-        />
+        <Suspense fallback={<SkeletonProductsCarousel />}>
+          <ProductCarousel
+            products={recommendedProducts}
+            regionId={region.id}
+            title="Recommended products"
+          />
+        </Suspense>
       )}
     </>
   )
