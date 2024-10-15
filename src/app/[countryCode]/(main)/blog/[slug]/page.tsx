@@ -7,7 +7,6 @@ import BlogTemplate from '@modules/blog/templates'
 
 export async function generateStaticParams() {
   const slugs = await getAllBlogSlugs()
-  console.log('slugs: ', slugs)
 
   if (!slugs) {
     return []
