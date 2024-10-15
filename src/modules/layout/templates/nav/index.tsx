@@ -26,6 +26,7 @@ export default async function NavWrapper(props: any) {
           <SideMenu
             productCategories={productCategories}
             collections={collections}
+            strapiCollections={strapiCollections}
           />
         </Box>
         <Navigation
