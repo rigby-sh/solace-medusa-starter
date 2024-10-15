@@ -4,8 +4,6 @@ import { getBlogPostCategories } from '@lib/data/fetch'
 import { getProductsList } from '@lib/data/products'
 import BlogTemplate from '@modules/blog/templates'
 
-import Loading from './loading'
-
 export const metadata: Metadata = {
   title: 'Blog',
   description: 'Read our latest blog posts',
