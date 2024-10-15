@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { getAllBlogSlugs, getBlogPostBySlug } from '@lib/data/fetch'
 import { listRegions } from '@lib/data/regions'
 import { StoreRegion } from '@medusajs/types'
-import BlogPostTemplate from '@modules/categories/templates/blogPostTemplate'
+import BlogPostTemplate from '@modules/blog/templates/blogPostTemplate'
 
 export async function generateStaticParams() {
   const slugs = await getAllBlogSlugs()
