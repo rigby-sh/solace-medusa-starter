@@ -122,7 +122,9 @@ export const getContentPage = async (
 }
 
 // Blog
-export const getBlogPostBySlug = async (slug: string): Promise<BlogPost | null> => {
+export const getBlogPostBySlug = async (
+  slug: string
+): Promise<BlogPost | null> => {
   const res = await fetchStrapiClient(
     `/api/blogs?filters[Slug][$eq]=${slug}&populate=*`,
     {
