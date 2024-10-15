@@ -3,15 +3,24 @@
 import { useCallback } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
-import SortProducts, { SortOptions } from './sort-products'
+import Sorting from './sorting'
 
 type RefinementListProps = {
-  sortBy: SortOptions | string
+  options: {
+    value: string
+    label: string
+  }[]
+  sortBy: string
+  queryName?: string
   search?: boolean
   'data-testid'?: string
 }
 
-const RefinementList = ({ sortBy }: RefinementListProps) => {
+const RefinementList = ({
+  options,
+  sortBy,
+  queryName,
+}: RefinementListProps) => {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -31,7 +40,14 @@ const RefinementList = ({ sortBy }: RefinementListProps) => {
     router.push(`${pathname}?${query}`)
   }
 
-  return <SortProducts sortBy={sortBy} setQueryParams={setQueryParams} />
+  return (
+    <Sorting
+      options={options}
+      sortBy={sortBy}
+      queryName={queryName}
+      setQueryParams={setQueryParams}
+    />
+  )
 }
 
 export default RefinementList

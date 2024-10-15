@@ -6,12 +6,11 @@ import { getProductsList, getStoreFilters } from '@lib/data/products'
 import { listRegions } from '@lib/data/regions'
 import { StoreProductCategory, StoreRegion } from '@medusajs/types'
 import CategoryTemplate from '@modules/categories/templates'
-import { SortOptions } from '@modules/store/components/refinement-list/sort-products'
 
 type Props = {
   params: { category: string[]; countryCode: string }
   searchParams: {
-    sortBy?: SortOptions
+    sortBy?: string
     page?: string
     collection?: string
     type?: string

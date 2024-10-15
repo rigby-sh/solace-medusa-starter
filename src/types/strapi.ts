@@ -51,6 +51,14 @@ export type BlogPost = {
 
 export type BlogData = {
   data: BlogPost[]
+  meta: {
+    pagination: {
+      page: number
+      pageSize: number
+      pageCount: number
+      total: number
+    }
+  }
 }
 
 export type Collection = {

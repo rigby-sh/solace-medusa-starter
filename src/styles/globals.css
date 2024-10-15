@@ -5,6 +5,7 @@
 @layer base {
   body {
     @apply bg-primary;
+    scroll-behavior: smooth;
   }
 }
 

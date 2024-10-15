@@ -1,21 +1,21 @@
 import { Suspense } from 'react'
 
+import { storeSortOptions } from '@lib/constants'
 import { getRegion } from '@lib/data/regions'
 import { StoreProduct } from '@medusajs/types'
 import { Box } from '@modules/common/components/box'
 import { Container } from '@modules/common/components/container'
 import { Heading } from '@modules/common/components/heading'
+import RefinementList from '@modules/common/components/sort'
 import { Text } from '@modules/common/components/text'
 import { ProductCarousel } from '@modules/products/components/product-carousel'
 import { search } from '@modules/search/actions'
 import SkeletonProductGrid from '@modules/skeletons/templates/skeleton-product-grid'
-import { SortOptions } from '@modules/store/components/refinement-list/sort-products'
 import { ProductFilters as ProductFiltersType } from 'types/global'
 
 import ProductFilters from '../components/filters'
 import ActiveProductFilters from '../components/filters/active-filters'
 import ProductFiltersDrawer from '../components/filters/filters-drawer'
-import RefinementList from '../components/refinement-list'
 import StoreBreadcrumbs from './breadcrumbs'
 import PaginatedProducts from './paginated-products'
 
@@ -30,7 +30,7 @@ export default async function StoreTemplate({
   countryCode,
   recommendedProducts,
 }: {
-  sortBy?: SortOptions
+  sortBy?: string
   page?: string
   collection?: string[]
   type?: string[]
@@ -74,7 +74,10 @@ export default async function StoreTemplate({
             <ProductFiltersDrawer>
               <ProductFilters filters={filters} />
             </ProductFiltersDrawer>
-            <RefinementList sortBy={sortBy || 'relevance'} />
+            <RefinementList
+              options={storeSortOptions}
+              sortBy={sortBy || 'relevance'}
+            />
           </Box>
         </Box>
         <ActiveProductFilters countryCode={countryCode} filters={filters} />

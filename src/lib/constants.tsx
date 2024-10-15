@@ -20,6 +20,36 @@ export const PRODUCT_LIST_PATHNAMES = {
   SEARCH: '/results',
 } as const
 
+export const blogSortOptions = [
+  {
+    value: 'desc',
+    label: 'Newest',
+  },
+  {
+    value: 'asc',
+    label: 'Oldest',
+  },
+]
+
+export const storeSortOptions = [
+  {
+    value: 'relevance',
+    label: 'Relevance',
+  },
+  {
+    value: 'created_at',
+    label: 'New in',
+  },
+  {
+    value: 'price_asc',
+    label: 'Price: Low-High',
+  },
+  {
+    value: 'price_desc',
+    label: 'Price: High-Low',
+  },
+]
+
 /* Map of payment provider_id to their title and icon. Add in any payment providers you want to use. */
 export const paymentInfoMap: Record<
   string,
@@ -170,7 +200,7 @@ export const createFooterNavigation = (
           },
           {
             title: 'Blog',
-            href: '#',
+            href: '/blog',
           },
           {
             title: 'Careers',

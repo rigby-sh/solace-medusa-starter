@@ -1,10 +1,12 @@
 import React, { Suspense } from 'react'
 
+import { storeSortOptions } from '@lib/constants'
 import { getRegion } from '@lib/data/regions'
 import { StoreProduct } from '@medusajs/types'
 import { Box } from '@modules/common/components/box'
 import { Container } from '@modules/common/components/container'
 import { Heading } from '@modules/common/components/heading'
+import RefinementList from '@modules/common/components/sort'
 import { Text } from '@modules/common/components/text'
 import { SearchResultsIcon } from '@modules/common/icons'
 import { ProductCarousel } from '@modules/products/components/product-carousel'
@@ -13,15 +15,13 @@ import SkeletonProductGrid from '@modules/skeletons/templates/skeleton-product-g
 import ProductFilters from '@modules/store/components/filters'
 import ActiveProductFilters from '@modules/store/components/filters/active-filters'
 import ProductFiltersDrawer from '@modules/store/components/filters/filters-drawer'
-import RefinementList from '@modules/store/components/refinement-list'
-import { SortOptions } from '@modules/store/components/refinement-list/sort-products'
 import StoreBreadcrumbs from '@modules/store/templates/breadcrumbs'
 import PaginatedProducts from '@modules/store/templates/paginated-products'
 import { ProductFilters as ProductFiltersType } from 'types/global'
 
 type SearchResultsTemplateProps = {
   query: string
-  sortBy?: SortOptions
+  sortBy?: string
   page?: string
   collection?: string[]
   type?: string[]
@@ -81,7 +81,10 @@ export default async function SearchResultsTemplate({
                 <ProductFiltersDrawer>
                   <ProductFilters filters={filters} />
                 </ProductFiltersDrawer>
-                <RefinementList sortBy={sortBy || 'relevance'} />
+                <RefinementList
+                  options={storeSortOptions}
+                  sortBy={sortBy || 'relevance'}
+                />
               </Box>
             </Box>
             <ActiveProductFilters

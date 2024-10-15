@@ -119,3 +119,43 @@ export const getContentPage = async (
 
   return res.json()
 }
+
+// Blog
+export const getBlogPosts = async ({
+  sortBy = 'createdAt:desc',
+  query,
+  category,
+}: {
+  sortBy: string
+  query?: string
+  category?: string
+}): Promise<BlogData> => {
+  const baseUrl = `/api/blogs?populate[1]=FeaturedImage&populate[2]=Categories&sort=${sortBy}&pagination[limit]=1000`
+
+  let urlWithFilters = baseUrl
+
+  if (query) {
+    urlWithFilters += `&filters[Title][$contains]=${query}`
+  }
+
+  if (category) {
+    urlWithFilters += `&filters[Categories][Slug][$eq]=${category}`
+  }
+
+  const res = await fetchStrapiClient(urlWithFilters, {
+    next: { tags: ['blog'] },
+  })
+
+  return res.json()
+}
+
+export const getBlogPostCategories = async (): Promise<BlogData> => {
+  const res = await fetchStrapiClient(
+    `/api/blog-post-categories?sort=createdAt:desc&pagination[limit]=100`,
+    {
+      next: { tags: ['blog-categories'] },
+    }
+  )
+
+  return res.json()
+}

@@ -15,45 +15,24 @@ import {
 import { Text } from '@modules/common/components/text'
 import { SortIcon } from '@modules/common/icons'
 
-export type SortOptions =
-  | 'relevance'
-  | 'price_asc'
-  | 'price_desc'
-  | 'created_at'
-
-type SortProductsProps = {
-  sortBy: SortOptions | string
-  setQueryParams: (name: string, value: SortOptions) => void
+type SortingProps = {
+  options: {
+    value: string
+    label: string
+  }[]
+  sortBy: string
+  setQueryParams: (name: string, value: string) => void
 }
 
-const sortOptions = [
-  {
-    value: 'relevance',
-    label: 'Relevance',
-  },
-  {
-    value: 'created_at',
-    label: 'New in',
-  },
-  {
-    value: 'price_asc',
-    label: 'Price: Low-High',
-  },
-  {
-    value: 'price_desc',
-    label: 'Price: High-Low',
-  },
-]
-
-const SortProducts = ({ sortBy, setQueryParams }: SortProductsProps) => {
+const Sorting = ({ options, sortBy, setQueryParams }: SortingProps) => {
   const handleChange = (
-    e: ChangeEvent<HTMLButtonElement> | SortOptions,
+    e: ChangeEvent<HTMLButtonElement> | string,
     close?: () => void
   ) => {
     const newSortBy = close
-      ? ((e as ChangeEvent<HTMLButtonElement>).target.value as SortOptions)
-      : (e as SortOptions)
-    setQueryParams('sortBy', newSortBy as SortOptions)
+      ? ((e as ChangeEvent<HTMLButtonElement>).target.value as string)
+      : (e as string)
+    setQueryParams('sortBy', newSortBy as string)
 
     if (close) {
       setTimeout(close, 500)
@@ -67,14 +46,18 @@ const SortProducts = ({ sortBy, setQueryParams }: SortProductsProps) => {
       </Text>
       <Select
         value={sortBy}
-        onValueChange={(e: SortOptions) => handleChange(e)}
+        onValueChange={(e: string) => handleChange(e)}
         className="hidden w-[200px] small:block"
       >
         <SelectTrigger>
-          <SelectValue placeholder="New in" />
+          <SelectValue
+            placeholder={
+              options && options.length > 0 ? options[0].label : 'Select'
+            }
+          />
         </SelectTrigger>
         <SelectContent className="w-[200px]">
-          {sortOptions.map((option, index) => (
+          {options.map((option, index) => (
             <SelectItem key={index} value={option.value}>
               {option.label}
             </SelectItem>
@@ -100,7 +83,7 @@ const SortProducts = ({ sortBy, setQueryParams }: SortProductsProps) => {
                 <Menu.Items className="absolute right-0 top-[25px] z-10 mt-8 border border-action-primary">
                   <Menu.Item>
                     <FilterRadioGroup
-                      items={sortOptions}
+                      items={options}
                       value={sortBy}
                       handleChange={(e) => handleChange(e, close)}
                     />
@@ -115,4 +98,4 @@ const SortProducts = ({ sortBy, setQueryParams }: SortProductsProps) => {
   )
 }
 
-export default SortProducts
+export default Sorting

@@ -9,12 +9,11 @@ import { getProductsList, getStoreFilters } from '@lib/data/products'
 import { listRegions } from '@lib/data/regions'
 import { StoreCollection, StoreRegion } from '@medusajs/types'
 import CollectionTemplate from '@modules/collections/templates'
-import { SortOptions } from '@modules/store/components/refinement-list/sort-products'
 
 type Props = {
   params: { handle: string; countryCode: string }
   searchParams: {
-    sortBy?: SortOptions
+    sortBy?: string
     page?: string
     type?: string
     material?: string

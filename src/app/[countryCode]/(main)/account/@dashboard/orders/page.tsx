@@ -5,7 +5,6 @@ import { listOrders } from '@lib/data/orders'
 import OrderOverview, {
   OrderType,
 } from '@modules/account/components/order-overview'
-import { SortOptions } from '@modules/store/components/refinement-list/sort-products'
 
 export const metadata: Metadata = {
   title: 'Orders',
@@ -14,7 +13,7 @@ export const metadata: Metadata = {
 
 type Props = {
   searchParams: {
-    sortBy?: SortOptions
+    sortBy?: string
     page?: string
   }
 }

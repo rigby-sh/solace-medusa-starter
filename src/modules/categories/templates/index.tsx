@@ -1,11 +1,13 @@
 import { Suspense } from 'react'
 import { notFound } from 'next/navigation'
 
+import { storeSortOptions } from '@lib/constants'
 import { getRegion } from '@lib/data/regions'
 import { HttpTypes, StoreProduct } from '@medusajs/types'
 import { Box } from '@modules/common/components/box'
 import { Container } from '@modules/common/components/container'
 import { Heading } from '@modules/common/components/heading'
+import RefinementList from '@modules/common/components/sort'
 import { Text } from '@modules/common/components/text'
 import { ProductCarousel } from '@modules/products/components/product-carousel'
 import { search } from '@modules/search/actions'
@@ -13,8 +15,6 @@ import SkeletonProductGrid from '@modules/skeletons/templates/skeleton-product-g
 import ProductFilters from '@modules/store/components/filters'
 import ActiveProductFilters from '@modules/store/components/filters/active-filters'
 import ProductFiltersDrawer from '@modules/store/components/filters/filters-drawer'
-import RefinementList from '@modules/store/components/refinement-list'
-import { SortOptions } from '@modules/store/components/refinement-list/sort-products'
 import StoreBreadcrumbs from '@modules/store/templates/breadcrumbs'
 import PaginatedProducts from '@modules/store/templates/paginated-products'
 import { ProductFilters as ProductFiltersType } from 'types/global'
@@ -31,7 +31,7 @@ export default async function CategoryTemplate({
   categories,
   recommendedProducts,
 }: {
-  sortBy?: SortOptions
+  sortBy?: string
   page?: string
   collection?: string[]
   type?: string[]
@@ -80,7 +80,10 @@ export default async function CategoryTemplate({
             <ProductFiltersDrawer>
               <ProductFilters filters={filters} />
             </ProductFiltersDrawer>
-            <RefinementList sortBy={sortBy || 'created_at'} />
+            <RefinementList
+              options={storeSortOptions}
+              sortBy={sortBy || 'relevance'}
+            />
           </Box>
           <ActiveProductFilters
             filters={filters}
