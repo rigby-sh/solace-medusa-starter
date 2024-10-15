@@ -1,4 +1,4 @@
-import { cache } from 'react'
+import { unstable_noStore as noStore } from 'next/cache'
 
 import { sdk } from '@lib/config'
 import { HttpTypes } from '@medusajs/types'
@@ -7,7 +7,7 @@ import { ProductFilters } from 'types/global'
 
 import { getRegion } from './regions'
 
-export const getProductsById = cache(async function ({
+export const getProductsById = async function ({
   ids,
   regionId,
 }: {
@@ -25,9 +25,9 @@ export const getProductsById = cache(async function ({
       { next: { tags: ['products'] } }
     )
     .then(({ products }) => products)
-})
+}
 
-export const getProductByHandle = cache(async function (
+export const getProductByHandle = async function (
   handle: string,
   regionId: string
 ) {
@@ -42,9 +42,9 @@ export const getProductByHandle = cache(async function (
       { next: { tags: ['products'] } }
     )
     .then(({ products }) => products[0])
-})
+}
 
-export const getProductsList = cache(async function ({
+export const getProductsList = async function ({
   pageParam = 1,
   queryParams,
   countryCode,
@@ -57,6 +57,8 @@ export const getProductsList = cache(async function ({
   nextPage: number | null
   queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams
 }> {
+  noStore()
+
   const limit = queryParams?.limit || 12
   const offset = Math.max(0, (pageParam - 1) * limit)
   const region = await getRegion(countryCode)
@@ -91,9 +93,9 @@ export const getProductsList = cache(async function ({
         queryParams,
       }
     })
-})
+}
 
-export const getProductsListByCollectionId = cache(async function ({
+export const getProductsListByCollectionId = async function ({
   collectionId,
   countryCode,
   excludeProductId,
@@ -145,9 +147,9 @@ export const getProductsListByCollectionId = cache(async function ({
         nextPage,
       }
     })
-})
+}
 
-export const getStoreFilters = cache(async function () {
+export const getStoreFilters = async function () {
   const filters: ProductFilters = await fetch(
     `${BACKEND_URL}/store/filter-product-attributes`,
     {
@@ -161,4 +163,4 @@ export const getStoreFilters = cache(async function () {
   ).then((res) => res.json())
 
   return filters
-})
+}

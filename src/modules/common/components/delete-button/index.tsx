@@ -21,7 +21,7 @@ const DeleteButton = ({
 
   const handleDelete = async (id: string) => {
     setIsDeleting(true)
-    await deleteLineItem(id).catch((err) => {
+    await deleteLineItem(id).catch(() => {
       setIsDeleting(false)
     })
   }
@@ -30,7 +30,11 @@ const DeleteButton = ({
     <Button
       withIcon
       variant={variant}
-      className={clx('bg-primary', className)}
+      className={clx(
+        'bg-primary',
+        { 'pointer-events-none': isDeleting },
+        className
+      )}
       onClick={() => handleDelete(id)}
     >
       {isDeleting ? (

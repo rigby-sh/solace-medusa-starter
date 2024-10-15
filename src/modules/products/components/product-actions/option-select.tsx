@@ -53,12 +53,13 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
               className={cn('border-primary h-12 w-12 border', {
                 'border-action-primary': v === current,
               })}
+              aria-label="Choose variant color"
               disabled={disabled}
               data-testid="option-button"
             >
               <Image
                 src={image.url}
-                alt={image.alternativeText}
+                alt={image.alternativeText ?? 'Variant color'}
                 width={80}
                 height={80}
                 className="h-full w-full object-cover"
@@ -71,6 +72,7 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
               className={cn('border-primary h-12 w-12 border', {
                 'border-action-primary': v === current,
               })}
+              aria-label="Choose variant color"
               style={{ backgroundColor: hex }}
               disabled={disabled}
               data-testid="option-button"

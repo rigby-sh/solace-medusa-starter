@@ -61,7 +61,7 @@ export const darkMode = {
 
   '--bg-static': '9 9 9',
   '--bg-primary': '9 9 9',
-  '--bg-secondary': '34 34 34',
+  '--bg-secondary': '21 21 21',
   '--bg-brand': '9 9 9',
   '--bg-hover': '70 70 70',
   '--bg-pressed': '108 108 108',

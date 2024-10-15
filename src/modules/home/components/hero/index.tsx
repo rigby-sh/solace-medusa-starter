@@ -20,6 +20,7 @@ const Hero = ({ data }: { data: HeroBanner }) => {
           className="h-full w-full object-cover"
           width={1000}
           height={600}
+          priority
         />
       </Box>
       <Container className="flex flex-col gap-2 !py-6 small:gap-8 small:!py-10">

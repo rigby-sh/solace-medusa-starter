@@ -1,5 +1,4 @@
-import React, { Suspense } from 'react'
-import { notFound } from 'next/navigation'
+import React, { lazy, Suspense } from 'react'
 
 import { getProductVariantsColors } from '@lib/data/fetch'
 import { getProductsListByCollectionId } from '@lib/data/products'
@@ -10,8 +9,8 @@ import ImageGallery from '@modules/products/components/image-gallery'
 import ProductActions from '@modules/products/components/product-actions'
 import ProductTabs from '@modules/products/components/product-tabs'
 import ProductInfo from '@modules/products/templates/product-info'
+import SkeletonProductGrid from '@modules/skeletons/templates/skeleton-product-grid'
 
-import { ProductCarousel } from '../components/product-carousel'
 import ProductBreadcrumbs from './breadcrumbs'
 import ProductActionsWrapper from './product-actions-wrapper'
 
@@ -22,6 +21,12 @@ type ProductTemplateProps = {
   countryCode: string
 }
 
+const LazyProductCarousel = lazy(() =>
+  import('../components/product-carousel').then((module) => ({
+    default: module.ProductCarousel,
+  }))
+)
+
 const ProductTemplate: React.FC<ProductTemplateProps> = async ({
   product,
   region,
@@ -29,10 +34,6 @@ const ProductTemplate: React.FC<ProductTemplateProps> = async ({
   countryCode,
 }: ProductTemplateProps) => {
   const variantsColors = await getProductVariantsColors()
-
-  if (!product || !product.id) {
-    return notFound()
-  }
 
   const { response: productsList } = await getProductsListByCollectionId({
     collectionId: product.collection_id,
@@ -79,11 +80,13 @@ const ProductTemplate: React.FC<ProductTemplateProps> = async ({
         </Box>
       </Container>
       {productsList.products.length > 0 && (
-        <ProductCarousel
-          products={productsList.products}
-          regionId={region.id}
-          title="Complete the look"
-        />
+        <Suspense fallback={<SkeletonProductGrid />}>
+          <LazyProductCarousel
+            products={productsList.products}
+            regionId={region.id}
+            title="Complete the look"
+          />
+        </Suspense>
       )}
     </>
   )

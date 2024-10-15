@@ -120,7 +120,7 @@ export const RadioGroupIndicator = forwardRef<
     >
       <div
         className={cn(className, RadioGroupIndicatorVariants({ disabled }))}
-      ></div>
+      />
     </RadioGroup.Indicator>
   )
 })

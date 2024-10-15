@@ -47,7 +47,7 @@ export function ProductActions({ product }: { product: StoreProduct }) {
       disabled={isAddingToCart}
       className={cn(
         'absolute bottom-3 right-3 opacity-100 transition-opacity duration-300 group-hover:opacity-100 small:bottom-5 small:right-5 large:opacity-0',
-        { '!px-4': isAddingToCart }
+        { 'pointer-events-none !px-4': isAddingToCart }
       )}
       onClick={handleAddToCart}
     >

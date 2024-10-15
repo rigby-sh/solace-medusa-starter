@@ -119,8 +119,12 @@ const Filters = ({ data, countryCode }: FiltersProps) => {
                       key={cat.value}
                       className="flex items-center gap-2 p-1"
                     >
-                      <Link href={href}>
-                        <RadioGroupItem id={cat.value} value={cat.value}>
+                      <Link href={href} aria-label="Choose a category">
+                        <RadioGroupItem
+                          id={cat.value}
+                          value={cat.value}
+                          aria-label="Choose a category"
+                        >
                           <RadioGroupIndicator />
                         </RadioGroupItem>
                       </Link>

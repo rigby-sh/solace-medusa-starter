@@ -11,7 +11,6 @@ export default function Loading() {
             <div className="hidden h-12 w-[130px] bg-skeleton-primary small:block" />
             <div className="hidden h-12 w-[130px] bg-skeleton-primary small:block" />
             <div className="h-12 w-full bg-skeleton-primary small:w-[100px]" />
-            <div className="h-12 w-full bg-skeleton-primary small:w-[100px]" />
           </div>
           <div className="flex items-center gap-3">
             <div className="hidden h-6 w-[100px] bg-skeleton-primary small:block" />

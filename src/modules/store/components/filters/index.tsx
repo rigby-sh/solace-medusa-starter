@@ -78,7 +78,9 @@ export default function ProductFilters({
       <Box className="hidden items-center gap-2 small:flex">
         {!isCollection && collectionOptions && collectionOptions.length > 0 && (
           <Select value={null} onValueChange={() => {}}>
-            <SelectTrigger>Collections</SelectTrigger>
+            <SelectTrigger aria-label="Choose collection/s">
+              Collections
+            </SelectTrigger>
             <SelectContent className="w-full">
               <FilterItems items={collectionOptions} param="collection" />
             </SelectContent>
@@ -86,7 +88,9 @@ export default function ProductFilters({
         )}
         {typeOptions && typeOptions.length > 0 && (
           <Select value={null} onValueChange={() => {}}>
-            <SelectTrigger>Product type</SelectTrigger>
+            <SelectTrigger aria-label="Choose product type/s">
+              Product type
+            </SelectTrigger>
             <SelectContent className="w-full">
               <FilterItems items={typeOptions} param="type" />
             </SelectContent>
@@ -94,14 +98,16 @@ export default function ProductFilters({
         )}
         {materialOptions && materialOptions.length > 0 && (
           <Select value={null} onValueChange={() => {}}>
-            <SelectTrigger>Material</SelectTrigger>
+            <SelectTrigger aria-label="Choose material/s">
+              Material
+            </SelectTrigger>
             <SelectContent className="w-full">
               <FilterItems items={materialOptions} param="material" />
             </SelectContent>
           </Select>
         )}
         <Select value={null} onValueChange={() => {}}>
-          <SelectTrigger>Price</SelectTrigger>
+          <SelectTrigger aria-label="Choose price">Price</SelectTrigger>
           <SelectContent>
             <FilterItems items={priceOptions} param="price" />
           </SelectContent>

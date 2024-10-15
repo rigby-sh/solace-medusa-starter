@@ -17,6 +17,7 @@ export function BlogTile({ post }: { post: BlogPost }) {
             alt={post.FeaturedImage.alternativeText ?? 'Blog post image'}
             width={600}
             height={600}
+            priority
           />
         </LocalizedClientLink>
       </Box>

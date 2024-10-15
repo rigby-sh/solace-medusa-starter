@@ -25,7 +25,7 @@ const AccountNavLink = ({
     <LocalizedClientLink href={href} data-testid={dataTestId}>
       <div
         className={cn(
-          'flex items-center gap-4 p-4 hover:bg-hover',
+          'flex items-center gap-4 p-4 transition-all duration-200 ease-in-out hover:bg-hover',
           active && 'bg-hover'
         )}
       >

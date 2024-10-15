@@ -1,9 +1,6 @@
 import { Metadata } from 'next'
 
-import {
-  getCollectionsList,
-  getCollectionsWithProducts,
-} from '@lib/data/collections'
+import { getCollectionsList } from '@lib/data/collections'
 import {
   getCollectionsData,
   getExploreBlogData,
@@ -19,9 +16,9 @@ import Hero from '@modules/home/components/hero'
 import { ProductCarousel } from '@modules/products/components/product-carousel'
 
 export const metadata: Metadata = {
-  title: 'Medusa Next.js Starter Template',
+  title: 'Solace Medusa Starter Template',
   description:
-    'A performant frontend ecommerce starter template with Next.js 14 and Medusa.',
+    'A performant frontend ecommerce starter template with Next.js 14 and Medusa 2.0.',
 }
 
 export default async function Home({
@@ -29,38 +26,41 @@ export default async function Home({
 }: {
   params: { countryCode: string }
 }) {
-  const collections = await getCollectionsWithProducts(countryCode)
-  const {
-    response: { products },
-  } = await getProductsList({
-    pageParam: 0,
-    queryParams: {
-      limit: 9,
-    },
-    countryCode,
-  })
+  const [{ collections: collectionsList }, { products }] = await Promise.all([
+    getCollectionsList(),
+    getProductsList({
+      pageParam: 0,
+      queryParams: { limit: 9 },
+      countryCode: countryCode,
+    }).then(({ response }) => response),
+  ])
+
   const region = await getRegion(countryCode)
-  const { collections: collectionsList } = await getCollectionsList()
 
-  const strapiCollections = await getCollectionsData()
-
-  const {
-    data: { HeroBanner },
-  } = await getHeroBannerData()
-
-  const {
-    data: { MidBanner },
-  } = await getMidBannerData()
-
-  const { data: posts } = await getExploreBlogData()
-
-  if (!products || !collections || !region) {
+  if (!products || !collectionsList || !region) {
     return null
   }
 
+  // CMS data
+  const [
+    strapiCollections,
+    {
+      data: { HeroBanner },
+    },
+    {
+      data: { MidBanner },
+    },
+    { data: posts },
+  ] = await Promise.all([
+    getCollectionsData(),
+    getHeroBannerData(),
+    getMidBannerData(),
+    getExploreBlogData(),
+  ])
+
   return (
     <>
-      <Hero data={HeroBanner} />
+      {HeroBanner && <Hero data={HeroBanner} />}
       <Collections
         cmsCollections={strapiCollections}
         medusaCollections={collectionsList}
@@ -74,8 +74,8 @@ export default async function Home({
           text: 'View all',
         }}
       />
-      <Banner data={MidBanner} />
-      <ExploreBlog posts={posts} />
+      {MidBanner && <Banner data={MidBanner} />}
+      {posts && posts.length > 0 && <ExploreBlog posts={posts} />}
     </>
   )
 }

@@ -69,7 +69,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ProductPage({ params }: Props) {
-  const cart = await retrieveCart()
   const region = await getRegion(params.countryCode)
 
   if (!region) {
@@ -81,6 +80,8 @@ export default async function ProductPage({ params }: Props) {
   if (!pricedProduct) {
     notFound()
   }
+
+  const cart = await retrieveCart()
 
   return (
     <ProductTemplate
