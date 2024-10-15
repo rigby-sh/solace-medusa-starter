@@ -1,6 +1,7 @@
 import {
   AboutUsData,
   BlogData,
+  BlogPost,
   CollectionsData,
   ContentPageData,
   FAQData,
@@ -118,4 +119,22 @@ export const getContentPage = async (
   })
 
   return res.json()
+}
+
+// Blog
+export const getBlogPostBySlug = async (slug: string): Promise<BlogPost | null> => {
+  const res = await fetchStrapiClient(
+    `/api/blogs?filters[Slug][$eq]=${slug}&populate=*`,
+    {
+      next: { tags: [`blog-${slug}`] },
+    }
+  )
+
+  const data = await res.json()
+
+  if (data.data && data.data.length > 0) {
+    return data.data[0]
+  }
+
+  return null
 }
