@@ -2,7 +2,6 @@ import { Suspense } from 'react'
 import { Metadata } from 'next'
 
 import { enrichLineItems, retrieveCart } from '@lib/data/cart'
-import { getCustomer } from '@lib/data/customer'
 import { getProductsList } from '@lib/data/products'
 import { getRegion } from '@lib/data/regions'
 import CartTemplate from '@modules/cart/templates'
@@ -35,22 +34,22 @@ export default async function Cart({
 }: {
   params: { countryCode: string }
 }) {
-  const region = await getRegion(countryCode)
   const cart = await fetchCart()
-  const customer = await getCustomer()
-  const {
-    response: { products },
-  } = await getProductsList({
-    pageParam: 0,
-    queryParams: {
-      limit: 9,
-    },
-    countryCode,
-  })
+
+  const [region, { products }] = await Promise.all([
+    getRegion(countryCode),
+    getProductsList({
+      pageParam: 0,
+      queryParams: {
+        limit: 9,
+      },
+      countryCode,
+    }).then(({ response }) => response),
+  ])
 
   return (
     <Container className="max-w-full bg-secondary !p-0">
-      <CartTemplate cart={cart} customer={customer} />
+      <CartTemplate cart={cart} />
       <Suspense fallback={<SkeletonProductsCarousel />}>
         <ProductCarousel
           products={products}
