@@ -46,9 +46,9 @@ export function Pagination({
           window.scrollTo({ top: 0, behavior: 'smooth' })
         }}
         className={clx(
-          'txt-xlarge-plus flex h-10 w-10 items-center justify-center text-basic-primary',
+          'flex h-10 w-10 items-center justify-center text-lg text-basic-primary',
           {
-            'rounded-full border-[1px] border-black bg-fg-secondary hover:text-ui-fg-subtle':
+            'rounded-full border-[1px] border-black bg-fg-secondary hover:text-secondary':
               isCurrent,
           }
         )}
@@ -76,7 +76,7 @@ export function Pagination({
           }
           window.scrollTo({ top: 0, behavior: 'smooth' })
         }}
-        className="txt-xlarge-plus flex h-10 w-10 items-center justify-center text-ui-fg-muted"
+        className="flex h-10 w-10 items-center justify-center text-lg text-disabled"
         aria-disabled={disabled}
       >
         {direction === 'prev' ? (
@@ -92,7 +92,7 @@ export function Pagination({
   const renderEllipsis = (key: string) => (
     <span
       key={key}
-      className="txt-xlarge-plus cursor-default items-center text-ui-fg-muted"
+      className="cursor-default items-center text-lg text-disabled"
     >
       ...
     </span>

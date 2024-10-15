@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
+import ForgotPassword from '@modules/account/components/forgot-password'
 import Login from '@modules/account/components/login'
 import Register from '@modules/account/components/register'
 import { Box } from '@modules/common/components/box'
@@ -10,6 +11,7 @@ import { Box } from '@modules/common/components/box'
 export enum LOGIN_VIEW {
   SIGN_IN = 'sign-in',
   REGISTER = 'register',
+  FORGOT_PASSWORD = 'forgot-password',
 }
 
 const LoginTemplate = () => {
@@ -27,13 +29,24 @@ const LoginTemplate = () => {
     }
   }, [mode, router])
 
+  let Component = Login
+  switch (currentView) {
+    case 'sign-in':
+      Component = Login
+      break
+    case 'register':
+      Component = Register
+      break
+    case 'forgot-password':
+      Component = ForgotPassword
+      break
+    default:
+      break
+  }
+
   return (
     <Box className="flex w-full">
-      {currentView === 'sign-in' ? (
-        <Login setCurrentView={setCurrentView} />
-      ) : (
-        <Register setCurrentView={setCurrentView} />
-      )}
+      <Component setCurrentView={setCurrentView} />
     </Box>
   )
 }

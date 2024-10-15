@@ -2,7 +2,6 @@ import { Metadata } from 'next'
 
 import { getProductsList, getStoreFilters } from '@lib/data/products'
 import SearchResultsTemplate from '@modules/search/templates/search-results-template'
-import { SortOptions } from '@modules/store/components/refinement-list/sort-products'
 
 export const metadata: Metadata = {
   title: 'Search',
@@ -12,7 +11,7 @@ export const metadata: Metadata = {
 type Params = {
   params: { query: string; countryCode: string }
   searchParams: {
-    sortBy?: SortOptions
+    sortBy?: string
     page?: string
     collection?: string
     type?: string

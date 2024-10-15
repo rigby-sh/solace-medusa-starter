@@ -8,7 +8,6 @@ import { Box } from '@modules/common/components/box'
 import { Button } from '@modules/common/components/button'
 import { Heading } from '@modules/common/components/heading'
 import { Input } from '@modules/common/components/input'
-import LocalizedClientLink from '@modules/common/components/localized-client-link'
 import { toast } from '@modules/common/components/toast'
 import { useFormState } from 'react-dom'
 
@@ -113,10 +112,12 @@ const Login = ({ setCurrentView }: Props) => {
             <SubmitButton data-testid="sign-in-button" className="mt-6 w-full">
               Continue with email
             </SubmitButton>
-            <Button variant="text" className="w-full" asChild>
-              <LocalizedClientLink href="/reset-password">
-                Forgot password
-              </LocalizedClientLink>
+            <Button
+              variant="text"
+              className="w-full"
+              onClick={() => setCurrentView(LOGIN_VIEW.FORGOT_PASSWORD)}
+            >
+              Forgot password
             </Button>
           </Box>
         </form>

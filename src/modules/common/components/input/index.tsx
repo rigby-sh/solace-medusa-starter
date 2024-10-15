@@ -12,11 +12,12 @@ import { Label } from '../label'
 type InputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> & {
   label?: string
   error?: string
+  noLabel?: boolean
   touched?: Record<string, unknown>
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ type, name, label, touched, required, ...props }, ref) => {
+  ({ type, name, label, noLabel, touched, required, ...props }, ref) => {
     const localRef = useRef<HTMLInputElement>(null)
     const [showPassword, setShowPassword] = useState(false)
     const [inputType, setInputType] = useState(type)
@@ -67,7 +68,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             id={name}
             ref={mergeRefs(localRef, ref)}
             placeholder={props.placeholder}
-            className="w-full !bg-transparent text-md text-basic-primary outline-none placeholder:text-secondary focus-visible:ring-0 focus-visible:ring-offset-0 [.dark_&]:placeholder:text-static"
+            className="w-full touch-none !bg-transparent text-lg text-basic-primary outline-none placeholder:text-secondary focus-visible:ring-0 focus-visible:ring-offset-0 medium:text-md [.dark_&]:placeholder:text-static"
             {...props}
           />
           {type === 'password' && (
@@ -82,7 +83,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         </Box>
         {props.error && (
           <p className="text-sm font-medium text-negative">
-            {props.error} {label?.toLowerCase() ?? 'a value'}
+            {props.error} {!noLabel && (label?.toLowerCase() ?? 'a value')}
           </p>
         )}
       </Box>
