@@ -1,7 +1,29 @@
 import { notFound } from 'next/navigation'
 
-import { getBlogPostBySlug } from '@lib/data/fetch'
+import { getAllBlogSlugs, getBlogPostBySlug } from '@lib/data/fetch'
+import { listRegions } from '@lib/data/regions'
+import { StoreRegion } from '@medusajs/types'
 import BlogTemplate from '@modules/blog/templates'
+
+export async function generateStaticParams() {
+  const slugs = await getAllBlogSlugs()
+  console.log('slugs: ', slugs)
+
+  if (!slugs) {
+    return []
+  }
+
+  const countryCodes = await listRegions().then((regions: StoreRegion[]) =>
+    regions?.map((r) => r.countries?.map((c) => c.iso_2)).flat()
+  )
+
+  return slugs.flatMap((slug) =>
+    countryCodes.map((countryCode) => ({
+      slug,
+      countryCode,
+    }))
+  )
+}
 
 export async function generateMetadata({ params }) {
   const article = await getBlogPostBySlug(params.slug)

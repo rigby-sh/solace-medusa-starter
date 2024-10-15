@@ -140,3 +140,12 @@ export const getBlogPostBySlug = async (
 
   return null
 }
+
+export const getAllBlogSlugs = async (): Promise<string[]> => {
+  const res = await fetchStrapiClient(`/api/blogs?populate=*`, {
+    next: { tags: ['blog-slugs'] },
+  })
+
+  const data = await res.json()
+  return data.data.map((post: BlogPost) => post.Slug)
+}
