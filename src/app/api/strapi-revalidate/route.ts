@@ -1,16 +1,11 @@
 import { revalidateTag } from 'next/cache'
 import { NextRequest, NextResponse } from 'next/server'
-export const runtime = 'edge'
 
 export async function POST(request: NextRequest) {
   const secret = request.nextUrl.searchParams.get('secret')
-  console.log('secret: ', secret)
-  console.log('NEXT_PUBLIC_STRAPI_WEBHOOK_REVALIDATION_SECRET: ', process.env.NEXT_PUBLIC_STRAPI_WEBHOOK_REVALIDATION_SECRET)
   const body = await request.json()
 
-  console.log('body: ', body)
-
-  if (secret !== process.env.NEXT_PUBLIC_STRAPI_WEBHOOK_REVALIDATION_SECRET) {
+  if (secret !== process.env.STRAPI_WEBHOOK_REVALIDATION_SECRET) {
     return NextResponse.json({ message: 'Invalid secret' }, { status: 401 })
   }
 
