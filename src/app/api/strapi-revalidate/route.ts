@@ -10,16 +10,14 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    if (body.event === 'entry.publish' || body.event === 'entry.update') {
-      if (body.model === 'blog' || body.model === 'blog-post-category') {
-        revalidateTag(`blog-${body.entry.Slug}`)
-        revalidateTag('blog')
-        revalidateTag('explore-blog')
-        revalidateTag('blog-categories')
-        revalidateTag('blog-slugs')
+    if (body.model === 'blog' || body.model === 'blog-post-category') {
+      revalidateTag(`blog-${body.entry.Slug}`)
+      revalidateTag('blog')
+      revalidateTag('explore-blog')
+      revalidateTag('blog-categories')
+      revalidateTag('blog-slugs')
 
-        return NextResponse.json({ revalidated: true, now: Date.now() })
-      }
+      return NextResponse.json({ revalidated: true, now: Date.now() })
     }
 
     return NextResponse.json({ message: 'No revalidation needed' })
