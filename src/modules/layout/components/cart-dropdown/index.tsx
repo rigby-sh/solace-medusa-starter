@@ -9,6 +9,7 @@ import { HttpTypes } from '@medusajs/types'
 import { Box } from '@modules/common/components/box'
 import { Button } from '@modules/common/components/button'
 import DeleteButton from '@modules/common/components/delete-button'
+import { Heading } from '@modules/common/components/heading'
 import LineItemOptions from '@modules/common/components/line-item-options'
 import LineItemPrice from '@modules/common/components/line-item-price'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
@@ -24,7 +25,7 @@ const CartDropdown = ({
   const [activeTimer, setActiveTimer] = useState<NodeJS.Timer | undefined>(
     undefined
   )
-  const [cartDropdownOpen, setCartDropdownOpen] = useState(false)
+  const [cartDropdownOpen, setCartDropdownOpen] = useState(true)
 
   const open = () => setCartDropdownOpen(true)
   const close = () => setCartDropdownOpen(false)
@@ -83,7 +84,9 @@ const CartDropdown = ({
           <LocalizedClientLink href="/cart" data-testid="nav-cart-link">
             <Box className="relative">
               <BagIcon />
-              <span className="absolute left-[14px] top-[-12px] flex h-4 w-4 items-center justify-center rounded-full bg-fg-primary-negative text-[10px] text-white xsmall:left-[18px] xsmall:top-[-16px] xsmall:h-5 xsmall:w-5 xsmall:text-sm">{`${totalItems}`}</span>
+              {totalItems > 0 && (
+                <span className="absolute left-[14px] top-[-12px] flex h-4 w-4 items-center justify-center rounded-full bg-fg-primary-negative text-[10px] text-white xsmall:left-[18px] xsmall:top-[-16px] xsmall:h-5 xsmall:w-5 xsmall:text-sm">{`${totalItems}`}</span>
+              )}
             </Box>
           </LocalizedClientLink>
         </Popover.Button>
@@ -200,21 +203,21 @@ const CartDropdown = ({
                 </Box>
               </>
             ) : (
-              <Box>
-                <Box className="flex flex-col items-center justify-center gap-y-4 py-16">
-                  <Box className="text-small-regular flex h-6 w-6 items-center justify-center rounded-full bg-gray-900 text-white">
-                    <span>0</span>
-                  </Box>
-                  <span>Your shopping bag is empty.</span>
-                  <Box>
-                    <LocalizedClientLink href="/shop">
-                      <>
-                        <span className="sr-only">Go to all products page</span>
-                        <Button onClick={close}>Explore products</Button>
-                      </>
-                    </LocalizedClientLink>
-                  </Box>
+              <Box className="my-6 flex flex-col items-center justify-center gap-y-6 px-10 py-5">
+                <BagIcon className="h-14 w-14" />
+                <Box className="flex flex-col items-center justify-center gap-y-2">
+                  <Heading as="h4" className="text-2xl">
+                    Your shopping cart is empty.
+                  </Heading>
+                  <Text className="text-secondary">
+                    Are you looking for inspiration?
+                  </Text>
                 </Box>
+                <Button onClick={close} asChild className="w-full">
+                  <LocalizedClientLink href="/">
+                    Explore Home page
+                  </LocalizedClientLink>
+                </Button>
               </Box>
             )}
           </Popover.Panel>

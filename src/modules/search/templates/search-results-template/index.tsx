@@ -75,12 +75,12 @@ export default async function SearchResultsTemplate({
         {results && results.length > 0 ? (
           <>
             <Box className="flex flex-col gap-4">
-              <StoreBreadcrumbs breadcrumb={`"${query}"`} />
+              <StoreBreadcrumbs breadcrumb={`"${decodeURIComponent(query)}"`} />
               <Heading
                 as="h1"
                 className="text-4xl text-basic-primary small:text-5xl"
               >
-                &quot;{query}&quot;
+                &quot;{decodeURIComponent(query)}&quot;
               </Heading>
               <Text className="text-md text-secondary">
                 {count === 1 ? `${count} product` : `${count} products`}

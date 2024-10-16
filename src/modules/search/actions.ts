@@ -87,7 +87,7 @@ export async function search({
   }
 
   if (query) {
-    searchParams.append('q', query)
+    searchParams.append('q', decodeURIComponent(query))
   }
 
   const response = await fetch(

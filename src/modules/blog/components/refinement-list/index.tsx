@@ -29,6 +29,7 @@ const RefinementList = ({
     (name: string, value: string) => {
       const params = new URLSearchParams(searchParams)
       params.set(name, value)
+      params.delete('page')
 
       return params.toString()
     },
