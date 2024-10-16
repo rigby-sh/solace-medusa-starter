@@ -5,7 +5,7 @@ export async function POST(request: NextRequest) {
   const secret = request.nextUrl.searchParams.get('secret')
   const body = await request.json()
 
-  if (secret !== process.env.STRAPI_WEBHOOK_REVALIDATION_SECRET) {
+  if (secret !== process.env.NEXT_PUBLIC_STRAPI_WEBHOOK_REVALIDATION_SECRET) {
     return NextResponse.json({ message: 'Invalid secret' }, { status: 401 })
   }
 
