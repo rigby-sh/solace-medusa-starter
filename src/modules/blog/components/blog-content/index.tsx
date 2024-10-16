@@ -22,6 +22,7 @@ export function BlogContent({ content }: { content: string }) {
         ),
         h2: ({ node, ...props }) => (
           <Heading
+            id={props.children.toString().toLowerCase().replace(/\s+/g, '-')}
             as="h2"
             className="mb-2 text-xl text-basic-primary medium:text-2xl"
           >

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 
 import { cn } from '@lib/util/cn'
+import { scrollToSection } from '@lib/util/scroll-to-section'
 import {
   Accordion,
   AccordionContent,
@@ -18,21 +19,6 @@ type SidebarBookmarksProps = {
 const SidebarBookmarks = ({ data }: SidebarBookmarksProps) => {
   const [isOpen, setIsOpen] = useState(true)
   const [activeSection, setActiveSection] = useState('placing-order')
-
-  const scrollToSection = (sectionId: string) => {
-    setActiveSection(sectionId)
-    const element = document.getElementById(sectionId)
-    if (element) {
-      const navHeight = 96
-      const elementPosition = element.getBoundingClientRect().top
-      const offsetPosition = elementPosition + window.scrollY - navHeight
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth',
-      })
-    }
-  }
 
   return (
     <div className="sticky top-24 w-full bg-primary">
@@ -58,7 +44,10 @@ const SidebarBookmarks = ({ data }: SidebarBookmarksProps) => {
               {data.map((section) => (
                 <button
                   key={section.id}
-                  onClick={() => scrollToSection(section.id)}
+                  onClick={() => {
+                    scrollToSection(section.id)
+                    setActiveSection(section.id)
+                  }}
                   className={cn('w-fit cursor-pointer py-2 text-left text-lg', {
                     'border-b border-action-primary':
                       activeSection === section.id,
