@@ -35,7 +35,7 @@ export default async function Checkout({
   const customer = await getCustomer()
 
   return (
-    <Container className="mx-0 max-w-full bg-secondary">
+    <Container className="mx-0 grid max-w-full grid-cols-1 gap-y-4 bg-secondary large:grid-cols-[1fr_416px] large:gap-x-10 2xl:gap-x-40">
       <Wrapper cart={cart}>
         <CheckoutForm cart={cart} customer={customer} />
         <CheckoutSummary cart={cart} searchParams={searchParams} />

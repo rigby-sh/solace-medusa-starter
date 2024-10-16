@@ -21,6 +21,7 @@ import { Button } from '@modules/common/components/button'
 import { Heading } from '@modules/common/components/heading'
 import { Stepper } from '@modules/common/components/stepper'
 import { Text } from '@modules/common/components/text'
+import { StripeIcon } from '@modules/common/icons'
 import { CardElement } from '@stripe/react-stripe-js'
 import { StripeCardElementOptions } from '@stripe/stripe-js'
 
@@ -31,12 +32,13 @@ const Payment = ({
   cart: any
   availablePaymentMethods: any[]
 }) => {
-  const activeSession = cart.payment_collection?.payment_sessions?.find(
+  const activeSession = cart?.payment_collection?.payment_sessions?.find(
     (paymentSession: any) => paymentSession.status === 'pending'
   )
 
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [cardBrand, setCardBrand] = useState<string | null>(null)
   const [cardComplete, setCardComplete] = useState(false)
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(
     activeSession?.provider_id ?? ''
@@ -130,11 +132,7 @@ const Payment = ({
 
   return (
     <Box className="bg-primary p-5">
-      <Box
-        className={cn('flex flex-row items-center justify-between', {
-          'mb-6': isOpen,
-        })}
-      >
+      <Box className="mb-6 flex flex-row items-center justify-between">
         <Heading
           as="h2"
           className={cn('flex flex-row items-center gap-x-4 text-2xl', {
@@ -189,10 +187,13 @@ const Payment = ({
                   <Text className="mb-3 text-md text-basic-primary">
                     Enter your card details:
                   </Text>
-
                   <CardElement
                     options={useOptions}
                     onChange={(e) => {
+                      setCardBrand(
+                        e.brand &&
+                          e.brand.charAt(0).toUpperCase() + e.brand.slice(1)
+                      )
                       setError(e.error?.message || null)
                       setCardComplete(e.complete)
                     }}
@@ -235,6 +236,57 @@ const Payment = ({
               Enter card details
             </Button>
           )}
+        </Box>
+
+        <Box className={isOpen ? 'hidden' : 'block'}>
+          {cart && paymentReady && activeSession ? (
+            <Box className="flex flex-col items-start">
+              <Box className="flex w-full flex-col p-4">
+                <Text size="lg" className="font-normal text-basic-primary">
+                  Payment method
+                </Text>
+                <Text
+                  className="font-normal text-secondary"
+                  data-testid="payment-method-summary"
+                >
+                  {paymentInfoMap[selectedPaymentMethod]?.title ||
+                    selectedPaymentMethod}
+                </Text>
+              </Box>
+              <Box className="flex w-full flex-col p-4">
+                <Text size="lg" className="font-normal text-basic-primary">
+                  Payment details
+                </Text>
+                <div
+                  className="flex items-center gap-2 text-md text-basic-primary"
+                  data-testid="payment-details-summary"
+                >
+                  <Box className="flex h-7 w-fit items-center p-2">
+                    {paymentInfoMap[selectedPaymentMethod]?.icon || (
+                      <StripeIcon />
+                    )}
+                  </Box>
+                  <Text className="font-normal text-secondary">
+                    {isStripeFunc(selectedPaymentMethod) && cardBrand
+                      ? cardBrand
+                      : 'Another step will appear'}
+                  </Text>
+                </div>
+              </Box>
+            </Box>
+          ) : paidByGiftcard ? (
+            <Box className="flex w-full flex-col p-4">
+              <Text size="lg" className="font-normal text-basic-primary">
+                Payment method
+              </Text>
+              <Text
+                className="font-normal text-secondary"
+                data-testid="payment-method-summary"
+              >
+                Gift card
+              </Text>
+            </Box>
+          ) : null}
         </Box>
       </Box>
     </Box>

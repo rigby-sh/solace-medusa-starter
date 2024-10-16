@@ -2,7 +2,11 @@
 
 import React, { useEffect, useState } from 'react'
 
-import { applyPromotions, submitPromotionForm } from '@lib/data/cart'
+import {
+  applyPromotions,
+  initiatePaymentSession,
+  submitPromotionForm,
+} from '@lib/data/cart'
 import { HttpTypes } from '@medusajs/types'
 import {
   Accordion,
@@ -20,6 +24,7 @@ import {
   CheckCircleIcon,
   ChevronDownIcon,
   DiscountIcon,
+  Spinner,
   TrashIcon,
 } from '@modules/common/icons'
 import { useFormState } from 'react-dom'
@@ -35,32 +40,63 @@ type DiscountCodeProps = {
 const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
   const [codeValue, setCodeValue] = React.useState('')
   const [errorMessage, setErrorMessage] = React.useState('')
+  const [isRemoving, setIsRemoving] = React.useState(false)
   const { promotions = [] } = cart
   const [codes, setCodes] = useState(promotions)
   const [codeChanged, setCodeChanged] = useState({ changed: false, code: '' })
+
+  const activeSession = cart?.payment_collection?.payment_sessions?.find(
+    (paymentSession: any) => paymentSession.status === 'pending'
+  )
 
   const removePromotionCode = async (code: string) => {
     const validPromotions = promotions.filter(
       (promotion) => promotion.code !== code
     )
-    await applyPromotions(
-      validPromotions.filter((p) => p.code !== undefined).map((p) => p.code!)
-    )
+
+    setIsRemoving(true)
+
+    const validPromotionCodes = validPromotions
+      .filter((p) => p.code !== undefined)
+      .map((p) => p.code!)
+
+    await Promise.all([
+      applyPromotions(validPromotionCodes),
+      activeSession
+        ? initiatePaymentSession(cart, {
+            provider_id: activeSession.provider_id,
+          })
+        : Promise.resolve(),
+    ])
+
+    setIsRemoving(false)
     setErrorMessage('')
     setCodeChanged({ code, changed: true })
   }
+
   const addPromotionCode = async (formData: FormData) => {
     setErrorMessage('')
     const code = formData.get('code')
+
     if (!code) {
       setErrorMessage('Please enter code')
       return
     }
+
     const codes = promotions
       .filter((p) => p.code !== undefined)
       .map((p) => p.code!)
     codes.push(typeof code === 'string' ? code : JSON.stringify(code))
-    await applyPromotions(codes)
+
+    await Promise.all([
+      applyPromotions(codes),
+      activeSession
+        ? initiatePaymentSession(cart, {
+            provider_id: activeSession.provider_id,
+          })
+        : Promise.resolve(),
+    ])
+
     if (codeValue) {
       setCodeValue('')
     }
@@ -74,12 +110,12 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
     if (codes.length < promotions.length) {
       toast(
         'success',
-        `The promotion "${codeChanged.code}" has been successfully applied`
+        `The promotion "${codeChanged.code}" has been successfully applied!`
       )
     } else if (codes.length > promotions.length) {
       toast(
         'success',
-        `The promotion "${codeChanged.code}" has been successfully removed`
+        `The promotion "${codeChanged.code}" has been successfully removed.`
       )
     } else if (
       codes.length === promotions.length &&
@@ -99,6 +135,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
     setCodeChanged((prev) => {
       return { ...prev, changed: false }
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [promotions])
 
   return (
@@ -110,12 +147,13 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
       <Accordion
         type="single"
         collapsible
+        defaultValue={promotions.length > 0 ? 'discount' : undefined}
         className="flex w-full flex-col gap-2"
       >
-        <AccordionItem value={`discount`} className="bg-primary px-5 pb-3 pt-5">
+        <AccordionItem value="discount" className="bg-primary px-5 pb-3 pt-5">
           <AccordionTrigger className="text-basic-primary [&[data-state=open]>#chevronDown]:rotate-180">
             <Heading
-              className="flex items-center gap-2 text-left text-lg font-medium"
+              className="flex items-center gap-2 text-left text-lg"
               as="h3"
             >
               <DiscountIcon />
@@ -129,12 +167,12 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
             </div>
           </AccordionTrigger>
           <AccordionContent>
-            <Box className="flex flex-col gap-4 px-3 pb-4">
-              {promotions.length > 0 &&
+            <Box className="flex flex-col gap-4">
+              {promotions.length > 0 ? (
                 promotions.map((promotion) => {
                   return (
                     <div
-                      className="flex items-center justify-between"
+                      className="flex items-center justify-between py-2"
                       key={promotion.id}
                     >
                       <div className="flex gap-2">
@@ -147,35 +185,39 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
                         variant="tonal"
                         size="sm"
                         withIcon
+                        isLoading={isRemoving}
+                        disabled={isRemoving}
                         onClick={() => {
                           if (!promotion.code) {
                             return
                           }
                           removePromotionCode(promotion.code)
                         }}
-                        className="bg-transparent hover:bg-transparent"
+                        className="h-12 w-12 bg-transparent hover:bg-transparent"
                       >
                         <TrashIcon className="h-5 w-5" />
                       </Button>
                     </div>
                   )
-                })}
-              <div className="flex flex-col gap-2">
-                <Box className="flex w-full justify-between gap-3">
-                  <Box className="w-3/4">
-                    <Input
-                      name="code"
-                      error={errorMessage || message}
-                      placeholder="Enter promo code"
-                      value={codeValue}
-                      onChange={(e) => setCodeValue(e.target.value)}
-                    />
+                })
+              ) : (
+                <div className="flex flex-col gap-2 pt-2">
+                  <Box className="flex w-full justify-between gap-3">
+                    <Box className="w-3/4">
+                      <Input
+                        name="code"
+                        error={errorMessage || message}
+                        placeholder="Enter promo code"
+                        value={codeValue}
+                        onChange={(e) => setCodeValue(e.target.value)}
+                      />
+                    </Box>
+                    <Box className="flex w-1/4 justify-end">
+                      <SubmitButton variant="tonal">Activate</SubmitButton>
+                    </Box>
                   </Box>
-                  <Box className="flex w-1/4 justify-center">
-                    <SubmitButton variant="tonal">Activate</SubmitButton>
-                  </Box>
-                </Box>
-              </div>
+                </div>
+              )}
             </Box>
           </AccordionContent>
         </AccordionItem>

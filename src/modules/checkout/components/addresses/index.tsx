@@ -3,7 +3,7 @@
 import React from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
-import { setAddresses } from '@lib/data/cart'
+import { initiatePaymentSession, setAddresses } from '@lib/data/cart'
 import { useCheckoutForms } from '@lib/hooks/use-checkout-forms'
 import compareAddresses from '@lib/util/addresses'
 import { HttpTypes } from '@medusajs/types'
@@ -107,7 +107,18 @@ const Addresses = ({
           checkout.values.same_as_shipping ? 'on' : 'off'
         )
 
-        await formAction(formData)
+        const activeSession = cart?.payment_collection?.payment_sessions?.find(
+          (paymentSession: any) => paymentSession.status === 'pending'
+        )
+
+        await Promise.all([
+          formAction(formData),
+          activeSession
+            ? initiatePaymentSession(cart, {
+                provider_id: activeSession.provider_id,
+              })
+            : Promise.resolve(),
+        ])
       }
     } catch (error) {
       console.error('Error:', error)
