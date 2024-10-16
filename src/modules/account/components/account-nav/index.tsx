@@ -32,7 +32,7 @@ const AccountNav = () => {
                     <Button
                       variant="text"
                       onClick={handleLogout}
-                      className="w-full justify-start rounded-none p-0 hover:bg-hover"
+                      className="w-full justify-start rounded-none p-0 transition-all duration-200 ease-in-out hover:bg-hover"
                     >
                       <div className="flex items-center gap-2 p-4 text-lg">
                         {item.icon}

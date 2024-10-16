@@ -7,13 +7,7 @@ import EmptyCartMessage from '../components/empty-cart-message'
 import ItemsTemplate from './items'
 import Summary from './summary'
 
-const CartTemplate = ({
-  cart,
-  customer,
-}: {
-  cart: HttpTypes.StoreCart | null
-  customer: HttpTypes.StoreCustomer | null
-}) => {
+const CartTemplate = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
   return (
     <Container className="flex items-center justify-center">
       {cart?.items?.length ? (

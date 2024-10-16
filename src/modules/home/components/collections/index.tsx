@@ -35,6 +35,8 @@ const CollectionTile = ({
         alt={`${title} collection image`}
         width={600}
         height={300}
+        loading="lazy"
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         className="h-full w-full object-cover object-center"
       />
       <Box className="absolute left-0 top-0 hidden h-full w-full flex-col p-6 small:flex large:p-10">

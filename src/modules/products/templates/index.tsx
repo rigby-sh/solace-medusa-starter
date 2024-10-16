@@ -1,5 +1,4 @@
 import React, { Suspense } from 'react'
-import { notFound } from 'next/navigation'
 
 import { getProductVariantsColors } from '@lib/data/fetch'
 import { getProductsListByCollectionId } from '@lib/data/products'
@@ -10,6 +9,7 @@ import ImageGallery from '@modules/products/components/image-gallery'
 import ProductActions from '@modules/products/components/product-actions'
 import ProductTabs from '@modules/products/components/product-tabs'
 import ProductInfo from '@modules/products/templates/product-info'
+import SkeletonProductsCarousel from '@modules/skeletons/templates/skeleton-products-carousel'
 
 import { ProductCarousel } from '../components/product-carousel'
 import ProductBreadcrumbs from './breadcrumbs'
@@ -29,10 +29,6 @@ const ProductTemplate: React.FC<ProductTemplateProps> = async ({
   countryCode,
 }: ProductTemplateProps) => {
   const variantsColors = await getProductVariantsColors()
-
-  if (!product || !product.id) {
-    return notFound()
-  }
 
   const { response: productsList } = await getProductsListByCollectionId({
     collectionId: product.collection_id,
@@ -79,11 +75,13 @@ const ProductTemplate: React.FC<ProductTemplateProps> = async ({
         </Box>
       </Container>
       {productsList.products.length > 0 && (
-        <ProductCarousel
-          products={productsList.products}
-          regionId={region.id}
-          title="Complete the look"
-        />
+        <Suspense fallback={<SkeletonProductsCarousel />}>
+          <ProductCarousel
+            products={productsList.products}
+            regionId={region.id}
+            title="Complete the look"
+          />
+        </Suspense>
       )}
     </>
   )

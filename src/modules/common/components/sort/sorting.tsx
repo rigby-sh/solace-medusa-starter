@@ -49,7 +49,7 @@ const Sorting = ({ options, sortBy, setQueryParams }: SortingProps) => {
         onValueChange={(e: string) => handleChange(e)}
         className="hidden w-[200px] small:block"
       >
-        <SelectTrigger>
+        <SelectTrigger aria-label="Sort by">
           <SelectValue
             placeholder={
               options && options.length > 0 ? options[0].label : 'Select'

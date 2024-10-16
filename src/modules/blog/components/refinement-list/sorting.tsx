@@ -54,7 +54,7 @@ const Sorting = ({
         onValueChange={(e: string) => handleChange(e)}
         className="w-[calc(100vw-32px)] small:w-[calc(100vw-112px)] medium:w-[200px]"
       >
-        <SelectTrigger>
+        <SelectTrigger aria-label="Sort by">
           <SelectValue
             placeholder={
               options && options.length > 0 ? options[0].label : 'Select'

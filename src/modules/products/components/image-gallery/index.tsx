@@ -1,12 +1,12 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
 
 import { cn } from '@lib/util/cn'
 import { HttpTypes } from '@medusajs/types'
 import { Button } from '@modules/common/components/button'
 
+import { LoadingImage } from '../product-tile/loading-image'
 import { MAX_INITIAL_IMAGES } from './consts'
 import { GalleryDialog } from './gallery-dialog'
 import ImageCarousel from './image-carousel'
@@ -39,13 +39,12 @@ const ImageGallery = ({ images, title }: ImageGalleryProps) => {
               )}
               key={image.id}
             >
-              <Image
+              <LoadingImage
                 src={image.url}
-                priority
-                alt={`${title} - Product image`}
-                fill
+                alt={`${title} - product image`}
                 sizes="(max-width: 768px) 100vw, (max-width: 992px) 780px"
                 className="cursor-pointer object-cover"
+                loading={index === 0 ? 'eager' : 'lazy'}
                 onClick={() => handleImageClick(index)}
               />
             </div>

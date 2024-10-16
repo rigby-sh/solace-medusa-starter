@@ -1,8 +1,8 @@
 import React, { Suspense } from 'react'
 
 import { storeSortOptions } from '@lib/constants'
-import { getRegion } from '@lib/data/regions'
-import { StoreProduct } from '@medusajs/types'
+import { getProductsList, getStoreFilters } from '@lib/data/products'
+import { StoreRegion } from '@medusajs/types'
 import { Box } from '@modules/common/components/box'
 import { Container } from '@modules/common/components/container'
 import { Heading } from '@modules/common/components/heading'
@@ -12,12 +12,14 @@ import { SearchResultsIcon } from '@modules/common/icons'
 import { ProductCarousel } from '@modules/products/components/product-carousel'
 import { search } from '@modules/search/actions'
 import SkeletonProductGrid from '@modules/skeletons/templates/skeleton-product-grid'
+import SkeletonProductsCarousel from '@modules/skeletons/templates/skeleton-products-carousel'
 import ProductFilters from '@modules/store/components/filters'
 import ActiveProductFilters from '@modules/store/components/filters/active-filters'
 import ProductFiltersDrawer from '@modules/store/components/filters/filters-drawer'
 import StoreBreadcrumbs from '@modules/store/templates/breadcrumbs'
 import PaginatedProducts from '@modules/store/templates/paginated-products'
-import { ProductFilters as ProductFiltersType } from 'types/global'
+
+export const runtime = 'edge'
 
 type SearchResultsTemplateProps = {
   query: string
@@ -27,9 +29,8 @@ type SearchResultsTemplateProps = {
   type?: string[]
   material?: string[]
   price?: string[]
-  filters: ProductFiltersType
+  region: StoreRegion
   countryCode: string
-  recommendedProducts: StoreProduct[]
 }
 
 export default async function SearchResultsTemplate({
@@ -40,12 +41,11 @@ export default async function SearchResultsTemplate({
   type,
   material,
   price,
-  filters,
+  region,
   countryCode,
-  recommendedProducts,
 }: SearchResultsTemplateProps) {
-  const region = await getRegion(countryCode)
   const pageNumber = page ? parseInt(page) : 1
+  const filters = await getStoreFilters()
 
   const { results, count } = await search({
     currency_code: region.currency_code,
@@ -56,6 +56,17 @@ export default async function SearchResultsTemplate({
     type,
     material,
     price,
+  })
+
+  // TODO: Add logic in future
+  const {
+    response: { products: recommendedProducts },
+  } = await getProductsList({
+    pageParam: 0,
+    queryParams: {
+      limit: 9,
+    },
+    countryCode: countryCode,
   })
 
   return (
@@ -115,11 +126,15 @@ export default async function SearchResultsTemplate({
           </Box>
         )}
       </Container>
-      <ProductCarousel
-        products={recommendedProducts}
-        regionId={region.id}
-        title="Recommended products"
-      />
+      {recommendedProducts && (
+        <Suspense fallback={<SkeletonProductsCarousel />}>
+          <ProductCarousel
+            products={recommendedProducts}
+            regionId={region.id}
+            title="Recommended products"
+          />
+        </Suspense>
+      )}
     </>
   )
 }

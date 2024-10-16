@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 
-import { getProductsList, getStoreFilters } from '@lib/data/products'
+import { getRegion } from '@lib/data/regions'
 import SearchResultsTemplate from '@modules/search/templates/search-results-template'
 
 export const metadata: Metadata = {
@@ -21,33 +21,22 @@ type Params = {
 }
 
 export default async function SearchResults({ params, searchParams }: Params) {
-  const { query } = params
   const { sortBy, page, collection, type, material, price } = searchParams
-  const filters = await getStoreFilters()
+  const { query, countryCode } = params
 
-  // TODO: Add logic in future
-  const {
-    response: { products: recommendedProducts },
-  } = await getProductsList({
-    pageParam: 0,
-    queryParams: {
-      limit: 9,
-    },
-    countryCode: params.countryCode,
-  })
+  const region = await getRegion(countryCode)
 
   return (
     <SearchResultsTemplate
       query={query}
       sortBy={sortBy}
       page={page}
-      filters={filters}
       collection={collection?.split(',')}
       type={type?.split(',')}
       material={material?.split(',')}
       price={price?.split(',')}
+      region={region}
       countryCode={params.countryCode}
-      recommendedProducts={recommendedProducts}
     />
   )
 }

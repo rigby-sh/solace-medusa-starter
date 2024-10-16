@@ -29,7 +29,7 @@ export default function ItemQtySelect({
         'pointer-events-none opacity-60': maxQuantity === 0,
       })}
     >
-      <SelectTrigger>{qty}</SelectTrigger>
+      <SelectTrigger aria-label="Choose quantity">{qty}</SelectTrigger>
       <SelectContent>
         {Array.from(
           {

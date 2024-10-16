@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { applyPromotions, submitPromotionForm } from '@lib/data/cart'
 import { HttpTypes } from '@medusajs/types'
@@ -15,6 +15,7 @@ import { Button } from '@modules/common/components/button'
 import { Heading } from '@modules/common/components/heading'
 import { Input } from '@modules/common/components/input'
 import { Label } from '@modules/common/components/label'
+import { toast } from '@modules/common/components/toast'
 import {
   CheckCircleIcon,
   ChevronDownIcon,
@@ -35,6 +36,8 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
   const [codeValue, setCodeValue] = React.useState('')
   const [errorMessage, setErrorMessage] = React.useState('')
   const { promotions = [] } = cart
+  const [codes, setCodes] = useState(promotions)
+  const [codeChanged, setCodeChanged] = useState({ changed: false, code: '' })
 
   const removePromotionCode = async (code: string) => {
     const validPromotions = promotions.filter(
@@ -44,6 +47,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
       validPromotions.filter((p) => p.code !== undefined).map((p) => p.code!)
     )
     setErrorMessage('')
+    setCodeChanged({ code, changed: true })
   }
   const addPromotionCode = async (formData: FormData) => {
     setErrorMessage('')
@@ -56,15 +60,46 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
       .filter((p) => p.code !== undefined)
       .map((p) => p.code!)
     codes.push(typeof code === 'string' ? code : JSON.stringify(code))
-
     await applyPromotions(codes)
-
     if (codeValue) {
       setCodeValue('')
     }
+    setCodeChanged({ code: code.toString(), changed: true })
   }
 
   const [message] = useFormState(submitPromotionForm, null)
+
+  useEffect(() => {
+    if (!codeChanged.changed) return
+    if (codes.length < promotions.length) {
+      toast(
+        'success',
+        `The promotion "${codeChanged.code}" has been successfully applied`
+      )
+    } else if (codes.length > promotions.length) {
+      toast(
+        'success',
+        `The promotion "${codeChanged.code}" has been successfully removed`
+      )
+    } else if (
+      codes.length === promotions.length &&
+      promotions
+        .filter((p) => p.code !== undefined)
+        .map((p) => p.code!)
+        .includes(codeChanged.code)
+    ) {
+      toast(
+        'error',
+        `The promotion "${codeChanged.code}" has been already applied`
+      )
+    } else {
+      toast('error', `The promotion "${codeChanged.code}" was not found`)
+    }
+    setCodes(promotions)
+    setCodeChanged((prev) => {
+      return { ...prev, changed: false }
+    })
+  }, [promotions])
 
   return (
     <form

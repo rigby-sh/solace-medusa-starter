@@ -8,12 +8,12 @@ import { sdk } from '@lib/config'
 
 import { getAuthHeaders, removeAuthToken, setAuthToken } from './cookies'
 
-export const getCustomer = cache(async function () {
+export async function getCustomer() {
   return await sdk.store.customer
     .retrieve({}, { next: { tags: ['customer'] }, ...getAuthHeaders() })
     .then(({ customer }) => customer)
     .catch(() => null)
-})
+}
 
 export const updateCustomer = cache(async function (
   _currentState: {

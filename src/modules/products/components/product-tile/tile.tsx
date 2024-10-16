@@ -3,8 +3,8 @@ import { useMemo } from 'react'
 import { StoreProduct } from '@medusajs/types'
 import { Badge } from '@modules/common/components/badge'
 import { Box } from '@modules/common/components/box'
-import { Heading } from '@modules/common/components/heading'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
+import { Text } from '@modules/common/components/text'
 
 import { ProductActions } from './action'
 import { LoadingImage } from './loading-image'
@@ -46,7 +46,7 @@ export function ProductTileClient({
           <LoadingImage
             src={product.thumbnail}
             alt={product.title}
-            priority
+            loading="lazy"
             className="h-full w-full object-cover"
           />
         </LocalizedClientLink>
@@ -79,13 +79,13 @@ function ProductInfo({
           href={`/products/${product.handle}`}
           className="mx-auto w-max"
         >
-          <Heading
+          <Text
             title={product.title}
-            as="h3"
+            as="span"
             className="line-clamp-2 text-center text-lg text-basic-primary"
           >
             {product.title}
-          </Heading>
+          </Text>
         </LocalizedClientLink>
         <ProductPrice price={cheapestPrice} />
       </div>

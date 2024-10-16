@@ -5,6 +5,8 @@ export default function Loading() {
   return (
     <Container className="flex flex-col gap-8 !py-8">
       <div className="flex animate-pulse flex-col gap-4">
+        <div className="h-6 w-[150px] bg-skeleton-primary small:w-[200px]" />
+        <div className="h-12 w-[300px] bg-skeleton-primary small:h-14 small:w-[350px]" />
         <div className="h-[22px] w-[100px] bg-skeleton-primary" />
         <div className="grid w-full grid-cols-1 items-center justify-between gap-2 large:flex">
           <div className="flex gap-2">

@@ -30,7 +30,7 @@ export function ExploreBlog({ posts }: { posts: BlogPost[] }) {
             <LocalizedClientLink href="/blog">Read more</LocalizedClientLink>
           </Button>
         </Box>
-        <Box className="hidden items-center gap-2 large:flex">
+        <Box className="hidden items-center gap-2 large:grid large:grid-cols-3">
           {posts.map((post, id) => {
             return <BlogTile key={id} post={post} />
           })}

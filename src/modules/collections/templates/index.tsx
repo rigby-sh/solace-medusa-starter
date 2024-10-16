@@ -1,68 +1,68 @@
 import { Suspense } from 'react'
+import { notFound } from 'next/navigation'
 
 import { storeSortOptions } from '@lib/constants'
+import { getCollectionByHandle } from '@lib/data/collections'
+import { getProductsList, getStoreFilters } from '@lib/data/products'
 import { getRegion } from '@lib/data/regions'
-import { StoreCollection, StoreProduct } from '@medusajs/types'
+import { StoreCollection } from '@medusajs/types'
 import { Box } from '@modules/common/components/box'
 import { Container } from '@modules/common/components/container'
-import { Heading } from '@modules/common/components/heading'
 import RefinementList from '@modules/common/components/sort'
 import { Text } from '@modules/common/components/text'
 import { ProductCarousel } from '@modules/products/components/product-carousel'
 import { search } from '@modules/search/actions'
 import SkeletonProductGrid from '@modules/skeletons/templates/skeleton-product-grid'
+import SkeletonProductsCarousel from '@modules/skeletons/templates/skeleton-products-carousel'
 import ProductFilters from '@modules/store/components/filters'
 import ActiveProductFilters from '@modules/store/components/filters/active-filters'
 import ProductFiltersDrawer from '@modules/store/components/filters/filters-drawer'
-import StoreBreadcrumbs from '@modules/store/templates/breadcrumbs'
 import PaginatedProducts from '@modules/store/templates/paginated-products'
-import { ProductFilters as ProductFiltersType } from 'types/global'
+
+export const runtime = 'edge'
 
 export default async function CollectionTemplate({
-  sortBy,
-  page,
-  type,
-  material,
-  price,
-  filters,
-  countryCode,
-  currentCollection,
-  recommendedProducts,
+  searchParams,
+  params,
 }: {
-  sortBy?: string
-  page?: string
-  type?: string[]
-  material?: string[]
-  price?: string[]
-  filters: ProductFiltersType
-  countryCode: string
-  currentCollection: StoreCollection
-  recommendedProducts: StoreProduct[]
+  searchParams: Record<string, string>
+  params: { countryCode: string; handle: string }
 }) {
-  const pageNumber = page ? parseInt(page) : 1
+  const { sortBy, page, type, material, price } = searchParams
+  const { countryCode, handle } = params
+
   const region = await getRegion(countryCode)
+  if (!region) notFound()
+
+  const currentCollection = await getCollectionByHandle(handle).then(
+    (collection: StoreCollection) => collection
+  )
+  if (!currentCollection) notFound()
+
+  const pageNumber = page ? parseInt(page) : 1
+  const filters = await getStoreFilters()
 
   const { results, count } = await search({
     currency_code: region.currency_code,
     order: sortBy,
     page: pageNumber,
     collection: [currentCollection.id],
-    type,
-    material,
-    price,
+    type: type?.split(','),
+    material: material?.split(','),
+    price: price?.split(','),
   })
+
+  // TODO: Add logic in future
+  const { products: recommendedProducts } = await getProductsList({
+    pageParam: 0,
+    queryParams: { limit: 9 },
+    countryCode: params.countryCode,
+  }).then(({ response }) => response)
 
   return (
     <>
-      <Container className="flex flex-col gap-8 !py-8">
+      <Container className="flex flex-col gap-8 !pb-8 !pt-4">
         <Box className="flex flex-col gap-4">
-          <StoreBreadcrumbs breadcrumb={currentCollection.title} />
-          <Heading
-            as="h1"
-            className="text-4xl text-basic-primary small:text-5xl"
-          >
-            {currentCollection.title}
-          </Heading>
           <Text className="text-md text-secondary">
             {count === 1 ? `${count} product` : `${count} products`}
           </Text>
@@ -99,11 +99,15 @@ export default async function CollectionTemplate({
           )}
         </Suspense>
       </Container>
-      <ProductCarousel
-        products={recommendedProducts}
-        regionId={region.id}
-        title="Recommended products"
-      />
+      {recommendedProducts && (
+        <Suspense fallback={<SkeletonProductsCarousel />}>
+          <ProductCarousel
+            products={recommendedProducts}
+            regionId={region.id}
+            title="Recommended products"
+          />
+        </Suspense>
+      )}
     </>
   )
 }

@@ -2,74 +2,65 @@ import { Suspense } from 'react'
 import { notFound } from 'next/navigation'
 
 import { storeSortOptions } from '@lib/constants'
+import { getCategoryByHandle } from '@lib/data/categories'
+import { getProductsList, getStoreFilters } from '@lib/data/products'
 import { getRegion } from '@lib/data/regions'
-import { HttpTypes, StoreProduct } from '@medusajs/types'
 import { Box } from '@modules/common/components/box'
 import { Container } from '@modules/common/components/container'
-import { Heading } from '@modules/common/components/heading'
 import RefinementList from '@modules/common/components/sort'
 import { Text } from '@modules/common/components/text'
 import { ProductCarousel } from '@modules/products/components/product-carousel'
 import { search } from '@modules/search/actions'
 import SkeletonProductGrid from '@modules/skeletons/templates/skeleton-product-grid'
+import SkeletonProductsCarousel from '@modules/skeletons/templates/skeleton-products-carousel'
 import ProductFilters from '@modules/store/components/filters'
 import ActiveProductFilters from '@modules/store/components/filters/active-filters'
 import ProductFiltersDrawer from '@modules/store/components/filters/filters-drawer'
-import StoreBreadcrumbs from '@modules/store/templates/breadcrumbs'
 import PaginatedProducts from '@modules/store/templates/paginated-products'
-import { ProductFilters as ProductFiltersType } from 'types/global'
+
+export const runtime = 'edge'
 
 export default async function CategoryTemplate({
-  sortBy,
-  page,
-  collection,
-  type,
-  material,
-  price,
-  filters,
-  countryCode,
-  categories,
-  recommendedProducts,
+  searchParams,
+  params,
 }: {
-  sortBy?: string
-  page?: string
-  collection?: string[]
-  type?: string[]
-  material?: string[]
-  price?: string[]
-  filters: ProductFiltersType
-  countryCode: string
-  categories: HttpTypes.StoreProductCategory[]
-  recommendedProducts: StoreProduct[]
+  searchParams: Record<string, string>
+  params: { countryCode: string; category: string[] }
 }) {
-  const pageNumber = page ? parseInt(page) : 1
-  const category = categories[categories.length - 1]
-  const region = await getRegion(countryCode)
+  const { sortBy, page, collection, type, material, price } = searchParams
+  const { countryCode, category } = params
 
-  if (!category || !region) notFound()
+  const region = await getRegion(countryCode)
+  const { product_categories } = await getCategoryByHandle(category)
+  const currentCategory = product_categories[product_categories.length - 1]
+
+  if (!currentCategory || !region) notFound()
+
+  const pageNumber = page ? parseInt(page) : 1
+  const filters = await getStoreFilters()
 
   const { results, count } = await search({
     currency_code: region.currency_code,
-    category_id: category.id,
+    category_id: currentCategory.id,
     order: sortBy,
     page: pageNumber,
-    collection,
-    type,
-    material,
-    price,
+    collection: collection?.split(','),
+    type: type?.split(','),
+    material: material?.split(','),
+    price: price?.split(','),
   })
+
+  // TODO: Add logic in future
+  const { products: recommendedProducts } = await getProductsList({
+    pageParam: 0,
+    queryParams: { limit: 9 },
+    countryCode: params.countryCode,
+  }).then(({ response }) => response)
 
   return (
     <>
-      <Container className="flex flex-col gap-8 !py-8">
+      <Container className="flex flex-col gap-8 !pb-8 !pt-4">
         <Box className="flex flex-col gap-4">
-          <StoreBreadcrumbs breadcrumb={category.name} />
-          <Heading
-            as="h1"
-            className="text-4xl text-basic-primary small:text-5xl"
-          >
-            {category.name}
-          </Heading>
           <Text className="text-md text-secondary">
             {count === 1 ? `${count} product` : `${count} products`}
           </Text>
@@ -87,7 +78,7 @@ export default async function CategoryTemplate({
           </Box>
           <ActiveProductFilters
             filters={filters}
-            currentCategory={category}
+            currentCategory={currentCategory}
             countryCode={countryCode}
           />
         </Box>
@@ -106,11 +97,15 @@ export default async function CategoryTemplate({
           )}
         </Suspense>
       </Container>
-      <ProductCarousel
-        products={recommendedProducts}
-        regionId={region.id}
-        title="Recommended products"
-      />
+      {recommendedProducts && (
+        <Suspense fallback={<SkeletonProductsCarousel />}>
+          <ProductCarousel
+            products={recommendedProducts}
+            regionId={region.id}
+            title="Recommended products"
+          />
+        </Suspense>
+      )}
     </>
   )
 }
