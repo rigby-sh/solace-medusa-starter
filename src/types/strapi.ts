@@ -47,6 +47,7 @@ export type BlogPost = {
     url: string
     alternativeText?: string
   }
+  createdAt: string
 }
 
 export type BlogData = {
