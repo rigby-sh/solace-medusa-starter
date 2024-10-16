@@ -106,7 +106,7 @@ export default async function SearchResultsTemplate({
             <SearchResultsIcon />
             <Box className="flex flex-col items-center gap-2">
               <Heading as="h3" className="text-xl small:text-2xl">
-                No results for {`"${query}"`}
+                No results for &quot;{decodeURIComponent(query)}&quot;
               </Heading>
               <p className="text-center text-md text-secondary">
                 Please try again using a different spelling or phrase

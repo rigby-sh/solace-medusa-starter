@@ -1,4 +1,5 @@
 import validator from 'validator'
+import * as Yup from 'yup'
 
 export type ValidationError = {
   field: string
@@ -32,39 +33,33 @@ export const validatePassword = (password: string): string[] => {
   return unmetRequirements
 }
 
-export const validateField = (
-  name: string,
-  value: string,
-  addressType: 'billing' | 'shipping',
-  touchedFields: Record<string, boolean>,
-  setErrors: React.Dispatch<React.SetStateAction<Record<string, string>>>
-) => {
-  const addressPrefix = `${addressType}_address.`
-  if (
-    touchedFields[name] &&
-    !value &&
-    name !== `${addressPrefix}company` &&
-    name !== `${addressPrefix}province`
-  ) {
-    setErrors((prev) => ({ ...prev, [name]: 'Please enter' }))
-  } else if (name === `${addressPrefix}phone` && value) {
-    if (!validatePhoneNumber(value)) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: 'Invalid value. Please enter correct',
-      }))
-    } else {
-      setErrors((prev) => {
-        const newErrors = { ...prev }
-        delete newErrors[name]
-        return newErrors
-      })
-    }
-  } else {
-    setErrors((prev) => {
-      const newErrors = { ...prev }
-      delete newErrors[name]
-      return newErrors
-    })
-  }
-}
+const billingFormValidationSchema = Yup.object({
+  first_name: Yup.string().required('Please enter first name'),
+  last_name: Yup.string().required('Please enter last name'),
+  address_1: Yup.string().required('Please enter address'),
+  city: Yup.string().required('Please enter city'),
+  country_code: Yup.string().required('Please select country'),
+  postal_code: Yup.string().required('Please enter postal code'),
+  phone: Yup.number().required('Please enter phone number'),
+})
+
+export const checkoutFormValidationSchema = Yup.object({
+  shipping_address: Yup.object({
+    first_name: Yup.string().required('Please enter first name'),
+    last_name: Yup.string().required('Please enter last name'),
+    address_1: Yup.string().required('Please enter address'),
+    city: Yup.string().required('Please enter city'),
+    country_code: Yup.string().required('Please select country'),
+    postal_code: Yup.string().required('Please enter postal code'),
+    phone: Yup.number().required('Please enter phone number'),
+  }),
+  billing_address: Yup.object().when('same_as_shipping', {
+    is: false,
+    then: () => billingFormValidationSchema,
+    otherwise: () => Yup.object().notRequired(),
+  }),
+  email: Yup.string()
+    .email('Invalid email address')
+    .required('Please enter email'),
+  same_as_shipping: Yup.boolean(),
+})

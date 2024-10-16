@@ -86,6 +86,7 @@ const SideMenu = ({
 
       return item.type === 'collection' && strapiCollection ? (
         <LocalizedClientLink
+          key={index}
           href={item.handle}
           className="relative mb-2"
           onClick={() => handleOpenDialogChange(false)}

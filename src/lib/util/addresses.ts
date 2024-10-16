@@ -1,4 +1,5 @@
 import { HttpTypes } from '@medusajs/types'
+import { SelectedAddressProps } from '@modules/checkout/components/shipping-address/selected-address'
 import { isEqual, pick } from 'lodash'
 
 type FormData = Record<string, string>
@@ -31,7 +32,7 @@ export default function compareAddresses(address1: any, address2: any) {
 }
 
 export const getShippingAddressDisplay = (
-  formData: FormData,
+  formikValues: SelectedAddressProps['formikValues'],
   addressesInRegion: HttpTypes.StoreCustomerAddress[] | undefined,
   cart: HttpTypes.StoreCart | null
 ): FormData => {
@@ -41,12 +42,12 @@ export const getShippingAddressDisplay = (
   // Check if customer has selected address
   const formDataAddress = addressesInRegion?.find(
     (addr) =>
-      addr.first_name === formData['shipping_address.first_name'] &&
-      addr.last_name === formData['shipping_address.last_name'] &&
-      addr.address_1 === formData['shipping_address.address_1'] &&
-      addr.city === formData['shipping_address.city'] &&
-      addr.country_code === formData['shipping_address.country_code'] &&
-      addr.postal_code === formData['shipping_address.postal_code']
+      addr.first_name === formikValues.shipping_address.first_name &&
+      addr.last_name === formikValues.shipping_address.last_name &&
+      addr.address_1 === formikValues.shipping_address.address_1 &&
+      addr.city === formikValues.shipping_address.city &&
+      addr.country_code === formikValues.shipping_address.country_code &&
+      addr.postal_code === formikValues.shipping_address.postal_code
   )
 
   const selectedAddress =
@@ -59,18 +60,21 @@ export const getShippingAddressDisplay = (
 
   if (selectedAddress) {
     return {
-      'shipping_address.first_name': selectedAddress.first_name || '',
-      'shipping_address.last_name': selectedAddress.last_name || '',
-      'shipping_address.company': selectedAddress.company || '',
-      'shipping_address.address_1': selectedAddress.address_1 || '',
-      'shipping_address.address_2': selectedAddress.address_2 || '',
-      'shipping_address.postal_code': selectedAddress.postal_code || '',
-      'shipping_address.city': selectedAddress.city || '',
-      'shipping_address.country_code': selectedAddress.country_code || '',
-      'shipping_address.province': selectedAddress.province || '',
-      'shipping_address.phone': selectedAddress.phone || '',
+      first_name: selectedAddress.first_name || '',
+      last_name: selectedAddress.last_name || '',
+      company: selectedAddress.company || '',
+      address_1: selectedAddress.address_1 || '',
+      address_2: selectedAddress.address_2 || '',
+      postal_code: selectedAddress.postal_code || '',
+      city: selectedAddress.city || '',
+      country_code: selectedAddress.country_code || '',
+      province: selectedAddress.province || '',
+      phone: selectedAddress.phone || '',
     }
   }
 
-  return formData
+  return {
+    ...formikValues.shipping_address,
+    email: formikValues.email || cart?.email,
+  }
 }

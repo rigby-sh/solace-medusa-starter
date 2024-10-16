@@ -149,7 +149,7 @@ export default function ProductActions({
         <ProductPrice product={product} variant={selectedVariant} />
         <Divider />
         <div>
-          {(product.variants?.length ?? 0) > 1 && (
+          {product.variants.length > 0 && (
             <div className="flex flex-col gap-y-4">
               {(product.options || []).map((option) => {
                 return (
@@ -197,7 +197,7 @@ export default function ProductActions({
                 : 'Add to cart'}
           </Button>
         </Box>
-        {maxQuantity === 0 && (
+        {maxQuantity === 0 && inStock && (
           <Text size="sm" className="text-negative">
             You cannot add more items to your cart - you already have the
             maximum number in cart.

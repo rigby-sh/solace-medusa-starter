@@ -132,7 +132,6 @@ export function ResetPassword() {
           </Box>
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <Input
-              noLabel={true}
               label="New Password"
               name="new_password"
               required
@@ -172,7 +171,6 @@ export function ResetPassword() {
               })}
             </Box>
             <Input
-              noLabel={true}
               label="Confirm new password"
               name="confirmed_password"
               required

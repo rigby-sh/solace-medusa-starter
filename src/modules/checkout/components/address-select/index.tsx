@@ -96,12 +96,14 @@ const AddressSelect: React.FC<AddressSelectProps> = ({
           </VisuallyHidden.Root>
           <DialogBody className="flex flex-col gap-6 overflow-y-auto p-4 small:p-5">
             {addNewAddress ? (
+              // TODO: For refactor with formik
               <NewAddressForm
                 ref={formRef}
                 region={cart?.region}
                 formState={addFormState}
               />
             ) : editAddress ? (
+              // TODO: For refactor with formik
               <EditAddressForm
                 ref={editFormRef}
                 address={editingAddress}

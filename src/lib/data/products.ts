@@ -79,13 +79,21 @@ export const getProductsList = cache(async function ({
       },
       { next: { tags: ['products'] } }
     )
-    .then(({ products, count }) => {
-      const nextPage = count > offset + limit ? pageParam + 1 : null
+    .then(({ products }) => {
+      const filteredProducts = products.filter((product) => {
+        if (product.variants.length === 1) {
+          return product.variants[0].inventory_quantity > 0
+        }
+        return product.variants.length > 1
+      })
+
+      const filteredCount = filteredProducts.length
+      const nextPage = filteredCount > offset + limit ? pageParam + 1 : null
 
       return {
         response: {
-          products,
-          count,
+          products: filteredProducts,
+          count: filteredCount,
         },
         nextPage: nextPage,
         queryParams,

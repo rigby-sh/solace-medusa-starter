@@ -1,4 +1,6 @@
-import React, { ChangeEvent, FormEvent, RefObject } from 'react'
+'use client'
+
+import React, { ChangeEvent, FormEvent, RefObject, useEffect } from 'react'
 
 import { XMarkMini } from '@medusajs/icons'
 import { Box } from '@modules/common/components/box'
@@ -45,6 +47,12 @@ export const ControlledSearchBox = ({
       inputRef.current.focus()
     }
   }
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [])
 
   return (
     <Box {...props} className="w-full bg-primary">

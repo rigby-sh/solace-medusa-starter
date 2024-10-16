@@ -4,6 +4,7 @@ import React from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 import { setAddresses } from '@lib/data/cart'
+import { useCheckoutForms } from '@lib/hooks/use-checkout-forms'
 import compareAddresses from '@lib/util/addresses'
 import { HttpTypes } from '@medusajs/types'
 import { useToggleState } from '@medusajs/ui'
@@ -17,7 +18,6 @@ import { Spinner } from '@modules/common/icons'
 import { useFormState } from 'react-dom'
 
 import BillingAddress from '../billing_address'
-import ErrorMessage from '../error-message'
 import ShippingAddress from '../shipping-address'
 import { SubmitButton } from '../submit-button'
 
@@ -34,18 +34,85 @@ const Addresses = ({
 
   const isOpen = searchParams.get('step') === 'address'
 
-  const { state: sameAsShipping, toggle: toggleSameAsShipping } =
+  const handleEdit = () => {
+    router.push(pathname + '?step=address')
+  }
+
+  const { state: sameAsShipping, toggle: originalToggleSameAsShipping } =
     useToggleState(
       cart?.shipping_address && cart?.billing_address
         ? compareAddresses(cart?.billing_address, cart?.shipping_address)
         : true
     )
 
-  const handleEdit = () => {
-    router.push(pathname + '?step=address')
+  const initialValues = {
+    shipping_address: cart?.shipping_address || {
+      first_name: '',
+      last_name: '',
+      address_1: '',
+      company: '',
+      postal_code: '',
+      city: '',
+      country_code: cart?.shipping_address?.country_code ?? '',
+      province: '',
+      phone: '',
+    },
+    billing_address: cart?.billing_address || {
+      first_name: '',
+      last_name: '',
+      address_1: '',
+      company: '',
+      postal_code: '',
+      city: '',
+      country_code: cart?.shipping_address?.country_code ?? '',
+      province: '',
+      phone: '',
+    },
+    email: cart?.email || customer?.email || '',
+    same_as_shipping: sameAsShipping,
   }
 
-  const [message, formAction] = useFormState(setAddresses, null)
+  const checkout = useCheckoutForms(initialValues)
+  const [, formAction] = useFormState(setAddresses, null)
+
+  const toggleSameAsShipping = (value: boolean) => {
+    originalToggleSameAsShipping()
+    checkout.setFieldValue('same_as_shipping', value)
+  }
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    try {
+      await checkout.handleSubmit()
+
+      if (Object.keys(checkout.errors).length === 0) {
+        const formData = new FormData()
+
+        Object.entries(checkout.values.shipping_address).forEach(
+          ([key, value]) => {
+            formData.append(`shipping_address.${key}`, value as string)
+          }
+        )
+
+        Object.entries(checkout.values.billing_address).forEach(
+          ([key, value]) => {
+            formData.append(`billing_address.${key}`, value as string)
+          }
+        )
+
+        formData.append('email', checkout.values.email)
+        formData.append(
+          'same_as_shipping',
+          checkout.values.same_as_shipping ? 'on' : 'off'
+        )
+
+        await formAction(formData)
+      }
+    } catch (error) {
+      console.error('Error:', error)
+    }
+  }
 
   return (
     <Box className="bg-primary p-5">
@@ -73,13 +140,17 @@ const Addresses = ({
         )}
       </Box>
       {isOpen ? (
-        <form action={formAction}>
+        <form onSubmit={handleSubmit}>
           <Box>
             <ShippingAddress
               customer={customer}
               cart={cart}
+              formik={checkout}
               checked={sameAsShipping}
+              values={checkout.values}
               onChange={toggleSameAsShipping}
+              handleChange={checkout.handleChange}
+              errors={checkout.errors}
             />
             {!sameAsShipping && (
               <div>
@@ -87,13 +158,21 @@ const Addresses = ({
                 <Heading as="h2" className="pb-6 text-2xl">
                   Billing address
                 </Heading>
-                <BillingAddress cart={cart} />
+                <BillingAddress
+                  cart={cart}
+                  values={checkout.values}
+                  handleChange={checkout.handleChange}
+                  errors={checkout.errors}
+                />
               </div>
             )}
-            <SubmitButton className="mt-6" data-testid="submit-address-button">
+            <SubmitButton
+              isLoading={checkout.isSubmitting}
+              className="mt-6"
+              data-testid="submit-address-button"
+            >
               Proceed to delivery
             </SubmitButton>
-            <ErrorMessage error={message} data-testid="address-error-message" />
           </Box>
         </form>
       ) : (
@@ -115,7 +194,8 @@ const Addresses = ({
                       {cart.shipping_address.last_name}
                     </Text>
                     <Text className="text-secondary">
-                      {cart.shipping_address.company},{' '}
+                      {cart.shipping_address.company &&
+                        `${cart.shipping_address.company}, `}
                       {cart.shipping_address.address_1},{' '}
                       {cart.shipping_address.postal_code},{' '}
                       {cart.shipping_address.city},{' '}
@@ -174,5 +254,4 @@ const Addresses = ({
     </Box>
   )
 }
-
 export default Addresses

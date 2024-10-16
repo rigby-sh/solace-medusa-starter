@@ -6,6 +6,8 @@ import { clx } from '@medusajs/ui'
 import { Button } from '@modules/common/components/button'
 import { TrashIcon } from '@modules/common/icons'
 
+import { toast } from '../toast'
+
 const DeleteButton = ({
   id,
   children,
@@ -21,9 +23,15 @@ const DeleteButton = ({
 
   const handleDelete = async (id: string) => {
     setIsDeleting(true)
-    await deleteLineItem(id).catch((err) => {
-      setIsDeleting(false)
-    })
+
+    await deleteLineItem(id)
+      .catch((err) => {
+        toast('error', err)
+      })
+      .finally(() => {
+        toast('success', 'Product was removed from cart.')
+        setIsDeleting(false)
+      })
   }
 
   return (

@@ -13,13 +13,20 @@ import { ChevronDownIcon } from '@modules/common/icons/chevron-down'
 export type NativeSelectProps = {
   placeholder?: string
   label?: string
-  errors?: Record<string, unknown>
+  error?: string
   touched?: Record<string, unknown>
 } & SelectHTMLAttributes<HTMLSelectElement>
 
 const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
   (
-    { placeholder = 'Select...', defaultValue, className, children, ...props },
+    {
+      placeholder = 'Select...',
+      defaultValue,
+      className,
+      error,
+      children,
+      ...props
+    },
     ref
   ) => {
     const innerRef = useRef<HTMLSelectElement>(null)
@@ -48,7 +55,8 @@ const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
             className,
             {
               'text-secondary': isPlaceholder,
-            }
+            },
+            { 'border-negative': !!error }
           )}
         >
           <select
@@ -66,6 +74,9 @@ const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
             <ChevronDownIcon className="h-5 w-5 text-basic-primary" />
           </span>
         </div>
+        {error && (
+          <p className="mt-2 text-sm font-medium text-negative">{error}</p>
+        )}
       </div>
     )
   }

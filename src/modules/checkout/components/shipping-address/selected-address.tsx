@@ -4,75 +4,40 @@ import { getShippingAddressDisplay } from '@lib/util/addresses'
 import { HttpTypes } from '@medusajs/types'
 import { Text } from '@modules/common/components/text'
 
-type SelectedAddressProps = {
-  formData: Record<string, string>
+export type SelectedAddressProps = {
+  formikValues: {
+    shipping_address: Record<string, string>
+    email: string
+  }
   addressesInRegion: HttpTypes.StoreCustomerAddress[]
   cart: HttpTypes.StoreCart
 }
 
 export default function SelectedAddress({
-  formData,
+  formikValues,
   addressesInRegion,
   cart,
 }: SelectedAddressProps) {
+  const addressDisplay = getShippingAddressDisplay(
+    formikValues,
+    addressesInRegion,
+    cart
+  )
+
   return (
     <>
       <Text size="lg" className="text-basic-primary">
-        {
-          getShippingAddressDisplay(formData, addressesInRegion, cart)[
-            'shipping_address.first_name'
-          ]
-        }{' '}
-        {
-          getShippingAddressDisplay(formData, addressesInRegion, cart)[
-            'shipping_address.last_name'
-          ]
-        }
+        {addressDisplay.first_name} {addressDisplay.last_name}
       </Text>
       <Text className="text-secondary">
-        {getShippingAddressDisplay(formData, addressesInRegion, cart)[
-          'shipping_address.company'
-        ] &&
-          `${
-            getShippingAddressDisplay(formData, addressesInRegion, cart)[
-              'shipping_address.company'
-            ]
-          }, `}
-        {
-          getShippingAddressDisplay(formData, addressesInRegion, cart)[
-            'shipping_address.address_1'
-          ]
-        }
-        ,{' '}
-        {
-          getShippingAddressDisplay(formData, addressesInRegion, cart)[
-            'shipping_address.postal_code'
-          ]
-        }
-        ,{' '}
-        {
-          getShippingAddressDisplay(formData, addressesInRegion, cart)[
-            'shipping_address.city'
-          ]
-        }
-        ,{' '}
-        {getShippingAddressDisplay(formData, addressesInRegion, cart)[
-          'shipping_address.country_code'
-        ]?.toUpperCase()}
-        {getShippingAddressDisplay(formData, addressesInRegion, cart)[
-          'shipping_address.province'
-        ] &&
-          `, ${
-            getShippingAddressDisplay(formData, addressesInRegion, cart)[
-              'shipping_address.province'
-            ]
-          }`}
+        {addressDisplay.company && `${addressDisplay.company}, `}
+        {addressDisplay.address_1}, {addressDisplay.postal_code},{' '}
+        {addressDisplay.city}, {addressDisplay.country_code?.toUpperCase()}
+        {addressDisplay.province && `, ${addressDisplay.province}`}
       </Text>
       <Text className="text-secondary">
         {cart?.email && `${cart.email}, `}
-        {getShippingAddressDisplay(formData, addressesInRegion, cart)[
-          'shipping_address.phone'
-        ] || ''}
+        {addressDisplay.phone || ''}
       </Text>
     </>
   )
