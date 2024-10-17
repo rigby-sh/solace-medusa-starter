@@ -1,10 +1,13 @@
-import React, { forwardRef } from 'react'
+import React, { ChangeEventHandler, forwardRef } from 'react'
 
+import { userShippingAddressFormValidationSchema } from '@lib/util/validator'
 import { HttpTypes } from '@medusajs/types'
 import { Box } from '@modules/common/components/box'
 import { Checkbox } from '@modules/common/components/checkbox'
 import { Input } from '@modules/common/components/input'
 import { Label } from '@modules/common/components/label'
+import { useFormikContext } from 'formik'
+import { InferType } from 'yup'
 
 import CountrySelect from '../country-select'
 
@@ -21,6 +24,11 @@ const NewAddressForm = forwardRef<HTMLFormElement, NewAddressFormProps>(
   (props, ref) => {
     const { region, formState } = props
 
+    const { setFieldValue, errors, values, handleChange } =
+      useFormikContext<
+        InferType<typeof userShippingAddressFormValidationSchema>
+      >()
+
     return (
       <>
         <form ref={ref}>
@@ -31,6 +39,9 @@ const NewAddressForm = forwardRef<HTMLFormElement, NewAddressFormProps>(
               required
               autoComplete="given-name"
               data-testid="first-name-input"
+              error={errors?.first_name}
+              value={values.first_name}
+              onChange={handleChange}
             />
             <Input
               label="Last name"
@@ -38,12 +49,18 @@ const NewAddressForm = forwardRef<HTMLFormElement, NewAddressFormProps>(
               required
               autoComplete="family-name"
               data-testid="last-name-input"
+              error={errors?.last_name}
+              value={values.last_name}
+              onChange={handleChange}
             />
             <Input
               label="Company name (optional)"
               name="company"
               autoComplete="organization"
               data-testid="company-input"
+              error={errors?.company}
+              value={values.company}
+              onChange={handleChange}
             />
             <Input
               label="Address"
@@ -51,6 +68,9 @@ const NewAddressForm = forwardRef<HTMLFormElement, NewAddressFormProps>(
               required
               autoComplete="address-line1"
               data-testid="address-1-input"
+              error={errors?.address_1}
+              value={values.address_1}
+              onChange={handleChange}
             />
             <Input
               label="Postal code"
@@ -58,6 +78,9 @@ const NewAddressForm = forwardRef<HTMLFormElement, NewAddressFormProps>(
               required
               autoComplete="postal-code"
               data-testid="postal-code-input"
+              error={errors?.postal_code}
+              value={values.postal_code}
+              onChange={handleChange}
             />
             <Input
               label="City"
@@ -65,6 +88,9 @@ const NewAddressForm = forwardRef<HTMLFormElement, NewAddressFormProps>(
               required
               autoComplete="locality"
               data-testid="city-input"
+              error={errors?.city}
+              value={values.city}
+              onChange={handleChange}
             />
             <CountrySelect
               label="Country"
@@ -73,12 +99,20 @@ const NewAddressForm = forwardRef<HTMLFormElement, NewAddressFormProps>(
               required
               autoComplete="country"
               data-testid="country-select"
+              error={errors?.country_code}
+              value={values.country_code}
+              onChange={
+                handleChange as unknown as ChangeEventHandler<HTMLSelectElement>
+              }
             />
             <Input
               label="State / Province (optional)"
               name="province"
               autoComplete="address-level1"
               data-testid="state-input"
+              error={errors?.province}
+              value={values.province}
+              onChange={handleChange}
             />
             <Input
               label="Phone number"
@@ -86,10 +120,20 @@ const NewAddressForm = forwardRef<HTMLFormElement, NewAddressFormProps>(
               required
               autoComplete="phone"
               data-testid="phone-input"
+              error={errors?.phone}
+              value={values.phone}
+              onChange={handleChange}
             />
           </Box>
           <Box className="mt-6 flex items-center gap-x-2">
-            <Checkbox id="is_default_shipping" name="is_default_shipping" />
+            <Checkbox
+              id="is_default_shipping"
+              name="is_default_shipping"
+              checked={Boolean(values.is_default_shipping)}
+              onChange={(checked) =>
+                setFieldValue('is_default_shipping', checked)
+              }
+            />
             <Label
               htmlFor="is_default_shipping"
               className="cursor-pointer !text-md"

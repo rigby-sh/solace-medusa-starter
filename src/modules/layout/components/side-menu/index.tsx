@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useMemo, useState } from 'react'
+import React, { Fragment, useMemo, useState } from 'react'
 import Image from 'next/image'
 
 import { createNavigation } from '@lib/constants'
@@ -105,9 +105,8 @@ const SideMenu = ({
           </Box>
         </LocalizedClientLink>
       ) : (
-        <>
+        <Fragment key={index}>
           <Button
-            key={index}
             variant="ghost"
             className="w-full justify-between"
             onClick={
@@ -141,7 +140,7 @@ const SideMenu = ({
           {index === lastCategoryIndex && (
             <Divider className="my-4 -ml-4 w-[calc(100%+2rem)]" />
           )}
-        </>
+        </Fragment>
       )
     })
   }

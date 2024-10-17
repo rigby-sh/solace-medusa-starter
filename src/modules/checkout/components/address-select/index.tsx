@@ -1,6 +1,5 @@
-import React from 'react'
-
 import { useAddressSelect } from '@lib/hooks/use-address-select'
+import { userShippingAddressFormValidationSchema } from '@lib/util/validator'
 import { HttpTypes } from '@medusajs/types'
 import { Button } from '@modules/common/components/button'
 import {
@@ -17,6 +16,7 @@ import {
 } from '@modules/common/components/dialog'
 import { ArrowLeftIcon } from '@modules/common/icons'
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
+import { FormikProvider, useFormik } from 'formik'
 
 import EditAddressForm from '../edit-address-form'
 import NewAddressForm from '../new-address-form'
@@ -59,6 +59,35 @@ const AddressSelect: React.FC<AddressSelectProps> = ({
     selectedAddress,
   } = useAddressSelect(addresses, addressInput, cart, onSelect)
 
+  const defaultInitialValues = {
+    first_name: '',
+    last_name: '',
+    address_1: '',
+    city: '',
+    country_code: '',
+    postal_code: '',
+    phone: '',
+    company: '',
+    is_default_shipping: false,
+    province: '',
+  }
+
+  const formik = useFormik({
+    initialValues: editingAddress ?? defaultInitialValues,
+    validationSchema: userShippingAddressFormValidationSchema,
+    enableReinitialize: true,
+    onSubmit: async (values) => {
+      await formik.validateForm()
+
+      if (formik.isValid) {
+        handleSaveClick()
+      }
+    },
+    validateOnChange: false,
+  })
+
+  const handleSubmit = async () => await formik.handleSubmit()
+
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenDialogChange}>
       <DialogTrigger asChild>
@@ -95,38 +124,40 @@ const AddressSelect: React.FC<AddressSelectProps> = ({
             <DialogTitle>Select address modal</DialogTitle>
           </VisuallyHidden.Root>
           <DialogBody className="flex flex-col gap-6 overflow-y-auto p-4 small:p-5">
-            {addNewAddress ? (
-              // TODO: For refactor with formik
-              <NewAddressForm
-                ref={formRef}
-                region={cart?.region}
-                formState={addFormState}
-              />
-            ) : editAddress ? (
-              // TODO: For refactor with formik
-              <EditAddressForm
-                ref={editFormRef}
-                address={editingAddress}
-                region={cart?.region}
-                formState={updateFormState}
-              />
-            ) : (
-              <AddressesList
-                addresses={addresses}
-                choosenAddressId={choosenAddressId}
-                setChoosenAddressId={setChoosenAddressId}
-                selectedAddress={selectedAddress}
-                handleEditAddress={handleEditAddress}
-                setEditAddress={setEditAddress}
-                setAddNewAddress={setAddNewAddress}
-              />
-            )}
+            <FormikProvider value={formik}>
+              {addNewAddress ? (
+                <NewAddressForm
+                  ref={formRef}
+                  region={cart?.region}
+                  formState={addFormState}
+                />
+              ) : editAddress ? (
+                <EditAddressForm
+                  ref={editFormRef}
+                  address={editingAddress}
+                  region={cart?.region}
+                  formState={updateFormState}
+                />
+              ) : (
+                <AddressesList
+                  addresses={addresses}
+                  choosenAddressId={choosenAddressId}
+                  setChoosenAddressId={setChoosenAddressId}
+                  selectedAddress={selectedAddress}
+                  handleEditAddress={handleEditAddress}
+                  setEditAddress={setEditAddress}
+                  setAddNewAddress={setAddNewAddress}
+                  resetForm={formik.resetForm}
+                />
+              )}
+            </FormikProvider>
           </DialogBody>
           <DialogFooter>
             <Button
               className="w-full"
               isLoading={addingSuccessState || editingSuccessState}
-              onClick={handleSaveClick}
+              onClick={handleSubmit}
+              type="button"
             >
               Save
             </Button>

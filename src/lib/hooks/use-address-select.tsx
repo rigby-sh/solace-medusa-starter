@@ -28,7 +28,6 @@ export const useAddressSelect = (
   const [addingSuccessState, setAddingSuccessState] = useState(false)
 
   const [addFormState, addFormAction] = useFormState(addCustomerAddress, {
-    addressName: 'shipping_address',
     success: false,
     error: null,
   })
@@ -46,6 +45,7 @@ export const useAddressSelect = (
     setAddNewAddress(false)
     setEditingSuccessState(false)
     setEditAddress(false)
+    setEditingAddress(null)
   }
 
   const handleOpenDialogChange = (open: boolean) => {
@@ -53,6 +53,7 @@ export const useAddressSelect = (
     if (!open) {
       setAddNewAddress(false)
       setEditAddress(false)
+      setEditingAddress(null)
     }
   }
 
@@ -68,6 +69,7 @@ export const useAddressSelect = (
     setAddingSuccessState(true)
     if (formRef.current) {
       const formData = new FormData(formRef.current)
+      formData.append('address_name', 'shipping_address')
       addFormAction(formData)
     }
   }
@@ -82,6 +84,7 @@ export const useAddressSelect = (
 
   const handleSaveEditedAddress = () => {
     setEditingSuccessState(true)
+
     if (editFormRef.current) {
       const formData = new FormData(editFormRef.current)
       updateFormAction(formData)

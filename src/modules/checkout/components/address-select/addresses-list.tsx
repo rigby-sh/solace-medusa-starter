@@ -22,6 +22,7 @@ type AddressListProps = {
   handleEditAddress: (id: string) => void
   setEditAddress: (edit: boolean) => void
   setAddNewAddress: (add: boolean) => void
+  resetForm: () => void
 }
 
 const AddressesList: React.FC<AddressListProps> = ({
@@ -32,6 +33,7 @@ const AddressesList: React.FC<AddressListProps> = ({
   handleEditAddress,
   setEditAddress,
   setAddNewAddress,
+  resetForm,
 }) => (
   <Box className="flex flex-col gap-6">
     <RadioGroupRoot
@@ -73,7 +75,10 @@ const AddressesList: React.FC<AddressListProps> = ({
       variant="tonal"
       size="sm"
       className="w-max"
-      onClick={() => setAddNewAddress(true)}
+      onClick={() => {
+        resetForm()
+        setAddNewAddress(true)
+      }}
     >
       <PlusIcon />
       Add new address

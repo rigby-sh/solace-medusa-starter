@@ -1,10 +1,13 @@
 import React, { forwardRef } from 'react'
 
+import { userShippingAddressFormValidationSchema } from '@lib/util/validator'
 import { HttpTypes } from '@medusajs/types'
 import { Box } from '@modules/common/components/box'
 import { Checkbox } from '@modules/common/components/checkbox'
 import { Input } from '@modules/common/components/input'
 import { Label } from '@modules/common/components/label'
+import { useFormikContext } from 'formik'
+import { InferType } from 'yup'
 
 import CountrySelect from '../country-select'
 
@@ -22,6 +25,11 @@ const EditAddressForm = forwardRef<HTMLFormElement, EditAddressFormProps>(
   (props, ref) => {
     const { address, region, formState } = props
 
+    const { setFieldValue, errors, values, handleChange, initialValues } =
+      useFormikContext<
+        InferType<typeof userShippingAddressFormValidationSchema>
+      >()
+
     return (
       <>
         <form ref={ref}>
@@ -32,47 +40,61 @@ const EditAddressForm = forwardRef<HTMLFormElement, EditAddressFormProps>(
               name="first_name"
               required
               autoComplete="given-name"
-              defaultValue={address.first_name || undefined}
               data-testid="first-name-input"
+              error={errors?.first_name}
+              value={values.first_name}
+              onChange={handleChange}
+              defaultValue={address.first_name || undefined}
             />
             <Input
               label="Last name"
               name="last_name"
               required
               autoComplete="family-name"
-              defaultValue={address.last_name || undefined}
               data-testid="last-name-input"
+              error={errors?.last_name}
+              value={values.last_name}
+              onChange={handleChange}
+              defaultValue={initialValues.last_name}
             />
             <Input
               label="Company name (optional)"
               name="company"
               autoComplete="organization"
-              defaultValue={address.company || undefined}
               data-testid="company-input"
+              error={errors?.company}
+              value={values.company}
+              onChange={handleChange}
             />
             <Input
               label="Address"
               name="address_1"
               required
               autoComplete="address-line1"
-              defaultValue={address.address_1 || undefined}
               data-testid="address-1-input"
+              error={errors?.address_1}
+              value={values.address_1}
+              onChange={handleChange}
             />
             <Input
               label="Postal code"
               name="postal_code"
               required
               autoComplete="postal-code"
-              defaultValue={address.postal_code || undefined}
               data-testid="postal-code-input"
+              error={errors?.postal_code}
+              value={values.postal_code}
+              onChange={handleChange}
             />
             <Input
               label="City"
               name="city"
               required
               autoComplete="locality"
-              defaultValue={address.city || undefined}
               data-testid="city-input"
+              error={errors?.city}
+              value={values.city}
+              onChange={handleChange}
             />
             <CountrySelect
               label="Country"
@@ -82,6 +104,9 @@ const EditAddressForm = forwardRef<HTMLFormElement, EditAddressFormProps>(
               autoComplete="country"
               defaultValue={address.country_code || undefined}
               data-testid="country-select"
+              error={errors?.country_code}
+              value={values.country_code}
+              onChange={handleChange}
             />
             <Input
               label="State / Province (optional)"
@@ -89,6 +114,9 @@ const EditAddressForm = forwardRef<HTMLFormElement, EditAddressFormProps>(
               autoComplete="address-level1"
               defaultValue={address.province || undefined}
               data-testid="state-input"
+              error={errors?.province}
+              value={values.province}
+              onChange={handleChange}
             />
             <Input
               label="Phone number"
@@ -96,6 +124,9 @@ const EditAddressForm = forwardRef<HTMLFormElement, EditAddressFormProps>(
               autoComplete="phone"
               defaultValue={address.phone || undefined}
               data-testid="phone-input"
+              error={errors?.phone}
+              value={values.phone}
+              onChange={handleChange}
             />
           </div>
           {formState.error && (
@@ -105,7 +136,10 @@ const EditAddressForm = forwardRef<HTMLFormElement, EditAddressFormProps>(
             <Checkbox
               id="is_default_shipping"
               name="is_default_shipping"
-              defaultChecked={address.is_default_shipping}
+              checked={Boolean(values.is_default_shipping)}
+              onChange={(checked) =>
+                setFieldValue('is_default_shipping', checked)
+              }
             />
             <Label
               htmlFor="is_default_shipping"

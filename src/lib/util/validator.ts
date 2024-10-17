@@ -51,7 +51,9 @@ export const checkoutFormValidationSchema = Yup.object({
     city: Yup.string().required('Please enter city'),
     country_code: Yup.string().required('Please select country'),
     postal_code: Yup.string().required('Please enter postal code'),
-    phone: Yup.number().required('Please enter phone number'),
+    phone: Yup.number()
+    .required('Please enter phone number')
+    .typeError('Phone number must contain only digits'),
   }),
   billing_address: Yup.object().when('same_as_shipping', {
     is: false,
@@ -62,4 +64,19 @@ export const checkoutFormValidationSchema = Yup.object({
     .email('Invalid email address')
     .required('Please enter email'),
   same_as_shipping: Yup.boolean(),
+})
+
+export const userShippingAddressFormValidationSchema = Yup.object({
+  first_name: Yup.string().required('Please enter first name'),
+  last_name: Yup.string().required('Please enter last name'),
+  address_1: Yup.string().required('Please enter address'),
+  city: Yup.string().required('Please enter city'),
+  country_code: Yup.string().required('Please select country'),
+  postal_code: Yup.string().required('Please enter postal code'),
+  phone: Yup.number()
+    .required('Please enter phone number')
+    .typeError('Phone number must contain only digits'),
+  company: Yup.string().optional(),
+  is_default_shipping: Yup.boolean().optional(),
+  province: Yup.string().optional(),
 })

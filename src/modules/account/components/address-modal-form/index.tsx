@@ -48,7 +48,6 @@ const AddressModalForm: React.FC<AddressModalFormProps> = ({
   })
 
   const [addFormState, addFormAction] = useFormState(addCustomerAddress, {
-    addressName: 'shipping_address',
     success: false,
     error: null,
   })
