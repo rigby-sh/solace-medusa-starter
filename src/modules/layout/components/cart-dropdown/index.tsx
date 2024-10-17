@@ -25,7 +25,7 @@ const CartDropdown = ({
   const [activeTimer, setActiveTimer] = useState<NodeJS.Timer | undefined>(
     undefined
   )
-  const [cartDropdownOpen, setCartDropdownOpen] = useState(true)
+  const [cartDropdownOpen, setCartDropdownOpen] = useState(false)
 
   const open = () => setCartDropdownOpen(true)
   const close = () => setCartDropdownOpen(false)
