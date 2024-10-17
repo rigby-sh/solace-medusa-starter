@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
 
 import { clx } from '@medusajs/ui'
 import { Box } from '@modules/common/components/box'
@@ -17,6 +16,8 @@ import {
 } from '@modules/common/components/dialog'
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
 import useEmblaCarousel from 'embla-carousel-react'
+
+import { LoadingImage } from '../product-tile/loading-image'
 
 type GalleryDialogProps = {
   images: { id: string; url: string }[]
@@ -95,12 +96,8 @@ export const GalleryDialog = ({
                         setCurrentIndex(id)
                       }}
                     >
-                      <Image
+                      <LoadingImage
                         src={img.url}
-                        draggable={false}
-                        quality={50}
-                        width={400}
-                        height={400}
                         alt={
                           title ? `${title} - product image` : 'Product image'
                         }
@@ -111,12 +108,10 @@ export const GalleryDialog = ({
                 </div>
               </div>
               <Box className="relative order-1 mx-auto flex h-full max-h-[458px] w-full items-center small:max-h-[758px] small:max-w-[549px] large:order-2 large:-translate-x-20 xl:max-w-[660px] 2xl:max-h-[1137px] 2xl:max-w-[990px]">
-                <Image
+                <LoadingImage
                   src={images[currentIndex].url}
                   alt={title ? `${title} - product image` : 'Product image'}
-                  fill
-                  objectFit="cover"
-                  objectPosition="center"
+                  className="object-cover object-center"
                 />
               </Box>
             </DialogBody>
