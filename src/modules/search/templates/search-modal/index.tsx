@@ -12,10 +12,11 @@ export default function SearchModal({ countryCode }: { countryCode: string }) {
   const router = useRouter()
   const searchRef = useRef(null)
   const inputRef = useRef(null)
+  const encodedQuery = encodeURIComponent(query)
 
   const handleSubmit = () => {
     if (query) {
-      router.push(`/${countryCode}/results/${query}`)
+      router.push(`/${countryCode}/results/${encodedQuery}`)
     }
   }
 

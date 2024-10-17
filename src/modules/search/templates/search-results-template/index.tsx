@@ -2,6 +2,7 @@ import React, { Suspense } from 'react'
 
 import { storeSortOptions } from '@lib/constants'
 import { getProductsList, getStoreFilters } from '@lib/data/products'
+import { safeDecodeURIComponent } from '@lib/util/safe-decode-uri'
 import { StoreRegion } from '@medusajs/types'
 import { Box } from '@modules/common/components/box'
 import { Container } from '@modules/common/components/container'
@@ -75,12 +76,14 @@ export default async function SearchResultsTemplate({
         {results && results.length > 0 ? (
           <>
             <Box className="flex flex-col gap-4">
-              <StoreBreadcrumbs breadcrumb={`"${decodeURIComponent(query)}"`} />
+              <StoreBreadcrumbs
+                breadcrumb={`"${safeDecodeURIComponent(query)}"`}
+              />
               <Heading
                 as="h1"
                 className="text-4xl text-basic-primary small:text-5xl"
               >
-                &quot;{decodeURIComponent(query)}&quot;
+                &quot;{safeDecodeURIComponent(query)}&quot;
               </Heading>
               <Text className="text-md text-secondary">
                 {count === 1 ? `${count} product` : `${count} products`}
@@ -117,7 +120,7 @@ export default async function SearchResultsTemplate({
             <SearchResultsIcon />
             <Box className="flex flex-col items-center gap-2">
               <Heading as="h3" className="text-xl small:text-2xl">
-                No results for &quot;{decodeURIComponent(query)}&quot;
+                No results for &quot;{safeDecodeURIComponent(query)}&quot;
               </Heading>
               <p className="text-center text-md text-secondary">
                 Please try again using a different spelling or phrase

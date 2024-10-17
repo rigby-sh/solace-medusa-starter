@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 
 import { getRegion } from '@lib/data/regions'
+import { safeDecodeURIComponent } from '@lib/util/safe-decode-uri'
 import SearchResultsTemplate from '@modules/search/templates/search-results-template'
 
 export const metadata: Metadata = {
@@ -23,12 +24,13 @@ type Params = {
 export default async function SearchResults({ params, searchParams }: Params) {
   const { sortBy, page, collection, type, material, price } = searchParams
   const { query, countryCode } = params
+  const decodedQuery = safeDecodeURIComponent(query)
 
   const region = await getRegion(countryCode)
 
   return (
     <SearchResultsTemplate
-      query={query}
+      query={decodedQuery}
       sortBy={sortBy}
       page={page}
       collection={collection?.split(',')}

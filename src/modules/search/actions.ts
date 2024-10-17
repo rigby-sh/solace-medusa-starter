@@ -1,3 +1,5 @@
+import { safeDecodeURIComponent } from '@lib/util/safe-decode-uri'
+
 export const BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL
 export const PUBLISHABLE_API_KEY =
   process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
@@ -87,7 +89,7 @@ export async function search({
   }
 
   if (query) {
-    searchParams.append('q', decodeURIComponent(query))
+    searchParams.append('q', safeDecodeURIComponent(query))
   }
 
   const response = await fetch(
