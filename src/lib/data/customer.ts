@@ -170,7 +170,8 @@ export const addCustomerAddress = async (
     province: formData.get('province') as string,
     country_code: formData.get('country_code') as string,
     phone: formData.get('phone') as string,
-    address_name: formData.get('address_name') as string ?? 'shipping_address',
+    address_name:
+      (formData.get('address_name') as string) ?? 'shipping_address',
     is_default_shipping:
       formData.get('is_default_shipping') === 'on' ? true : false,
   }

@@ -52,8 +52,8 @@ export const checkoutFormValidationSchema = Yup.object({
     country_code: Yup.string().required('Please select country'),
     postal_code: Yup.string().required('Please enter postal code'),
     phone: Yup.number()
-    .required('Please enter phone number')
-    .typeError('Phone number must contain only digits'),
+      .required('Please enter phone number')
+      .typeError('Phone number must contain only digits'),
   }),
   billing_address: Yup.object().when('same_as_shipping', {
     is: false,
