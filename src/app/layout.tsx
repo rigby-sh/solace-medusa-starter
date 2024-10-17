@@ -22,7 +22,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
           // disableTransitionOnChange
         >
           <ProgressBar />
-          <Toaster position="top-right" closeButton />
+          <Toaster position="top-right" offset={65} closeButton />
           <main className="relative">{props.children}</main>
         </ThemeProvider>
       </body>
