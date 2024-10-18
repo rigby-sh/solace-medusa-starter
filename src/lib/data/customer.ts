@@ -173,7 +173,7 @@ export const addCustomerAddress = async (
     address_name:
       (formData.get('address_name') as string) ?? 'shipping_address',
     is_default_shipping:
-      formData.get('is_default_shipping') === 'on' ? true : false,
+      formData.get('is_default_shipping') === 'on' || 'true' ? true : false,
   }
 
   return sdk.store.customer
@@ -220,7 +220,7 @@ export const updateCustomerAddress = async (
     country_code: formData.get('country_code') as string,
     phone: formData.get('phone') as string,
     is_default_shipping:
-      formData.get('is_default_shipping') === 'on' ? true : false,
+      formData.get('is_default_shipping') === 'on' || 'true' ? true : false,
   }
 
   return sdk.store.customer

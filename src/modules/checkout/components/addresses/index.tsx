@@ -1,7 +1,12 @@
 'use client'
 
 import React from 'react'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from 'next/navigation'
 
 import { initiatePaymentSession, setAddresses } from '@lib/data/cart'
 import { useCheckoutForms } from '@lib/hooks/use-checkout-forms'
@@ -29,6 +34,7 @@ const Addresses = ({
   customer: HttpTypes.StoreCustomer | null
 }) => {
   const searchParams = useSearchParams()
+  const params = useParams()
   const router = useRouter()
   const pathname = usePathname()
 
@@ -53,7 +59,8 @@ const Addresses = ({
       company: '',
       postal_code: '',
       city: '',
-      country_code: cart?.shipping_address?.country_code ?? '',
+      country_code:
+        params.countryCode || cart?.shipping_address?.country_code || '',
       province: '',
       phone: '',
     },

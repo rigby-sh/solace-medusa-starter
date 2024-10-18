@@ -1,88 +1,92 @@
 'use client'
 
-import React, { ChangeEvent, FormEvent, RefObject, useEffect } from 'react'
+import React, { FormEvent, useEffect, useRef, useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 import { XMarkMini } from '@medusajs/icons'
 import { Box } from '@modules/common/components/box'
 import { Input } from '@modules/common/components/input'
 
-export type ControlledSearchBoxProps = React.ComponentProps<'div'> & {
-  inputRef: RefObject<HTMLInputElement>
-  onChange(event: ChangeEvent): void
-  onReset(event: FormEvent): void
-  onSubmit?(event: FormEvent): void
-  placeholder?: string
-  value: string
-}
-
 export const ControlledSearchBox = ({
-  inputRef,
-  onChange,
-  onReset,
-  onSubmit,
-  placeholder,
-  value,
-  ...props
-}: ControlledSearchBoxProps) => {
+  countryCode,
+  open,
+  closeSearch,
+}: {
+  countryCode: string
+  open: boolean
+  closeSearch: () => void
+}) => {
+  const [query, setQuery] = useState<string | undefined>('')
+  const router = useRouter()
+  const inputRef = useRef(null)
+
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
     event.stopPropagation()
+    if (query) {
+      const localSearches =
+        JSON.parse(localStorage.getItem('recentSearches')) || []
 
-    if (onSubmit) {
-      onSubmit(event)
-    }
+      const updatedSearches = new Set([query, ...localSearches])
 
-    if (inputRef.current) {
-      inputRef.current.blur()
+      localStorage.setItem(
+        'recentSearches',
+        JSON.stringify(Array.from(updatedSearches).slice(0, 5))
+      )
+      router.push(`/${countryCode}/results/${query}`)
     }
+    inputRef.current.blur()
+    setQuery('')
+    closeSearch()
   }
 
   const handleReset = (event: FormEvent) => {
     event.preventDefault()
     event.stopPropagation()
-
-    onReset(event)
-
+    setQuery('')
     if (inputRef.current) {
       inputRef.current.focus()
     }
   }
 
   useEffect(() => {
-    if (inputRef.current) {
+    if (inputRef.current && open) {
       inputRef.current.focus()
     }
-  }, [])
+  }, [open])
+
+  const handleChange = (e) => {
+    setQuery(e.target.value)
+  }
 
   return (
-    <Box {...props} className="w-full bg-primary">
+    <div className="relative w-full bg-primary large:mx-auto large:w-max">
       <form action="" noValidate onSubmit={handleSubmit} onReset={handleReset}>
-        <Box className="flex items-center justify-between border border-action-primary p-1 px-2 small:p-2 small:px-4">
+        <Box className="flex w-full items-center justify-between border border-action-primary large:relative large:w-[400px] xl:w-[600px]">
           <Input
             ref={inputRef}
             data-testid="search-input"
             autoComplete="off"
             autoCorrect="off"
             autoCapitalize="off"
-            placeholder={placeholder}
+            placeholder={'Search products...'}
             spellCheck={false}
             type="search"
-            value={value}
-            onChange={onChange}
-            className="min-w-[80px] !border-none bg-transparent text-lg placeholder:text-basic-primary focus:outline-none xsmall:min-w-[170px] small:min-w-[400px]"
+            value={query}
+            onChange={handleChange}
+            className="w-full !border-none bg-transparent pr-5 text-lg placeholder:text-basic-primary focus:outline-none"
           />
-          {value && (
+          {query && (
             <button
               onClick={handleReset}
               type="button"
-              className="flex items-center justify-center gap-x-2 px-2 text-lg text-basic-primary focus:outline-none"
+              className="absolute right-0 flex items-center justify-center gap-x-2 px-4 text-lg text-basic-primary focus:outline-none"
             >
               <XMarkMini />
-              <span className="hidden small:inline">Cancel</span>
             </button>
           )}
         </Box>
       </form>
-    </Box>
+    </div>
   )
 }
