@@ -20,8 +20,6 @@ const SidebarBookmarks = ({ data }: SidebarBookmarksProps) => {
   const [isOpen, setIsOpen] = useState(true)
   const [activeSection, setActiveSection] = useState(data[0].id)
 
-  const sidebarRef = useRef<HTMLDivElement>(null)
-
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY + 96
@@ -44,7 +42,7 @@ const SidebarBookmarks = ({ data }: SidebarBookmarksProps) => {
   }, [data])
 
   return (
-    <div ref={sidebarRef} className="sticky top-24 w-full bg-primary">
+    <div className="sticky top-24 w-full bg-primary">
       <Accordion
         type="single"
         collapsible
