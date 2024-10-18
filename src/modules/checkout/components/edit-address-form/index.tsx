@@ -25,7 +25,7 @@ const EditAddressForm = forwardRef<HTMLFormElement, EditAddressFormProps>(
   (props, ref) => {
     const { address, region, formState } = props
 
-    const { setFieldValue, errors, values, handleChange, initialValues } =
+    const { setFieldValue, errors, values, handleChange } =
       useFormikContext<
         InferType<typeof userShippingAddressFormValidationSchema>
       >()
@@ -44,7 +44,6 @@ const EditAddressForm = forwardRef<HTMLFormElement, EditAddressFormProps>(
               error={errors?.first_name}
               value={values.first_name}
               onChange={handleChange}
-              defaultValue={address.first_name || undefined}
             />
             <Input
               label="Last name"
@@ -55,7 +54,6 @@ const EditAddressForm = forwardRef<HTMLFormElement, EditAddressFormProps>(
               error={errors?.last_name}
               value={values.last_name}
               onChange={handleChange}
-              defaultValue={initialValues.last_name}
             />
             <Input
               label="Company name (optional)"
@@ -102,7 +100,6 @@ const EditAddressForm = forwardRef<HTMLFormElement, EditAddressFormProps>(
               region={region}
               required
               autoComplete="country"
-              defaultValue={address.country_code || undefined}
               data-testid="country-select"
               error={errors?.country_code}
               value={values.country_code}
@@ -112,7 +109,6 @@ const EditAddressForm = forwardRef<HTMLFormElement, EditAddressFormProps>(
               label="State / Province (optional)"
               name="province"
               autoComplete="address-level1"
-              defaultValue={address.province || undefined}
               data-testid="state-input"
               error={errors?.province}
               value={values.province}
@@ -122,7 +118,6 @@ const EditAddressForm = forwardRef<HTMLFormElement, EditAddressFormProps>(
               label="Phone number"
               name="phone"
               autoComplete="phone"
-              defaultValue={address.phone || undefined}
               data-testid="phone-input"
               error={errors?.phone}
               value={values.phone}

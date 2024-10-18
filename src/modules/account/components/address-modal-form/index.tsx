@@ -3,10 +3,9 @@
 import React, { useEffect, useState } from 'react'
 
 import { addCustomerAddress, updateCustomerAddress } from '@lib/data/customer'
+import { userShippingAddressFormValidationSchema } from '@lib/util/validator'
 import { HttpTypes } from '@medusajs/types'
 import { SubmitButton } from '@modules/checkout/components/submit-button'
-import { Box } from '@modules/common/components/box'
-import { Checkbox } from '@modules/common/components/checkbox'
 import {
   Dialog,
   DialogBody,
@@ -18,11 +17,15 @@ import {
   DialogPortal,
   DialogTitle,
 } from '@modules/common/components/dialog'
-import { Label } from '@modules/common/components/label'
 import { toast } from '@modules/common/components/toast'
+import { Form, Formik } from 'formik'
 import { useFormState } from 'react-dom'
 
 import AddressFormFields from './address-form-fields'
+import {
+  defaultInitialValues,
+  UserShippingAddressInputProps,
+} from './address-form.consts'
 
 type AddressModalFormProps = {
   region: HttpTypes.StoreRegion
@@ -40,6 +43,7 @@ const AddressModalForm: React.FC<AddressModalFormProps> = ({
   isAddingNewAddress,
 }) => {
   const [successState, setSuccessState] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const [editFormState, editFormAction] = useFormState(updateCustomerAddress, {
     success: false,
@@ -67,6 +71,7 @@ const AddressModalForm: React.FC<AddressModalFormProps> = ({
   useEffect(() => {
     if (editFormState.success || addFormState.success) {
       setSuccessState(true)
+      setIsLoading(false)
     }
   }, [editFormState, addFormState])
 
@@ -78,55 +83,62 @@ const AddressModalForm: React.FC<AddressModalFormProps> = ({
     }
   }, [editFormState, addFormState, isAddingNewAddress])
 
+  const handleSubmit = (values: UserShippingAddressInputProps) => {
+    const formData = new FormData()
+    Object.entries(values).forEach(([key, value]) => {
+      formData.append(key, value != null ? value.toString() : '')
+    })
+
+    setIsLoading(true)
+
+    if (isAddingNewAddress) {
+      addFormAction(formData)
+    } else {
+      editFormAction(formData)
+    }
+  }
+
   return (
     <Dialog open={isOpenDialog} onOpenChange={closeDialog}>
       <DialogPortal>
         <DialogOverlay />
-        <form action={isAddingNewAddress ? addFormAction : editFormAction}>
-          <DialogContent
-            className="max-h-full max-w-[654px] !rounded-none border border-action-primary small:max-h-[724px]"
-            aria-describedby={undefined}
-          >
-            <DialogTitle>
-              <DialogHeader className="flex items-center text-xl text-basic-primary small:text-2xl">
-                {isAddingNewAddress
-                  ? 'Add new address'
-                  : 'Edit shipping address'}
-                <DialogClose className="right-4" />
-              </DialogHeader>
-            </DialogTitle>
+        <Formik
+          initialValues={address ?? defaultInitialValues}
+          validationSchema={userShippingAddressFormValidationSchema}
+          onSubmit={handleSubmit}
+          enableReinitialize
+          validateOnChange={false}
+          validateOnBlur={true}
+        >
+          <Form>
+            <DialogContent
+              className="max-h-full max-w-[654px] !rounded-none border border-action-primary small:max-h-[724px]"
+              aria-describedby={undefined}
+            >
+              <DialogTitle>
+                <DialogHeader className="flex items-center text-xl text-basic-primary small:text-2xl">
+                  {isAddingNewAddress
+                    ? 'Add new address'
+                    : 'Edit shipping address'}
+                  <DialogClose className="right-4" />
+                </DialogHeader>
+              </DialogTitle>
 
-            <DialogBody className="overflow-y-auto p-4 small:p-5">
-              <AddressFormFields
-                address={address}
-                isAddingNewAddress={isAddingNewAddress}
-                region={region}
-              />
-              {editFormState.error && (
-                <div className="py-2 text-sm text-negative">
-                  {editFormState.error}
-                </div>
-              )}
-
-              <Box className="my-6 flex items-center gap-x-2">
-                <Checkbox
-                  id="is_default_shipping"
-                  name="is_default_shipping"
-                  defaultChecked={address?.is_default_shipping}
+              <DialogBody className="overflow-y-auto p-4 small:p-5">
+                <AddressFormFields
+                  address={address}
+                  isAddingNewAddress={isAddingNewAddress}
+                  region={region}
                 />
-                <Label
-                  htmlFor="is_default_shipping"
-                  className="cursor-pointer !text-md"
-                >
-                  Default shipping address
-                </Label>
-              </Box>
-            </DialogBody>
-            <DialogFooter>
-              <SubmitButton className="w-full">Save</SubmitButton>
-            </DialogFooter>
-          </DialogContent>
-        </form>
+              </DialogBody>
+              <DialogFooter>
+                <SubmitButton isLoading={isLoading} className="w-full">
+                  Save
+                </SubmitButton>
+              </DialogFooter>
+            </DialogContent>
+          </Form>
+        </Formik>
       </DialogPortal>
     </Dialog>
   )
