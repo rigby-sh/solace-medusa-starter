@@ -69,10 +69,13 @@ const SidebarBookmarks = ({ data }: SidebarBookmarksProps) => {
                     scrollToSection(section.id)
                     setActiveSection(section.id)
                   }}
-                  className={cn('w-fit cursor-pointer py-2 text-left text-lg', {
-                    'border-b border-action-primary':
-                      activeSection === section.id,
-                  })}
+                  className={cn(
+                    'w-fit cursor-pointer py-2 text-left text-lg transition-colors duration-500',
+                    {
+                      'border-b border-action-primary':
+                        activeSection === section.id,
+                    }
+                  )}
                 >
                   {section.label}
                 </button>
