@@ -222,7 +222,6 @@ export const updateCustomerAddress = async (
     is_default_shipping:
       formData.get('is_default_shipping') === 'on' || 'true' ? true : false,
   }
-  console.log('is_default_shipping: ', formData.get('is_default_shipping'))
 
   return sdk.store.customer
     .updateAddress(addressId, address, {}, getAuthHeaders())
