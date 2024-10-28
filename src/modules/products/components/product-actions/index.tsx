@@ -10,6 +10,7 @@ import { Box } from '@modules/common/components/box'
 import { Button } from '@modules/common/components/button'
 import Divider from '@modules/common/components/divider'
 import { Text } from '@modules/common/components/text'
+import { toast } from '@modules/common/components/toast'
 import OptionSelect from '@modules/products/components/product-actions/option-select'
 import { isEqual } from 'lodash'
 import { VariantColor } from 'types/strapi'
@@ -58,15 +59,18 @@ export default function ProductActions({
     if (!selectedVariant?.id) return null
 
     setIsAdding(true)
-
-    await addToCart({
-      variantId: selectedVariant.id,
-      quantity: qty,
-      countryCode,
-    })
-
-    setQty(1)
-    setIsAdding(false)
+    try {
+      await addToCart({
+        variantId: selectedVariant.id,
+        quantity: qty,
+        countryCode,
+      })
+    } catch (error) {
+      toast('error', error)
+    } finally {
+      toast('success', 'Product was added to cart!')
+      setIsAdding(false)
+    }
   }
 
   const selectedVariant = useMemo(() => {
