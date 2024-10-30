@@ -33,6 +33,11 @@
 - **MedusaJS 2.0 backend**. If this hasn't been set up yet, please use the following:
   - Our prepared repository: <a href="https://github.com/rigby-sh/solace-medusa-starter-api">Medusa 2.0 API <img width="20" alt="GitHub Logo" src="https://github.com/user-attachments/assets/b0657cbf-bbc1-40f1-99a7-8d60da97abac"></a>
   - [Medusa 2.0 Documentation](https://docs.medusajs.com/v2)
+  > **Important**: If you're not using our prepared API repository, remember to:
+  > - Copy the folder from [Repo Link](https://github.com/rigby-sh/solace-medusa-starter-api/tree/main/src/api/store) and paste it to your API project
+  > - Copy the Middlewares file from [Repo Link](https://github.com/rigby-sh/solace-medusa-starter-api/tree/main/src/api) and paste it to your API project
+  > 
+  > These files are required for the search engine and filter logic to work properly. Without them, the search and filtering functionality will not be available.
 - **A CMS management system like Strapi**. If this hasn't been set up yet, please use the following:
   - Our prepared repository: <a href="https://github.com/rigby-sh/solace-medusa-starter-strapi">Strapi <img width="20" alt="GitHub Logo" src="https://github.com/user-attachments/assets/b0657cbf-bbc1-40f1-99a7-8d60da97abac"></a>
   - [Strapi Documentation](https://docs.strapi.io/dev-docs/intro)
