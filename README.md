@@ -41,6 +41,14 @@
 - **A CMS management system like Strapi**. If this hasn't been set up yet, please use the following:
   - Our prepared repository: <a href="https://github.com/rigby-sh/solace-medusa-starter-strapi">Strapi <img width="20" alt="GitHub Logo" src="https://github.com/user-attachments/assets/b0657cbf-bbc1-40f1-99a7-8d60da97abac"></a>
   - [Strapi Documentation](https://docs.strapi.io/dev-docs/intro)
+  > **Important**: After setting up Strapi, configure the revalidation webhook:
+  > 1. Set `STRAPI_WEBHOOK_REVALIDATION_SECRET` in your Next.js `.env` (you can generate a secure value using `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`)
+  > 2. In Strapi admin panel: Settings → Webhooks → Create new webhook
+  > 3. Configure webhook:
+  >    - URL: `{your-frontend-url}/api/strapi-revalidate?secret={YOUR-STRAPI_WEBHOOK_REVALIDATION_SECRET}`  
+  >      Example: `http://localhost:8000/api/strapi-revalidate?secret=30747ea915627411fa275b9e3e6cafd199f9c5b221696b644509c02510ebe979`
+  >    - No additional headers needed
+  >    - Enable Entry and Media events (Create, Update, Delete)
 
 &nbsp;
 
