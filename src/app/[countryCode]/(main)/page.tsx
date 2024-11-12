@@ -63,10 +63,12 @@ export default async function Home({
   return (
     <>
       {HeroBanner && <Hero data={HeroBanner} />}
-      <Collections
-        cmsCollections={strapiCollections}
-        medusaCollections={collectionsList}
-      />
+      {strapiCollections && (
+        <Collections
+          cmsCollections={strapiCollections}
+          medusaCollections={collectionsList}
+        />
+      )}
       <Suspense fallback={<SkeletonProductsCarousel />}>
         <ProductCarousel
           products={products}
