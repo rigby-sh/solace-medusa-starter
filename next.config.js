@@ -25,18 +25,7 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'medusa-server-testing.s3.us-east-1.amazonaws.com',
       },
-      {
-        protocol: 'https',
-        hostname: process.env.NEXT_PUBLIC_SPACE_DOMAIN,
-      },
-      {
-        protocol: 'https',
-        hostname: process.env.NEXT_PUBLIC_CDN_SPACE_DOMAIN,
-      },
-      {
-        protocol: 'https',
-        hostname: process.env.NEXT_PUBLIC_SPACE_ENDPOINT,
-      },
+      
     ],
   },
 }
