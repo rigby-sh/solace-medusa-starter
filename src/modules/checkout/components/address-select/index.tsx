@@ -76,7 +76,7 @@ const AddressSelect: React.FC<AddressSelectProps> = ({
     initialValues: editingAddress ?? defaultInitialValues,
     validationSchema: userShippingAddressFormValidationSchema,
     enableReinitialize: true,
-    onSubmit: async (values) => {
+    onSubmit: async () => {
       await formik.validateForm()
 
       if (formik.isValid) {

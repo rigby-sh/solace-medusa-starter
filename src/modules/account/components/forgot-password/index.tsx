@@ -20,7 +20,7 @@ type Props = {
 }
 
 const ForgotPassword = ({ setCurrentView }: Props) => {
-  const [message, formAction] = useFormState(forgotPassword, null)
+  const [, formAction] = useFormState(forgotPassword, null)
   const [emailInputError, setEmailInputError] = useState(null)
   const [email, setEmail] = useState(null)
 

@@ -13,7 +13,6 @@ export const metadata: Metadata = {
 
 type Props = {
   searchParams: {
-    sortBy?: string
     page?: string
   }
 }
@@ -21,7 +20,7 @@ type Props = {
 export const ORDERS_LIMIT = 2
 
 export default async function Orders({ searchParams }: Props) {
-  const { sortBy, page } = searchParams
+  const { page } = searchParams
   const currentPage = page ? parseInt(page) : 1
 
   const orders = await listOrders(
@@ -35,7 +34,7 @@ export default async function Orders({ searchParams }: Props) {
 
   return (
     <div className="w-full" data-testid="orders-page-wrapper">
-      <OrderOverview orders={orders as OrderType[]} page={page} />
+      <OrderOverview orders={orders as unknown as OrderType[]} page={page} />
     </div>
   )
 }

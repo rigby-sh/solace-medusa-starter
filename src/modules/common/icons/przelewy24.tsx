@@ -4,7 +4,6 @@ import { IconProps } from 'types/icon'
 
 export const Przelewy24Icon: React.FC<IconProps> = ({
   size = '16',
-  color = 'currentColor',
   ...attributes
 }) => {
   return (

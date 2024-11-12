@@ -3,7 +3,6 @@ import React from 'react'
 import { IconProps } from 'types/icon'
 
 export const BancontactIcon: React.FC<IconProps> = ({
-  size = '20',
   color = 'currentColor',
   ...attributes
 }) => {

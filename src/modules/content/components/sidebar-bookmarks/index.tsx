@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { cn } from '@lib/util/cn'
 import { scrollToSection } from '@lib/util/scroll-to-section'

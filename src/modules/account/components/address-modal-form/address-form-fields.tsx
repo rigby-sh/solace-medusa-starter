@@ -1,5 +1,3 @@
-import { ChangeEventHandler } from 'react'
-
 import { HttpTypes } from '@medusajs/types'
 import CountrySelect from '@modules/checkout/components/country-select'
 import { Box } from '@modules/common/components/box'

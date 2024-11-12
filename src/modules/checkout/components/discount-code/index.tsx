@@ -24,7 +24,6 @@ import {
   CheckCircleIcon,
   ChevronDownIcon,
   DiscountIcon,
-  Spinner,
   TrashIcon,
 } from '@modules/common/icons'
 import { useFormState } from 'react-dom'
