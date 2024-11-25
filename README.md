@@ -180,6 +180,14 @@ yarn start
 
 &nbsp;
 
+## Deploying the project with Vercel
+
+Deploying your application on Vercel is a quick and straightforward process that allows for easy management and scaling of your project. To deploy your project, click the button below to start the process. Vercel will guide you through the configuration steps and connect to your repository.
+
+[![Deploy](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/rigby-sh/solace-medusa-starter)
+
+&nbsp;
+
 ## Resources
 
 #### Learn more about Medusa
