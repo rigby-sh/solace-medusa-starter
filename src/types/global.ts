@@ -29,3 +29,20 @@ export type ProductFilters = {
     value: string
   }[]
 }
+
+export type SearchedProduct = {
+  id: string
+  title: string
+  handle: string
+  thumbnail: string
+  calculated_price: string
+  sale_price: string
+  regular_price: string
+  created_at: string
+  updated_at: string
+}
+
+export type SearchedProducts = {
+  results: SearchedProduct[]
+  count: number
+}

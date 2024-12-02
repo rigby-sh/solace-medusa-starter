@@ -1,8 +1,9 @@
 import { getRegion } from '@lib/data/regions'
-import { HttpTypes } from '@medusajs/types'
-import ProductTile from '@modules/products/components/product-tile'
+import { convertToLocale } from '@lib/util/money'
+import { ProductTile } from '@modules/products/components/product-tile'
 import { PRODUCT_LIMIT } from '@modules/search/actions'
 import { Pagination } from '@modules/store/components/pagination'
+import { SearchedProduct } from 'types/global'
 
 export default async function PaginatedProducts({
   products,
@@ -10,7 +11,7 @@ export default async function PaginatedProducts({
   page,
   countryCode,
 }: {
-  products: HttpTypes.StoreProduct[]
+  products: SearchedProduct[]
   total: number
   page: number
   countryCode: string
@@ -31,7 +32,21 @@ export default async function PaginatedProducts({
         {products.map((p) => {
           return (
             <li key={p.id}>
-              <ProductTile product={p} regionId={region.id} />
+              <ProductTile
+                product={{
+                  id: p.id,
+                  created_at: p.created_at,
+                  title: p.title,
+                  handle: p.handle,
+                  thumbnail: p.thumbnail,
+                  calculatedPrice: convertToLocale({
+                    amount: Number(p.calculated_price),
+                    currency_code: region.currency_code,
+                  }),
+                  salePrice: p.sale_price,
+                }}
+                regionId={region.id}
+              />
             </li>
           )
         })}

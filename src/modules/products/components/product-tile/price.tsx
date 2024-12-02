@@ -1,21 +1,26 @@
 import { Box } from '@modules/common/components/box'
 import { Text } from '@modules/common/components/text'
-import { VariantPrice } from 'types/global'
 
-export default function ProductPrice({ price }: { price: VariantPrice }) {
-  if (!price) {
+export default function ProductPrice({
+  calculatedPrice,
+  salePrice,
+}: {
+  calculatedPrice: string
+  salePrice: string
+}) {
+  if (!calculatedPrice) {
     return null
   }
 
   return (
     <Box className="flex items-center justify-center gap-2">
-      {price.price_type === 'sale' && (
+      {salePrice !== calculatedPrice && (
         <Text size="md" className="text-secondary line-through">
-          {price.original_price}
+          {salePrice}
         </Text>
       )}
       <Text className="font-bold text-basic-primary" size="lg">
-        {price.calculated_price}
+        {calculatedPrice}
       </Text>
     </Box>
   )
