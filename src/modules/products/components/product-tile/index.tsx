@@ -34,7 +34,7 @@ export function ProductTile({
   }, [product.created_at])
 
   return (
-    <Box className="group flex flex-col">
+    <Box className="group flex h-full flex-col">
       <Box className="relative h-[290px] small:h-[504px]">
         {isNew && (
           <Box className="absolute left-3 top-3 z-10 small:left-5 small:top-5">
@@ -78,11 +78,8 @@ function ProductInfo({
 }) {
   return (
     <Box className="flex flex-col gap-3 p-4 small:gap-6 small:p-5">
-      <div className="flex flex-col gap-4">
-        <LocalizedClientLink
-          href={`/products/${productHandle}`}
-          className="mx-auto w-max"
-        >
+      <div className="flex flex-1 flex-col justify-between gap-4">
+        <LocalizedClientLink href={`/products/${productHandle}`}>
           <Text
             title={productTitle}
             as="span"
