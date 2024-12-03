@@ -49,11 +49,7 @@ export function ProductTile({
             className="h-full w-full object-cover"
           />
         </LocalizedClientLink>
-        <ProductActions
-          productId={product.id}
-          productHandle={product.handle}
-          regionId={regionId}
-        />
+        <ProductActions productHandle={product.handle} regionId={regionId} />
       </Box>
       <ProductInfo
         productHandle={product.handle}
