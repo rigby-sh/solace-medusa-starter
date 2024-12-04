@@ -137,9 +137,9 @@ const CartDropdown = ({
                           <Box className="flex flex-1 flex-col justify-between">
                             <Box className="flex flex-1 flex-col">
                               <Box className="flex items-start justify-between">
-                                <Box className="mr-4 flex w-[180px] flex-col overflow-ellipsis whitespace-nowrap">
+                                <Box className="mr-4 flex w-[220px] flex-col">
                                   <Box className="flex flex-col gap-1">
-                                    <h3 className="text-md font-medium">
+                                    <h3 className="line-clamp-2 text-md font-medium">
                                       <LocalizedClientLink
                                         href={`/products/${item.variant?.product?.handle}`}
                                         data-testid="product-link"
@@ -147,11 +147,13 @@ const CartDropdown = ({
                                         {item.product_title}
                                       </LocalizedClientLink>
                                     </h3>
-                                    <LineItemOptions
-                                      variant={item.variant}
-                                      data-testid="cart-item-variant"
-                                      data-value={item.variant}
-                                    />
+                                    <Box className="whitespace-nowrap">
+                                      <LineItemOptions
+                                        variant={item.variant}
+                                        data-testid="cart-item-variant"
+                                        data-value={item.variant}
+                                      />
+                                    </Box>
                                     <span
                                       className="text-md text-secondary"
                                       data-testid="cart-item-quantity"
