@@ -93,7 +93,7 @@ export default function ProductTabs({ product }: ProductTabsProps) {
 
 const ProductDescriptionTab = ({ description }: { description: string }) => {
   return (
-    <Text size="md" className="text-secondary">
+    <Text size="md" className="whitespace-pre-line text-secondary">
       {description}
     </Text>
   )
