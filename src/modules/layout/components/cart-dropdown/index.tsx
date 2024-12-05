@@ -1,9 +1,10 @@
 'use client'
 
-import React, { Fragment, useEffect, useRef, useState } from 'react'
-import { usePathname } from 'next/navigation'
+import { Fragment, useEffect, useState } from 'react'
 
 import { Popover, Transition } from '@headlessui/react'
+import { enrichLineItems } from '@lib/data/cart'
+import { useCartStore } from '@lib/store/useCartStore'
 import { convertToLocale } from '@lib/util/money'
 import { HttpTypes } from '@medusajs/types'
 import { Box } from '@modules/common/components/box'
@@ -16,68 +17,54 @@ import LocalizedClientLink from '@modules/common/components/localized-client-lin
 import { Text } from '@modules/common/components/text'
 import { BagIcon } from '@modules/common/icons/bag'
 import Thumbnail from '@modules/products/components/thumbnail'
+import SkeletonCartDropdownItems from '@modules/skeletons/components/skeleton-cart-dropdown-items'
 
 const CartDropdown = ({
   cart: cartState,
 }: {
   cart?: HttpTypes.StoreCart | null
 }) => {
-  const [activeTimer, setActiveTimer] = useState<NodeJS.Timer | undefined>(
-    undefined
-  )
-  const [cartDropdownOpen, setCartDropdownOpen] = useState(false)
+  const { isOpenCartDropdown, openCartDropdown, closeCartDropdown } =
+    useCartStore()
 
-  const open = () => setCartDropdownOpen(true)
-  const close = () => setCartDropdownOpen(false)
+  const [cart, setCart] = useState<HttpTypes.StoreCart | null>(cartState)
+  const [totalItems, setTotalItems] = useState(0)
+  const [isLoading, setIsLoading] = useState(false)
 
-  const totalItems =
-    cartState?.items?.reduce((acc, item) => {
-      return acc + item.quantity
-    }, 0) || 0
-
-  const subtotal = cartState?.subtotal ?? 0
-  const itemRef = useRef<number>(totalItems || 0)
-
-  const timedOpen = () => {
-    open()
-
-    const timer = setTimeout(close, 5000)
-
-    setActiveTimer(timer)
-  }
-
-  const openAndCancel = () => {
-    if (activeTimer) {
-      clearTimeout(activeTimer)
-    }
-
-    open()
-  }
-
-  // Clean up the timer when the component unmounts
   useEffect(() => {
-    return () => {
-      if (activeTimer) {
-        clearTimeout(activeTimer)
+    const fetchCart = async () => {
+      setIsLoading(true)
+      if (!cartState) {
+        return null
       }
-    }
-  }, [activeTimer])
 
-  const pathname = usePathname()
+      if (cartState?.items?.length) {
+        const enrichedItems = await enrichLineItems(
+          cartState.items,
+          cartState.region_id!
+        )
+        cartState.items = enrichedItems
+      }
 
-  // open cart dropdown when modifying the cart items, but only if we're not on the cart page
-  useEffect(() => {
-    if (itemRef.current !== totalItems && !pathname.includes('/cart')) {
-      timedOpen()
+      setCart(cartState)
+      setTotalItems(
+        cartState.items?.reduce((acc, item) => {
+          return acc + item.quantity
+        }, 0) || 0
+      )
+      setIsLoading(false)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [totalItems, itemRef.current])
+
+    fetchCart()
+  }, [cartState])
+
+  const subtotal = cart?.subtotal ?? 0
 
   return (
     <Box
       className="z-50 h-full"
-      onMouseEnter={openAndCancel}
-      onMouseLeave={close}
+      onMouseEnter={openCartDropdown}
+      onMouseLeave={closeCartDropdown}
     >
       <Popover className="relative h-full">
         <Popover.Button className="rounded-full bg-transparent !p-2 text-action-primary hover:bg-fg-secondary-hover hover:text-action-primary-hover active:bg-fg-secondary-pressed active:text-action-primary-pressed xsmall:!p-3.5">
@@ -91,7 +78,7 @@ const CartDropdown = ({
           </LocalizedClientLink>
         </Popover.Button>
         <Transition
-          show={cartDropdownOpen}
+          show={isOpenCartDropdown}
           as={Fragment}
           enter="transition ease-out duration-200"
           enterFrom="opacity-0 translate-y-1"
@@ -110,79 +97,83 @@ const CartDropdown = ({
             </Box>
             {cartState && cartState.items?.length ? (
               <>
-                <Box className="no-scrollbar grid max-h-[402px] grid-cols-1 gap-y-3 overflow-y-scroll overscroll-contain p-5">
-                  {cartState.items
-                    .sort((a, b) => {
-                      return (a.created_at ?? '') > (b.created_at ?? '')
-                        ? -1
-                        : 1
-                    })
-                    .map((item) => (
-                      <Box
-                        className="flex"
-                        key={item.id}
-                        data-testid="cart-item"
-                      >
-                        <LocalizedClientLink
-                          href={`/products/${item.variant?.product?.handle}`}
+                {isLoading ? (
+                  <SkeletonCartDropdownItems />
+                ) : (
+                  <Box className="no-scrollbar grid max-h-[402px] grid-cols-1 gap-y-3 overflow-y-scroll overscroll-contain p-5">
+                    {cartState.items
+                      .sort((a, b) => {
+                        return (a.created_at ?? '') > (b.created_at ?? '')
+                          ? -1
+                          : 1
+                      })
+                      .map((item) => (
+                        <Box
+                          className="flex"
+                          key={item.id}
+                          data-testid="cart-item"
                         >
-                          <Thumbnail
-                            thumbnail={item.variant?.product?.thumbnail}
-                            images={item.variant?.product?.images}
-                            size="square"
-                            className="h-[90px] w-[80px] rounded-none"
-                          />
-                        </LocalizedClientLink>
-                        <Box className="flex w-full justify-between px-4 py-3">
-                          <Box className="flex flex-1 flex-col justify-between">
-                            <Box className="flex flex-1 flex-col">
-                              <Box className="flex items-start justify-between">
-                                <Box className="mr-4 flex w-[220px] flex-col">
-                                  <Box className="flex flex-col gap-1">
-                                    <h3 className="line-clamp-2 text-md font-medium">
-                                      <LocalizedClientLink
-                                        href={`/products/${item.variant?.product?.handle}`}
-                                        data-testid="product-link"
+                          <LocalizedClientLink
+                            href={`/products/${item.variant?.product?.handle}`}
+                          >
+                            <Thumbnail
+                              thumbnail={item.variant?.product?.thumbnail}
+                              images={item.variant?.product?.images}
+                              size="square"
+                              className="h-[90px] w-[80px] rounded-none"
+                            />
+                          </LocalizedClientLink>
+                          <Box className="flex w-full justify-between px-4 py-3">
+                            <Box className="flex flex-1 flex-col justify-between">
+                              <Box className="flex flex-1 flex-col">
+                                <Box className="flex items-start justify-between">
+                                  <Box className="mr-4 flex w-[220px] flex-col">
+                                    <Box className="flex flex-col gap-1">
+                                      <h3 className="line-clamp-2 text-md font-medium">
+                                        <LocalizedClientLink
+                                          href={`/products/${item.variant?.product?.handle}`}
+                                          data-testid="product-link"
+                                        >
+                                          {item.product_title}
+                                        </LocalizedClientLink>
+                                      </h3>
+                                      <Box className="whitespace-nowrap">
+                                        <LineItemOptions
+                                          variant={item.variant}
+                                          data-testid="cart-item-variant"
+                                          data-value={item.variant}
+                                        />
+                                      </Box>
+                                      <span
+                                        className="text-md text-secondary"
+                                        data-testid="cart-item-quantity"
+                                        data-value={item.quantity}
                                       >
-                                        {item.product_title}
-                                      </LocalizedClientLink>
-                                    </h3>
-                                    <Box className="whitespace-nowrap">
-                                      <LineItemOptions
-                                        variant={item.variant}
-                                        data-testid="cart-item-variant"
-                                        data-value={item.variant}
+                                        {item.quantity}{' '}
+                                        {item.quantity > 1 ? 'items' : 'item'}
+                                      </span>
+                                    </Box>
+                                    <Box className="mt-3 flex">
+                                      <LineItemPrice
+                                        item={item}
+                                        style="tight"
+                                        isInCartDropdown
                                       />
                                     </Box>
-                                    <span
-                                      className="text-md text-secondary"
-                                      data-testid="cart-item-quantity"
-                                      data-value={item.quantity}
-                                    >
-                                      {item.quantity}{' '}
-                                      {item.quantity > 1 ? 'items' : 'item'}
-                                    </span>
-                                  </Box>
-                                  <Box className="mt-3 flex">
-                                    <LineItemPrice
-                                      item={item}
-                                      style="tight"
-                                      isInCartDropdown
-                                    />
                                   </Box>
                                 </Box>
                               </Box>
                             </Box>
-                          </Box>
 
-                          <DeleteButton
-                            id={item.id}
-                            data-testid="cart-item-remove-button"
-                          />
+                            <DeleteButton
+                              id={item.id}
+                              data-testid="cart-item-remove-button"
+                            />
+                          </Box>
                         </Box>
-                      </Box>
-                    ))}
-                </Box>
+                      ))}
+                  </Box>
+                )}
                 <Box className="text-small-regular flex flex-col gap-y-4 border-t-[0.5px] border-basic-primary p-5">
                   <Box className="flex items-center justify-between">
                     <Text className="text-md text-secondary">Total </Text>
@@ -215,7 +206,7 @@ const CartDropdown = ({
                     Are you looking for inspiration?
                   </Text>
                 </Box>
-                <Button onClick={close} asChild className="w-full">
+                <Button onClick={closeCartDropdown} asChild className="w-full">
                   <LocalizedClientLink href="/">
                     Explore Home page
                   </LocalizedClientLink>
