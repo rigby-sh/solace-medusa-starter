@@ -64,7 +64,7 @@ const CartDropdown = ({
     if (isOpenCartDropdown) {
       const timer = setTimeout(() => {
         closeCartDropdown()
-      }, 5000)
+      }, 3000)
 
       return () => clearTimeout(timer)
     }
