@@ -2,7 +2,7 @@ const SkeletonCartDropdownItems = () => {
   return (
     <div className="no-scrollbar grid max-h-[402px] grid-cols-1 gap-y-3 overflow-y-scroll overscroll-contain p-5">
       {Array.from({ length: 2 }).map((_, index) => (
-        <div className="flex animate-pulse" key="skeleton-item">
+        <div className="flex animate-pulse" key={index}>
           <div className="h-[90px] w-[100px] rounded-none bg-skeleton-primary"></div>
 
           <div className="flex w-full justify-between px-4 py-3">

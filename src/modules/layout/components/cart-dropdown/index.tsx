@@ -60,6 +60,16 @@ const CartDropdown = ({
 
   const subtotal = cart?.subtotal ?? 0
 
+  useEffect(() => {
+    if (isOpenCartDropdown) {
+      const timer = setTimeout(() => {
+        closeCartDropdown()
+      }, 5000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [totalItems])
+
   return (
     <Box
       className="z-50 h-full"

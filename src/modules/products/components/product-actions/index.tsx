@@ -1,9 +1,10 @@
 'use client'
 
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, usePathname } from 'next/navigation'
 
 import { addToCart } from '@lib/data/cart'
+import { useCartStore } from '@lib/store/useCartStore'
 import { HttpTypes } from '@medusajs/types'
 import ItemQtySelect from '@modules/cart/components/item-qty-select'
 import { Box } from '@modules/common/components/box'
@@ -40,6 +41,7 @@ export default function ProductActions({
   colors,
   disabled,
 }: ProductActionsProps) {
+  const { openCartDropdown } = useCartStore()
   const actionsRef = useRef<HTMLDivElement>(null)
   const [qty, setQty] = useState(1)
   const [options, setOptions] = useState<Record<string, string | undefined>>({})
@@ -68,7 +70,11 @@ export default function ProductActions({
     } catch (error) {
       toast('error', error)
     } finally {
-      toast('success', 'Product was added to cart!')
+      setTimeout(() => {
+        openCartDropdown()
+        toast('success', 'Product was added to cart!')
+      }, 1000)
+
       setIsAdding(false)
     }
   }
