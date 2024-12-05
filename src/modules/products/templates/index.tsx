@@ -1,5 +1,6 @@
-import React, { Suspense } from 'react'
+import { Suspense } from 'react'
 
+import { retrieveCart } from '@lib/data/cart'
 import { getProductVariantsColors } from '@lib/data/fetch'
 import { getProductsListByCollectionId } from '@lib/data/products'
 import { HttpTypes } from '@medusajs/types'
@@ -9,6 +10,7 @@ import ImageGallery from '@modules/products/components/image-gallery'
 import ProductActions from '@modules/products/components/product-actions'
 import ProductTabs from '@modules/products/components/product-tabs'
 import ProductInfo from '@modules/products/templates/product-info'
+import SkeletonProductActions from '@modules/skeletons/components/skeleton-product-actions'
 import SkeletonProductsCarousel from '@modules/skeletons/templates/skeleton-products-carousel'
 
 import { ProductCarousel } from '../components/product-carousel'
@@ -18,14 +20,12 @@ import ProductActionsWrapper from './product-actions-wrapper'
 type ProductTemplateProps = {
   product: HttpTypes.StoreProduct
   region: HttpTypes.StoreRegion
-  cartItems?: HttpTypes.StoreCartLineItem[]
   countryCode: string
 }
 
 const ProductTemplate: React.FC<ProductTemplateProps> = async ({
   product,
   region,
-  cartItems,
   countryCode,
 }: ProductTemplateProps) => {
   const variantsColors = await getProductVariantsColors()
@@ -35,6 +35,8 @@ const ProductTemplate: React.FC<ProductTemplateProps> = async ({
     countryCode,
     excludeProductId: product.id,
   })
+
+  const cart = await retrieveCart()
 
   return (
     <>
@@ -52,21 +54,11 @@ const ProductTemplate: React.FC<ProductTemplateProps> = async ({
           </Box>
           <Box className="flex w-full flex-col gap-y-6 py-8 large:sticky large:top-24 large:max-w-[440px] large:py-0">
             <ProductInfo product={product} />
-            <Suspense
-              fallback={
-                <ProductActions
-                  disabled={true}
-                  product={product}
-                  cartItems={cartItems}
-                  colors={variantsColors.data}
-                  region={region}
-                />
-              }
-            >
+            <Suspense fallback={<SkeletonProductActions />}>
               <ProductActionsWrapper
                 id={product.id}
                 region={region}
-                cartItems={cartItems}
+                cartItems={cart?.items}
                 colors={variantsColors.data}
               />
             </Suspense>
@@ -74,6 +66,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = async ({
           </Box>
         </Box>
       </Container>
+
       {productsList.products.length > 0 && (
         <Suspense fallback={<SkeletonProductsCarousel />}>
           <ProductCarousel

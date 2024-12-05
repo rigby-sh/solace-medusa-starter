@@ -1,7 +1,6 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
-import { retrieveCart } from '@lib/data/cart'
 import { getProductByHandle, getProductsList } from '@lib/data/products'
 import { getRegion, listRegions } from '@lib/data/regions'
 import ProductTemplate from '@modules/products/templates'
@@ -81,13 +80,10 @@ export default async function ProductPage({ params }: Props) {
     notFound()
   }
 
-  const cart = await retrieveCart()
-
   return (
     <ProductTemplate
       product={pricedProduct}
       region={region}
-      cartItems={cart?.items}
       countryCode={params.countryCode}
     />
   )
