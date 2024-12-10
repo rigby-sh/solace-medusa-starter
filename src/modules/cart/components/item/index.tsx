@@ -49,7 +49,7 @@ const Item = ({ item, type = 'full' }: ItemProps) => {
     item.variant.inventory_quantity > 0 ? item.variant.inventory_quantity : 10
 
   return (
-    <Box className="flex bg-primary small:h-[172px]">
+    <Box className="flex bg-primary small:h-[172px]" data-testid="cart-item">
       <Box>
         <LocalizedClientLink href={`/products/${handle}`}>
           <Thumbnail

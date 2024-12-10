@@ -22,6 +22,7 @@ const ProfileDetails = ({
           size="sm"
           onClick={toggle}
           className="hidden medium:flex"
+          data-testid="edit-details-button"
         >
           Edit details
         </Button>

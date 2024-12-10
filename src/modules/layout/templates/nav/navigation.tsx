@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 
 import { createNavigation } from '@lib/constants'
 import { cn } from '@lib/util/cn'
+import { formatNameForTestId } from '@lib/util/formatNameForTestId'
 import { StoreCollection, StoreProductCategory } from '@medusajs/types'
 import { Box } from '@modules/common/components/box'
 import { NavigationItem } from '@modules/common/components/navigation-item'
@@ -63,7 +64,10 @@ export default function Navigation({
               ) : undefined
             }
           >
-            <div className="flex h-full items-center">
+            <div
+              className="flex h-full items-center"
+              data-testid={formatNameForTestId(`${item.name}-dropdown`)}
+            >
               <NavigationItem
                 href={`/${countryCode}${item.handle}`}
                 className={cn('!py-2 px-2', {

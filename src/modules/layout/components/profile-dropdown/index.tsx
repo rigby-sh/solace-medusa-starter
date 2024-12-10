@@ -30,7 +30,10 @@ const ProfileDropdown = ({ loggedIn }: { loggedIn: boolean }) => {
   return (
     <Box className="z-50 h-full" onMouseEnter={open} onMouseLeave={close}>
       <Popover className="relative h-full">
-        <Popover.Button className="cursor-default rounded-full bg-transparent !p-2 text-action-primary outline-none hover:text-action-primary-hover active:bg-fg-secondary-pressed active:text-action-primary-pressed xsmall:!p-3.5 small:hover:bg-fg-secondary-hover">
+        <Popover.Button
+          className="cursor-default rounded-full bg-transparent !p-2 text-action-primary outline-none hover:text-action-primary-hover active:bg-fg-secondary-pressed active:text-action-primary-pressed xsmall:!p-3.5 small:hover:bg-fg-secondary-hover"
+          data-testid="profile-dropdown-button"
+        >
           <UserIcon />
         </Popover.Button>
         <Transition
@@ -46,43 +49,44 @@ const ProfileDropdown = ({ loggedIn }: { loggedIn: boolean }) => {
           <Popover.Panel
             static
             className="absolute -right-10 top-[calc(100%+8px)] w-[264px] border border-action-primary bg-primary text-basic-primary small:right-0"
-            data-testid="nav-cart-dropdown"
+            data-testid={`${loggedIn ? 'profile-dropdown-logged-in' : 'profile-dropdown-logged-out'}`}
           >
             {loggedIn ? (
-              <>
-                {profileNavItemsGroups.slice(0, 2).map((group, groupIndex) => (
-                  <Fragment key={groupIndex}>
-                    <ul className="p-2">
-                      {group.map((item) => (
-                        <li key={item.href || item.type}>
-                          {item.type === 'logout' ? (
-                            <Button
-                              variant="text"
-                              onClick={handleLogout}
-                              className="w-full justify-start rounded-none p-0 hover:bg-hover"
-                            >
-                              <div className="flex items-center gap-2 p-4 text-lg">
-                                {item.icon}
-                                {item.label}
-                              </div>
-                            </Button>
-                          ) : (
-                            <AccountNavLink href={item.href} icon={item.icon}>
+              profileNavItemsGroups.slice(0, 2).map((group, groupIndex) => (
+                <Fragment key={groupIndex}>
+                  <ul className="p-2">
+                    {group.map((item) => (
+                      <li key={item.href || item.type}>
+                        {item.type === 'logout' ? (
+                          <Button
+                            variant="text"
+                            onClick={handleLogout}
+                            className="w-full justify-start rounded-none p-0 hover:bg-hover"
+                          >
+                            <div className="flex items-center gap-2 p-4 text-lg">
+                              {item.icon}
                               {item.label}
-                            </AccountNavLink>
-                          )}
-                        </li>
-                      ))}
-                    </ul>
-                    {groupIndex < profileNavItemsGroups.length - 1 && (
-                      <div className="h-px w-full bg-hover" />
-                    )}
-                  </Fragment>
-                ))}
-              </>
+                            </div>
+                          </Button>
+                        ) : (
+                          <AccountNavLink href={item.href} icon={item.icon}>
+                            {item.label}
+                          </AccountNavLink>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                  {groupIndex < profileNavItemsGroups.length - 1 && (
+                    <div className="h-px w-full bg-hover" />
+                  )}
+                </Fragment>
+              ))
             ) : (
               <>
-                <Box className="flex flex-col gap-2 p-2">
+                <Box
+                  className="flex flex-col gap-2 p-2"
+                  data-testid="profile-dropdown-sign-in-up"
+                >
                   <Button size="sm" asChild>
                     <LocalizedClientLink href="/account?mode=sign-in">
                       Sign in

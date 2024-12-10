@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { cn } from '@lib/util/cn'
+import { formatNameForTestId } from '@lib/util/formatNameForTestId'
 import { Box } from '@modules/common/components/box'
 import { Button } from '@modules/common/components/button'
 import { Container } from '@modules/common/components/container'
@@ -54,6 +55,9 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
             <NavigationItem
               href={subItem.handle}
               className="w-max py-2 text-lg text-basic-primary !duration-150 hover:border-b hover:border-action-primary"
+              data-testid={formatNameForTestId(
+                `${subItem.name}-category-title`
+              )}
             >
               {subItem.name}
             </NavigationItem>
@@ -64,6 +68,9 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
                     key={childIndex}
                     href={childItem.handle}
                     className="py-1.5 text-md text-secondary"
+                    data-testid={formatNameForTestId(
+                      `${childItem.name}-category-item`
+                    )}
                   >
                     {childItem.name}
                   </NavigationItem>

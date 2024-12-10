@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 
 import { signout } from '@lib/data/customer'
 import { cn } from '@lib/util/cn'
+import { formatNameForTestId } from '@lib/util/formatNameForTestId'
 import { Button } from '@modules/common/components/button'
 
 import AccountNavLink from './account-nav-link'
@@ -27,6 +28,7 @@ const AccountNav = () => {
                 <li
                   key={item.href || item.type}
                   className={cn(itemIndex === group.length - 1 && 'pb-5')}
+                  data-testid={formatNameForTestId(`${item.label}-nav-item`)}
                 >
                   {item.type === 'logout' ? (
                     <Button

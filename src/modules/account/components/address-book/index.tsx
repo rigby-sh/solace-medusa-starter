@@ -63,6 +63,7 @@ const AddressBook: React.FC<AddressBookProps> = ({ customer, region }) => {
             size="sm"
             leftIcon={<PlusIcon />}
             onClick={handleAddNewAddress}
+            data-testid="add-new-address-button"
           >
             Add new address
           </Button>
@@ -105,6 +106,7 @@ const AddressBook: React.FC<AddressBookProps> = ({ customer, region }) => {
           size="sm"
           leftIcon={<PlusIcon />}
           onClick={handleAddNewAddress}
+          data-testid="add-new-address-button"
         >
           Add new address
         </Button>

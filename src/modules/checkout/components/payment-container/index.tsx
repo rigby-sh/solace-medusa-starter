@@ -2,6 +2,7 @@ import React from 'react'
 
 import { RadioGroup } from '@headlessui/react'
 import { isManual } from '@lib/constants'
+import { formatNameForTestId } from '@lib/util/formatNameForTestId'
 import { clx } from '@medusajs/ui'
 import { Box } from '@modules/common/components/box'
 import {
@@ -39,6 +40,9 @@ const PaymentContainer: React.FC<PaymentContainerProps> = ({
             'border-action-primary':
               paymentProviderId === selectedPaymentOptionId,
           }
+        )}
+        data-testid={formatNameForTestId(
+          `${paymentProviderId}-payment-container`
         )}
       >
         <Box className="flex w-full items-center gap-x-2">

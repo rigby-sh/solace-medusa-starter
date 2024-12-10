@@ -132,7 +132,11 @@ const AddressModalForm: React.FC<AddressModalFormProps> = ({
                 />
               </DialogBody>
               <DialogFooter>
-                <SubmitButton isLoading={isLoading} className="w-full">
+                <SubmitButton
+                  isLoading={isLoading}
+                  className="w-full"
+                  data-testid="save-address-button"
+                >
                   Save
                 </SubmitButton>
               </DialogFooter>

@@ -91,7 +91,7 @@ const AddressSelect: React.FC<AddressSelectProps> = ({
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenDialogChange}>
       <DialogTrigger asChild>
-        <Button variant="tonal" size="sm">
+        <Button variant="tonal" size="sm" data-testid="change-address-button">
           Change
         </Button>
       </DialogTrigger>

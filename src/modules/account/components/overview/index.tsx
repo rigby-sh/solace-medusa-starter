@@ -20,7 +20,13 @@ const Overview = ({ orders }: OverviewProps) => {
         <Heading as="h2" className="text-xl small:text-2xl">
           Latest order updates
         </Heading>
-        <Button variant="text" size="sm" asChild className="w-max">
+        <Button
+          variant="text"
+          size="sm"
+          asChild
+          className="w-max"
+          data-testid="view-all-orders-button"
+        >
           <LocalizedClientLink href={`/account/orders`}>
             View all
           </LocalizedClientLink>

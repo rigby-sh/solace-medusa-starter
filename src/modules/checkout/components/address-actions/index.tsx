@@ -55,6 +55,7 @@ export default function AddressActions({
                 'flex h-12 w-12 items-center justify-center gap-2 rounded-full bg-primary py-3.5 text-md text-basic-primary transition-all duration-200 ease-in-out hover:bg-fg-secondary active:bg-fg-secondary',
                 { 'bg-fg-secondary': open }
               )}
+              data-testid="address-actions-button"
             >
               <VerticalDotsIcon />
             </Menu.Button>

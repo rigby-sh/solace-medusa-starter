@@ -64,6 +64,7 @@ export default function NavContent(props: any) {
           withIcon
           className="ml-auto h-auto !p-2 xsmall:!p-3.5"
           onClick={() => setIsSearchOpen(true)}
+          data-testid="search-button"
         >
           <SearchIcon />
         </Button>
