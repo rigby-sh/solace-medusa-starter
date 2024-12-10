@@ -1,5 +1,6 @@
 'use client'
 
+import { formatNameForTestId } from '@lib/util/formatNameForTestId'
 import {
   Accordion,
   AccordionContent,
@@ -19,7 +20,10 @@ export default function FilterWrapper({ title, content }: FilterWrapperProps) {
   return (
     <Accordion type="single" collapsible>
       <AccordionItem value={`item-${title}`} className="border-none">
-        <AccordionTrigger className="!pb-0 transition-all [&[data-state=open]>#chevronDownSvg]:rotate-180">
+        <AccordionTrigger
+          className="!pb-0 transition-all [&[data-state=open]>#chevronDownSvg]:rotate-180"
+          data-testid={formatNameForTestId(`${title}-filter`)}
+        >
           <Heading as="h3" className="text-lg font-medium text-basic-primary">
             {title}
           </Heading>

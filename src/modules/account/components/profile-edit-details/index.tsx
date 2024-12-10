@@ -62,7 +62,12 @@ const ProfileEditDetails = ({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
-        <Button variant="tonal" size="sm" className="w-fit medium:hidden">
+        <Button
+          variant="tonal"
+          size="sm"
+          className="w-fit medium:hidden"
+          data-testid="edit-details-button"
+        >
           Edit details
         </Button>
       </DialogTrigger>
@@ -90,12 +95,14 @@ const ProfileEditDetails = ({
                   name="first_name"
                   required
                   defaultValue={customer.first_name}
+                  data-testid="first-name-input"
                 />
                 <Input
                   label="Last name"
                   name="last_name"
                   required
                   defaultValue={customer.last_name}
+                  data-testid="last-name-input"
                 />
                 <Input
                   disabled
@@ -103,12 +110,14 @@ const ProfileEditDetails = ({
                   name="email"
                   required
                   defaultValue={customer.email}
+                  data-testid="email-input"
                 />
                 <Input
                   label="Phone number"
                   name="phone"
                   required
                   defaultValue={customer.phone}
+                  data-testid="phone-input"
                 />
                 {formState.error && (
                   <div
@@ -121,7 +130,12 @@ const ProfileEditDetails = ({
               </div>
             </DialogBody>
             <DialogFooter className="mt-auto">
-              <SubmitButton className="w-full">Save</SubmitButton>
+              <SubmitButton
+                data-testid="save-details-button"
+                className="w-full"
+              >
+                Save
+              </SubmitButton>
             </DialogFooter>
           </form>
         </DialogContent>

@@ -1,6 +1,7 @@
 import { createFooterNavigation } from '@lib/constants'
 import { getCategoriesList } from '@lib/data/categories'
 import { cn } from '@lib/util/cn'
+import { formatNameForTestId } from '@lib/util/formatNameForTestId'
 import {
   Accordion,
   AccordionContent,
@@ -26,17 +27,17 @@ function SocialMedia({ className }: { className?: string }) {
   return (
     <Box className={cn('flex gap-2', className)}>
       <div className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full text-static">
-        <LocalizedClientLink href="#">
+        <LocalizedClientLink href="#" data-testid="linkedin-link">
           <LinkedinIcon />
         </LocalizedClientLink>
       </div>
       <div className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full text-static">
-        <LocalizedClientLink href="#">
+        <LocalizedClientLink href="#" data-testid="facebook-link">
           <FacebookIcon />
         </LocalizedClientLink>
       </div>
       <div className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full text-static">
-        <LocalizedClientLink href="#">
+        <LocalizedClientLink href="#" data-testid="x-link">
           <XLogoIcon />
         </LocalizedClientLink>
       </div>
@@ -81,6 +82,7 @@ export default async function Footer({ countryCode }: { countryCode: string }) {
                         key={`${id}-navigationItem-${linkId}`}
                         variant="secondary"
                         className="w-max hover:text-static"
+                        data-testid={formatNameForTestId(`${link.title}-link`)}
                       >
                         {link.title}
                       </NavigationItem>
@@ -102,7 +104,10 @@ export default async function Footer({ countryCode }: { countryCode: string }) {
                   key={id}
                   className="border-none"
                 >
-                  <AccordionTrigger className="transition-all [&[data-state=open]>#chevronDownSvg]:rotate-180">
+                  <AccordionTrigger
+                    className="transition-all [&[data-state=open]>#chevronDownSvg]:rotate-180"
+                    data-testid={formatNameForTestId(`${item.header}-dropdown`)}
+                  >
                     <Heading
                       className="text-md font-medium text-static small:text-lg"
                       as="h3"
@@ -124,6 +129,9 @@ export default async function Footer({ countryCode }: { countryCode: string }) {
                           key={`${id}-navigationItem-${linkId}`}
                           variant="secondary"
                           className="hover:text-static"
+                          data-testid={formatNameForTestId(
+                            `${link.title}-link`
+                          )}
                         >
                           {link.title}
                         </NavigationItem>
@@ -147,6 +155,7 @@ export default async function Footer({ countryCode }: { countryCode: string }) {
               variant="secondary"
               className="shrink-0 hover:text-static"
               href={link.href}
+              data-testid={formatNameForTestId(`${link.title}-link`)}
             >
               {link.title}
             </NavigationItem>

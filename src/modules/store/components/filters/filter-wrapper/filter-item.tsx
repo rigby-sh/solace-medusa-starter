@@ -4,6 +4,7 @@ import React from 'react'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
 
+import { formatNameForTestId } from '@lib/util/formatNameForTestId'
 import { createUrl } from '@lib/util/urls'
 import { Checkbox } from '@modules/common/components/checkbox'
 import { Label } from '@modules/common/components/label'
@@ -61,6 +62,7 @@ export const FilterItems: React.FC<CheckboxProps> = ({ items, param }) => {
               className="flex items-center gap-2 p-1 pr-[90px] text-basic-primary"
               href={href}
               key={item.id}
+              data-testid={formatNameForTestId(`${item.value}-filter-item`)}
             >
               <div>
                 <Checkbox

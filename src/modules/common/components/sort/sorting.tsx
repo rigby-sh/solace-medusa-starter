@@ -3,6 +3,7 @@
 import React, { ChangeEvent } from 'react'
 
 import { Menu, Transition } from '@headlessui/react'
+import { formatNameForTestId } from '@lib/util/formatNameForTestId'
 import { Box } from '@modules/common/components/box'
 import FilterRadioGroup from '@modules/common/components/filter-radio-group'
 import {
@@ -49,7 +50,7 @@ const Sorting = ({ options, sortBy, setQueryParams }: SortingProps) => {
         onValueChange={(e: string) => handleChange(e)}
         className="hidden w-[200px] small:block"
       >
-        <SelectTrigger aria-label="Sort by">
+        <SelectTrigger aria-label="Sort by" data-testid="select-sort-by">
           <SelectValue
             placeholder={
               options && options.length > 0 ? options[0].label : 'Select'
@@ -58,7 +59,11 @@ const Sorting = ({ options, sortBy, setQueryParams }: SortingProps) => {
         </SelectTrigger>
         <SelectContent className="w-[200px]">
           {options.map((option, index) => (
-            <SelectItem key={index} value={option.value}>
+            <SelectItem
+              key={index}
+              value={option.value}
+              data-testid={formatNameForTestId(`${option.label}-sort-by`)}
+            >
               {option.label}
             </SelectItem>
           ))}

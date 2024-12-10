@@ -150,7 +150,10 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
         className="flex w-full flex-col gap-2"
       >
         <AccordionItem value="discount" className="bg-primary px-5 pb-3 pt-5">
-          <AccordionTrigger className="text-basic-primary [&[data-state=open]>#chevronDown]:rotate-180">
+          <AccordionTrigger
+            className="text-basic-primary [&[data-state=open]>#chevronDown]:rotate-180"
+            data-testid="discount-code-accordion-trigger"
+          >
             <Heading
               className="flex items-center gap-2 text-left text-lg"
               as="h3"
@@ -193,6 +196,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
                           removePromotionCode(promotion.code)
                         }}
                         className="h-12 w-12 bg-transparent hover:bg-transparent"
+                        data-testid="remove-promotion-code-button"
                       >
                         <TrashIcon className="h-5 w-5" />
                       </Button>
@@ -209,10 +213,16 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
                         placeholder="Enter promo code"
                         value={codeValue}
                         onChange={(e) => setCodeValue(e.target.value)}
+                        data-testid="promotion-code-input"
                       />
                     </Box>
                     <Box className="flex w-1/4 justify-end">
-                      <SubmitButton variant="tonal">Activate</SubmitButton>
+                      <SubmitButton
+                        data-testid="activate-promotion-code-button"
+                        variant="tonal"
+                      >
+                        Activate
+                      </SubmitButton>
                     </Box>
                   </Box>
                 </div>

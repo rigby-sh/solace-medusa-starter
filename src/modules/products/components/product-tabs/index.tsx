@@ -59,6 +59,7 @@ export default function ProductTabs({ product }: ProductTabsProps) {
               key={id}
               value={`item-${id}`}
               className="border-basic-primary"
+              data-testid="product-tab"
             >
               <AccordionTrigger className="!rounded-none !py-2 transition-all duration-200 ease-in-out [&[data-state=closed]>#minusIconSvg]:hidden [&[data-state=open]>#plusIconSvg]:hidden">
                 <Heading
@@ -93,7 +94,11 @@ export default function ProductTabs({ product }: ProductTabsProps) {
 
 const ProductDescriptionTab = ({ description }: { description: string }) => {
   return (
-    <Text size="md" className="whitespace-pre-line text-secondary">
+    <Text
+      data-testid="product-description-tab"
+      size="md"
+      className="whitespace-pre-line text-secondary"
+    >
       {description}
     </Text>
   )
@@ -105,7 +110,7 @@ const ProductDimensionsTab = ({
   dimensions: Record<string, unknown>
 }) => {
   return (
-    <Box>
+    <Box data-testid="product-dimensions-tab">
       {Object.entries(dimensions).map(([key, value]) => (
         <div key={key}>
           <Text as="span" className="font-medium text-basic-primary">
@@ -122,7 +127,7 @@ const ProductDimensionsTab = ({
 
 const ProductDesignTab = ({ design }: { design: Record<string, unknown> }) => {
   return (
-    <Box>
+    <Box data-testid="product-design-tab">
       {Object.entries(design).map(([key, value]) => (
         <div key={key}>
           <Text as="span" className="font-medium text-basic-primary">

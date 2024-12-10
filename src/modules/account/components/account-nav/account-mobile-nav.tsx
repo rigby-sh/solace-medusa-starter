@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 import { Tab } from '@headlessui/react'
+import { formatNameForTestId } from '@lib/util/formatNameForTestId'
 
 import { profileNavItemsGroups } from './consts'
 
@@ -76,6 +77,7 @@ const AccountMobileNav = () => {
                 <Tab
                   key={navItem.id}
                   className="flex-1 whitespace-nowrap p-2 text-lg focus:outline-none"
+                  data-testid={formatNameForTestId(`${navItem.label}-nav-item`)}
                 >
                   {navItem.label}
                 </Tab>

@@ -44,6 +44,7 @@ const DeleteButton = ({
         className
       )}
       onClick={() => handleDelete(id)}
+      data-testid="delete-button"
     >
       {isDeleting ? (
         <div className="flex h-5 w-5 items-center justify-center">
