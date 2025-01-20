@@ -27,8 +27,9 @@ export default async function StoreTemplate({
   searchParams: Record<string, string>
   params?: { countryCode?: string }
 }) {
-  const { sortBy, page, collection, type, material, price } = searchParams
-  const region = await getRegion(params.countryCode)
+  const { countryCode } = await params
+  const { sortBy, page, collection, type, material, price } = await searchParams
+  const region = await getRegion(countryCode)
 
   if (!region) {
     return notFound()
@@ -51,7 +52,7 @@ export default async function StoreTemplate({
   const { products: recommendedProducts } = await getProductsList({
     pageParam: 0,
     queryParams: { limit: 9 },
-    countryCode: params.countryCode,
+    countryCode: countryCode,
   }).then(({ response }) => response)
 
   return (
@@ -74,17 +75,14 @@ export default async function StoreTemplate({
             />
           </Box>
         </Box>
-        <ActiveProductFilters
-          countryCode={params.countryCode}
-          filters={filters}
-        />
+        <ActiveProductFilters countryCode={countryCode} filters={filters} />
         <Suspense fallback={<SkeletonProductGrid />}>
           {results && results.length > 0 ? (
             <PaginatedProducts
               products={results}
               page={pageNumber}
               total={count}
-              countryCode={params.countryCode}
+              countryCode={countryCode}
             />
           ) : (
             <p className="py-10 text-center text-lg text-secondary">

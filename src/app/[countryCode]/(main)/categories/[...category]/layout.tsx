@@ -11,7 +11,7 @@ import StoreBreadcrumbs from '@modules/store/templates/breadcrumbs'
 
 interface CategoryPageLayoutProps {
   children: React.ReactNode
-  params: { category: string[] }
+  params: Promise<{ category: string[] }>
 }
 
 export async function generateStaticParams() {
@@ -41,9 +41,8 @@ export async function generateStaticParams() {
   return staticParams
 }
 
-export async function generateMetadata({
-  params,
-}: CategoryPageLayoutProps): Promise<Metadata> {
+export async function generateMetadata(props: CategoryPageLayoutProps): Promise<Metadata> {
+  const params = await props.params;
   try {
     const { product_categories } = await getCategoryByHandle(params.category)
 
@@ -67,10 +66,17 @@ export async function generateMetadata({
   }
 }
 
-export default async function CategoryPageLayout({
-  children,
-  params: { category },
-}: CategoryPageLayoutProps) {
+export default async function CategoryPageLayout(props: CategoryPageLayoutProps) {
+  const params = await props.params;
+
+  const {
+    category
+  } = params;
+
+  const {
+    children
+  } = props;
+
   const { product_categories } = await getCategoryByHandle(category)
   const currentCategory = product_categories[product_categories.length - 1]
 

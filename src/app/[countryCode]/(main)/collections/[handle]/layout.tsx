@@ -14,7 +14,7 @@ import StoreBreadcrumbs from '@modules/store/templates/breadcrumbs'
 
 interface CollectionPageLayoutProps {
   children: React.ReactNode
-  params: { handle: string; countryCode: string }
+  params: Promise<{ handle: string; countryCode: string }>
 }
 
 export async function generateStaticParams() {
@@ -48,9 +48,8 @@ export async function generateStaticParams() {
   return staticParams
 }
 
-export async function generateMetadata({
-  params,
-}: CollectionPageLayoutProps): Promise<Metadata> {
+export async function generateMetadata(props: CollectionPageLayoutProps): Promise<Metadata> {
+  const params = await props.params;
   const collection = await getCollectionByHandle(params.handle)
 
   if (!collection) {
@@ -65,10 +64,17 @@ export async function generateMetadata({
   return metadata
 }
 
-export default async function CollectionPageLayout({
-  children,
-  params: { handle },
-}: CollectionPageLayoutProps) {
+export default async function CollectionPageLayout(props: CollectionPageLayoutProps) {
+  const params = await props.params;
+
+  const {
+    handle
+  } = params;
+
+  const {
+    children
+  } = props;
+
   const currentCollection = await getCollectionByHandle(handle).then(
     (collection: StoreCollection) => collection
   )

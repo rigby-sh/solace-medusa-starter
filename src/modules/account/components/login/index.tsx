@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { startTransition, useActionState, useEffect, useState } from 'react'
 
 import { login } from '@lib/data/customer'
 import { ValidationError } from '@lib/util/validator'
@@ -9,7 +9,6 @@ import { Button } from '@modules/common/components/button'
 import { Heading } from '@modules/common/components/heading'
 import { Input } from '@modules/common/components/input'
 import { toast } from '@modules/common/components/toast'
-import { useFormState } from 'react-dom'
 
 import RegisterPrompt from './register-prompt'
 
@@ -18,7 +17,7 @@ type Props = {
 }
 
 const Login = ({ setCurrentView }: Props) => {
-  const [message, formAction] = useFormState(login, null)
+  const [message, formAction] = useActionState(login, null)
   const [localMessage, setLocalMessage] = useState(null)
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>(
     []
@@ -47,7 +46,9 @@ const Login = ({ setCurrentView }: Props) => {
     }
 
     setValidationErrors([])
-    formAction(formData)
+    startTransition(() => {
+      formAction(formData)
+    })
   }
 
   // Clear message

@@ -47,7 +47,7 @@ export default function AddressActions({
 
   return (
     <div className="relative">
-      <Menu>
+      <Menu as="div">
         {({ open }) => (
           <>
             <Menu.Button

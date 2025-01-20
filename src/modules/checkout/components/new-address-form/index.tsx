@@ -12,7 +12,7 @@ import { InferType } from 'yup'
 import CountrySelect from '../country-select'
 
 type NewAddressFormProps = {
-  ref: React.RefObject<HTMLFormElement>
+  ref: React.RefObject<HTMLFormElement | null>
   region: HttpTypes.StoreRegion
   formState: {
     success: boolean

@@ -71,7 +71,7 @@ const AccountInfo = ({
       </div>
 
       {/* Success state */}
-      <Disclosure>
+      <Disclosure as="div">
         <Disclosure.Panel
           static
           className={clx(

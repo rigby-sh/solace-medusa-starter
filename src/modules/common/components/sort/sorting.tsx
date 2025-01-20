@@ -70,7 +70,7 @@ const Sorting = ({ options, sortBy, setQueryParams }: SortingProps) => {
         </SelectContent>
       </Select>
       <div className="relative z-20 flex w-full justify-end small:hidden">
-        <Menu>
+        <Menu as="div">
           {({ close }) => (
             <>
               <Menu.Button className="flex w-full items-center justify-center gap-2 rounded-full bg-fg-secondary py-3.5 text-md text-basic-primary">

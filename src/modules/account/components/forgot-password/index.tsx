@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useActionState } from 'react';
 
 import { emailRegex } from '@lib/constants'
 import { forgotPassword } from '@lib/data/customer'
@@ -13,14 +13,13 @@ import { Heading } from '@modules/common/components/heading'
 import { Input } from '@modules/common/components/input'
 import { Text } from '@modules/common/components/text'
 import { SearchResultsIcon } from '@modules/common/icons'
-import { useFormState } from 'react-dom'
 
 type Props = {
   setCurrentView: (view: LOGIN_VIEW) => void
 }
 
 const ForgotPassword = ({ setCurrentView }: Props) => {
-  const [, formAction] = useFormState(forgotPassword, null)
+  const [, formAction] = useActionState(forgotPassword, null)
   const [emailInputError, setEmailInputError] = useState(null)
   const [email, setEmail] = useState(null)
 

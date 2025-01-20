@@ -9,8 +9,10 @@ import { sdk } from '@lib/config'
 import { getAuthHeaders, removeAuthToken, setAuthToken } from './cookies'
 
 export async function getCustomer() {
+  const authHeaders = await getAuthHeaders()
+
   return await sdk.store.customer
-    .retrieve({}, { next: { tags: ['customer'] }, ...getAuthHeaders() })
+    .retrieve({}, { next: { tags: ['customer'] }, ...authHeaders })
     .then(({ customer }) => customer)
     .catch(() => null)
 }
@@ -22,6 +24,8 @@ export const updateCustomer = cache(async function (
   },
   formData: FormData
 ) {
+  const authHeaders = await getAuthHeaders()
+
   const body = {
     first_name: formData.get('first_name') as string,
     last_name: formData.get('last_name') as string,
@@ -29,7 +33,7 @@ export const updateCustomer = cache(async function (
   }
 
   return await sdk.store.customer
-    .update(body, {}, getAuthHeaders())
+    .update(body, {}, authHeaders)
     .then(() => {
       revalidateTag('customer')
       return { success: true, error: null }
@@ -67,7 +71,7 @@ export async function signup(_currentState: unknown, formData: FormData) {
       password,
     })
 
-    setAuthToken(loginToken as string)
+    await setAuthToken(loginToken as string)
 
     revalidateTag('customer')
     return createdCustomer
@@ -133,12 +137,12 @@ export async function login(_currentState: unknown, formData: FormData) {
   const password = formData.get('password') as string
 
   try {
-    await sdk.auth
-      .login('customer', 'emailpass', { email, password })
-      .then((token) => {
-        setAuthToken(token as string)
-        revalidateTag('customer')
-      })
+    const token = await sdk.auth.login('customer', 'emailpass', {
+      email,
+      password,
+    })
+    await setAuthToken(token as string)
+    revalidateTag('customer')
   } catch (error: any) {
     return error.toString()
   }
@@ -146,7 +150,7 @@ export async function login(_currentState: unknown, formData: FormData) {
 
 export async function signout(countryCode: string) {
   await sdk.auth.logout()
-  removeAuthToken()
+  await removeAuthToken()
   revalidateTag('auth')
   revalidateTag('customer')
   redirect(`/${countryCode}/account`)
@@ -164,7 +168,6 @@ export const addCustomerAddress = async (
     last_name: formData.get('last_name') as string,
     company: formData.get('company') as string,
     address_1: formData.get('address_1') as string,
-    address_2: formData.get('address_2') as string,
     city: formData.get('city') as string,
     postal_code: formData.get('postal_code') as string,
     province: formData.get('province') as string,
@@ -176,8 +179,10 @@ export const addCustomerAddress = async (
       formData.get('is_default_shipping') === 'on' || 'true' ? true : false,
   }
 
+  const authHeaders = await getAuthHeaders()
+
   return sdk.store.customer
-    .createAddress(address, {}, getAuthHeaders())
+    .createAddress(address, {}, authHeaders)
     .then(() => {
       revalidateTag('customer')
       return { success: true, error: null }
@@ -190,8 +195,10 @@ export const addCustomerAddress = async (
 export const deleteCustomerAddress = async (
   addressId: string
 ): Promise<void> => {
+  const authHeaders = await getAuthHeaders()
+
   await sdk.store.customer
-    .deleteAddress(addressId, getAuthHeaders())
+    .deleteAddress(addressId, authHeaders)
     .then(() => {
       revalidateTag('customer')
       return { success: true, error: null }
@@ -223,8 +230,10 @@ export const updateCustomerAddress = async (
       formData.get('is_default_shipping') === 'on' || 'true' ? true : false,
   }
 
+  const authHeaders = await getAuthHeaders()
+
   return sdk.store.customer
-    .updateAddress(addressId, address, {}, getAuthHeaders())
+    .updateAddress(addressId, address, {}, authHeaders)
     .then(() => {
       revalidateTag('customer')
       return { success: true, error: null }

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { startTransition, useActionState, useEffect, useState } from 'react'
 
 import { passwordRequirements } from '@lib/constants'
 import { signup } from '@lib/data/customer'
@@ -17,7 +17,6 @@ import { Label } from '@modules/common/components/label'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
 import { toast } from '@modules/common/components/toast'
 import { CheckCircleIcon, XCircleIcon } from '@modules/common/icons'
-import { useFormState } from 'react-dom'
 
 import LoginPrompt from './login-prompt'
 
@@ -28,7 +27,7 @@ type Props = {
 const Register = ({ setCurrentView }: Props) => {
   const [isReadAgreements, setIsReadAgreements] = useState(false)
   const [localMessage, setLocalMessage] = useState(null)
-  const [message, formAction] = useFormState(signup, null)
+  const [message, formAction] = useActionState(signup, null)
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>(
     []
   )
@@ -76,14 +75,18 @@ const Register = ({ setCurrentView }: Props) => {
     }
 
     setValidationErrors([])
-    formAction(formData)
+    startTransition(() => {
+      formAction(formData)
+    })
   }
 
   // Clear message
   useEffect(() => {
     if (message) {
       setLocalMessage(message)
-      formAction(new FormData())
+      startTransition(() => {
+        formAction(new FormData())
+      })
     }
   }, [message, formAction])
 

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useActionState } from 'react';
 
 import {
   applyPromotions,
@@ -26,7 +26,6 @@ import {
   DiscountIcon,
   TrashIcon,
 } from '@modules/common/icons'
-import { useFormState } from 'react-dom'
 
 import { SubmitButton } from '../submit-button'
 
@@ -102,7 +101,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
     setCodeChanged({ code: code.toString(), changed: true })
   }
 
-  const [message] = useFormState(submitPromotionForm, null)
+  const [message] = useActionState(submitPromotionForm, null)
 
   useEffect(() => {
     if (!codeChanged.changed) return

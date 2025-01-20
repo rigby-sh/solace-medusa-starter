@@ -6,7 +6,7 @@
     "solace-medusa-starter"
   ],
   "scripts": {
-    "dev": "next dev -p 8000",
+    "dev": "next dev --turbopack -p 8000",
     "build": "next build",
     "start": "next start -p 8000",
     "lint": "next lint",
@@ -16,7 +16,9 @@
     "test-e2e": "playwright test e2e"
   },
   "resolutions": {
-    "webpack": "^5"
+    "webpack": "^5",
+    "@types/react": "19.0.7",
+    "@types/react-dom": "19.0.3"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
@@ -27,7 +29,7 @@
     "@medusajs/js-sdk": "^2.1.0",
     "@medusajs/types": "^2.1.0",
     "@medusajs/ui": "^4.0.1",
-    "@next/mdx": "^15.0.3",
+    "@next/mdx": "15.1.5",
     "@paypal/paypal-js": "^8.1.2",
     "@paypal/react-paypal-js": "^8.7.0",
     "@radix-ui/react-accordion": "^1.2.0",
@@ -45,15 +47,15 @@
     "hast-util-has-property": "^3.0.0",
     "hast-util-heading-rank": "^3.0.0",
     "lodash": "^4.17.21",
-    "next": "^14.2.17",
+    "next": "15.1.5",
     "next-mdx-remote": "^5.0.0",
     "next-nprogress-bar": "^2.3.13",
     "next-themes": "^0.3.0",
     "pg": "^8.11.3",
     "qs": "^6.12.1",
-    "react": "18.2.0",
+    "react": "19.0.0",
     "react-country-flag": "^3.0.2",
-    "react-dom": "18.2.0",
+    "react-dom": "19.0.0",
     "react-instantsearch-hooks-web": "^6.29.0",
     "react-intersection-observer": "^9.3.4",
     "react-markdown": "^9.0.1",
@@ -80,8 +82,8 @@
     "@types/lodash": "^4.14.195",
     "@types/node": "17.0.21",
     "@types/pg": "^8.11.0",
-    "@types/react": "18.3.8",
-    "@types/react-dom": "18.2.18",
+    "@types/react": "19.0.7",
+    "@types/react-dom": "19.0.3",
     "@types/react-instantsearch-dom": "6.12.3",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
@@ -89,7 +91,7 @@
     "autoprefixer": "^10.4.2",
     "babel-loader": "^8.2.3",
     "eslint": "^8.57.1",
-    "eslint-config-next": "14.1.0",
+    "eslint-config-next": "15.1.5",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-unused-imports": "^3.2.0",
     "postcss": "^8.4.8",

@@ -67,8 +67,8 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {
   children: React.ReactNode
   asChild?: boolean
-  leftIcon?: ReactElement
-  rightIcon?: ReactElement
+  leftIcon?: ReactElement<any>
+  rightIcon?: ReactElement<any>
   withIcon?: boolean
   testId?: string
 }
@@ -139,12 +139,12 @@ export function ButtonSlot({
   if (React.isValidElement(children)) {
     return React.cloneElement(children, {
       ...props,
-      ...children.props,
+      ...(children.props as any),
       style: {
         ...props.style,
-        ...children.props.style,
+        ...(children.props as any).style,
       },
-      className: cn(props.className, children.props.className),
+      className: cn(props.className, (children.props as any).className),
     })
   }
   return null

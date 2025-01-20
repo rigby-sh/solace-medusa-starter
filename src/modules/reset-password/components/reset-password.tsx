@@ -1,6 +1,12 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import {
+  startTransition,
+  useActionState,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import { useSearchParams } from 'next/navigation'
 
 import { passwordRequirements } from '@lib/constants'
@@ -17,12 +23,11 @@ import LocalizedClientLink from '@modules/common/components/localized-client-lin
 import { Text } from '@modules/common/components/text'
 import { toast } from '@modules/common/components/toast'
 import { CheckCircleIcon, XCircleIcon } from '@modules/common/icons'
-import { useFormState } from 'react-dom'
 
 export function ResetPassword() {
   const searchParams = useSearchParams()
   const [passwordChanged, setPasswordChanged] = useState(false)
-  const [message, formAction] = useFormState(resetPassword, null)
+  const [message, formAction] = useActionState(resetPassword, null)
   const [localMessage, setLocalMessage] = useState(null)
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>(
     []
@@ -75,14 +80,18 @@ export function ResetPassword() {
     }
     formData.append('email', email)
     formData.append('token', token)
-    formAction(formData)
+    startTransition(() => {
+      formAction(formData)
+    })
     setPasswordChanged(true)
   }
 
   useEffect(() => {
     if (message) {
       setLocalMessage(message)
-      formAction(new FormData())
+      startTransition(() => {
+        formAction(new FormData())
+      })
     }
   }, [message, formAction])
 

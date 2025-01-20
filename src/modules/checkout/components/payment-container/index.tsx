@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { type JSX } from 'react';
 
 import { RadioGroup } from '@headlessui/react'
 import { isManual } from '@lib/constants'

@@ -62,7 +62,7 @@ const AccountMobileNav = () => {
 
   return (
     <div className="w-full bg-primary xl:hidden">
-      <Tab.Group onChange={handleTabChange}>
+      <Tab.Group onChange={handleTabChange} as="div">
         <div className="relative">
           <div
             ref={tabsRef}

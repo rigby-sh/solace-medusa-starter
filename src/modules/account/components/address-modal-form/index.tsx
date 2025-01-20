@@ -1,6 +1,11 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, {
+  startTransition,
+  useActionState,
+  useEffect,
+  useState,
+} from 'react'
 
 import { addCustomerAddress, updateCustomerAddress } from '@lib/data/customer'
 import { userShippingAddressFormValidationSchema } from '@lib/util/validator'
@@ -19,7 +24,6 @@ import {
 } from '@modules/common/components/dialog'
 import { toast } from '@modules/common/components/toast'
 import { Form, Formik } from 'formik'
-import { useFormState } from 'react-dom'
 
 import AddressFormFields from './address-form-fields'
 import {
@@ -45,13 +49,16 @@ const AddressModalForm: React.FC<AddressModalFormProps> = ({
   const [successState, setSuccessState] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  const [editFormState, editFormAction] = useFormState(updateCustomerAddress, {
-    success: false,
-    error: null,
-    addressId: address?.id,
-  })
+  const [editFormState, editFormAction] = useActionState(
+    updateCustomerAddress,
+    {
+      success: false,
+      error: null,
+      addressId: address?.id,
+    }
+  )
 
-  const [addFormState, addFormAction] = useFormState(addCustomerAddress, {
+  const [addFormState, addFormAction] = useActionState(addCustomerAddress, {
     success: false,
     error: null,
   })
@@ -92,9 +99,13 @@ const AddressModalForm: React.FC<AddressModalFormProps> = ({
     setIsLoading(true)
 
     if (isAddingNewAddress) {
-      addFormAction(formData)
+      startTransition(() => {
+        addFormAction(formData)
+      })
     } else {
-      editFormAction(formData)
+      startTransition(() => {
+        editFormAction(formData)
+      })
     }
   }
 

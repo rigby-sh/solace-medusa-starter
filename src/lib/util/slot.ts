@@ -18,12 +18,12 @@ export function Slot({
   if (isValidElement(children)) {
     return cloneElement(children, {
       ...props,
-      ...children.props,
+      ...(children.props as any),
       style: {
         ...props.style,
-        ...children.props.style,
+        ...(children.props as any).style,
       },
-      className: cn(props.className, children.props.className),
+      className: cn(props.className, (children.props as any).className),
     })
   }
   return null

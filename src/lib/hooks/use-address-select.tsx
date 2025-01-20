@@ -1,9 +1,15 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import {
+  startTransition,
+  useActionState,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 
 import { addCustomerAddress, updateCustomerAddress } from '@lib/data/customer'
 import compareAddresses from '@lib/util/addresses'
 import { HttpTypes } from '@medusajs/types'
-import { useFormState } from 'react-dom'
 
 export const useAddressSelect = (
   addresses: HttpTypes.StoreCustomerAddress[],
@@ -27,12 +33,12 @@ export const useAddressSelect = (
   const [addNewAddress, setAddNewAddress] = useState(false)
   const [addingSuccessState, setAddingSuccessState] = useState(false)
 
-  const [addFormState, addFormAction] = useFormState(addCustomerAddress, {
+  const [addFormState, addFormAction] = useActionState(addCustomerAddress, {
     success: false,
     error: null,
   })
 
-  const [updateFormState, updateFormAction] = useFormState(
+  const [updateFormState, updateFormAction] = useActionState(
     updateCustomerAddress,
     {
       success: false,
@@ -70,7 +76,9 @@ export const useAddressSelect = (
     if (formRef.current) {
       const formData = new FormData(formRef.current)
       formData.append('address_name', 'shipping_address')
-      addFormAction(formData)
+      startTransition(() => {
+        addFormAction(formData)
+      })
     }
   }
 

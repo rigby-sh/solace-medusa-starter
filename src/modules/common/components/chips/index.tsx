@@ -34,8 +34,8 @@ interface ButtonProps
   selected?: boolean
   children: React.ReactNode
   asChild?: boolean
-  leftIcon?: ReactElement
-  rightIcon?: ReactElement
+  leftIcon?: ReactElement<any>
+  rightIcon?: ReactElement<any>
   className?: string
   disabled?: boolean
   testId?: string

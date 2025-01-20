@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useActionState } from 'react';
 
 import { updateCustomer } from '@lib/data/customer'
 import { HttpTypes } from '@medusajs/types'
@@ -21,7 +21,6 @@ import {
 import { Input } from '@modules/common/components/input'
 import { toast } from '@modules/common/components/toast'
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
-import { useFormState } from 'react-dom'
 
 const ProfileEditDetails = ({
   open,
@@ -35,7 +34,7 @@ const ProfileEditDetails = ({
   customer: HttpTypes.StoreCustomer
 }) => {
   const [isSuccess, setIsSuccess] = useState(false)
-  const [formState, formAction] = useFormState(updateCustomer, {
+  const [formState, formAction] = useActionState(updateCustomer, {
     success: false,
     error: null,
   })

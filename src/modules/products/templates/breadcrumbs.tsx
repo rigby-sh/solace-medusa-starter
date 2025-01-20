@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 
 import { StoreProduct } from '@medusajs/types'
 import {
@@ -26,7 +26,7 @@ export default function ProductBreadcrumbs({
             <BreadcrumbsLink href="/">Home Page</BreadcrumbsLink>
           </BreadcrumbsItem>
           {product?.categories?.map((category) => (
-            <>
+            <Fragment key={category.id}>
               <BreadcrumbsSeparator />
               <BreadcrumbsItem key={category.id}>
                 <BreadcrumbsLink
@@ -35,7 +35,7 @@ export default function ProductBreadcrumbs({
                   {category.name}
                 </BreadcrumbsLink>
               </BreadcrumbsItem>
-            </>
+            </Fragment>
           ))}
           <BreadcrumbsSeparator />
           <BreadcrumbsItem>

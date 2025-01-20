@@ -29,11 +29,17 @@ const fetchCart = async () => {
   return cart
 }
 
-export default async function Cart({
-  params: { countryCode },
-}: {
-  params: { countryCode: string }
-}) {
+export default async function Cart(
+  props: {
+    params: Promise<{ countryCode: string }>
+  }
+) {
+  const params = await props.params;
+
+  const {
+    countryCode
+  } = params;
+
   const cart = await fetchCart()
 
   const [region, { products }] = await Promise.all([

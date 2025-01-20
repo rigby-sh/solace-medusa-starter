@@ -12,14 +12,15 @@ export const metadata: Metadata = {
 }
 
 type Props = {
-  searchParams: {
+  searchParams: Promise<{
     page?: string
-  }
+  }>
 }
 
 export const ORDERS_LIMIT = 2
 
-export default async function Orders({ searchParams }: Props) {
+export default async function Orders(props: Props) {
+  const searchParams = await props.searchParams
   const { page } = searchParams
   const currentPage = page ? parseInt(page) : 1
 

@@ -10,18 +10,20 @@ export const metadata: Metadata = {
 }
 
 type Params = {
-  params: { query: string; countryCode: string }
-  searchParams: {
+  params: Promise<{ query: string; countryCode: string }>
+  searchParams: Promise<{
     sortBy?: string
     page?: string
     collection?: string
     type?: string
     material?: string
     price?: string
-  }
+  }>
 }
 
-export default async function SearchResults({ params, searchParams }: Params) {
+export default async function SearchResults(props: Params) {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   const { sortBy, page, collection, type, material, price } = searchParams
   const { query, countryCode } = params
   const decodedQuery = safeDecodeURIComponent(query)

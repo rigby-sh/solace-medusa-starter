@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { startTransition, useActionState } from 'react'
 import {
   useParams,
   usePathname,
@@ -20,7 +20,6 @@ import { Heading } from '@modules/common/components/heading'
 import { Stepper } from '@modules/common/components/stepper'
 import { Text } from '@modules/common/components/text'
 import { Spinner } from '@modules/common/icons'
-import { useFormState } from 'react-dom'
 
 import BillingAddress from '../billing_address'
 import ShippingAddress from '../shipping-address'
@@ -80,7 +79,7 @@ const Addresses = ({
   }
 
   const checkout = useCheckoutForms(initialValues)
-  const [, formAction] = useFormState(setAddresses, null)
+  const [, formAction] = useActionState(setAddresses, null)
 
   const toggleSameAsShipping = (value: boolean) => {
     originalToggleSameAsShipping()
@@ -119,7 +118,9 @@ const Addresses = ({
         )
 
         await Promise.all([
-          formAction(formData),
+          startTransition(() => {
+            formAction(formData)
+          }),
           activeSession
             ? initiatePaymentSession(cart, {
                 provider_id: activeSession.provider_id,
