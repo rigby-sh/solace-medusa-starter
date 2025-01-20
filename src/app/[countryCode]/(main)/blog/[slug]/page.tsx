@@ -25,7 +25,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata(props) {
-  const params = await props.params;
+  const params = await props.params
   const article = await getBlogPostBySlug(params.slug)
 
   if (!article) {
@@ -39,12 +39,10 @@ export async function generateMetadata(props) {
   }
 }
 
-export default async function BlogPost(
-  props: {
-    params: Promise<{ slug: string; countryCode: string }>
-  }
-) {
-  const params = await props.params;
+export default async function BlogPost(props: {
+  params: Promise<{ slug: string; countryCode: string }>
+}) {
+  const params = await props.params
   const { slug, countryCode } = params
   const article = await getBlogPostBySlug(slug)
 

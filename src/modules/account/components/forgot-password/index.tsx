@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useActionState } from 'react';
+import { useActionState, useState } from 'react'
 
 import { emailRegex } from '@lib/constants'
 import { forgotPassword } from '@lib/data/customer'

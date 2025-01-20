@@ -41,8 +41,10 @@ export async function generateStaticParams() {
   return staticParams
 }
 
-export async function generateMetadata(props: CategoryPageLayoutProps): Promise<Metadata> {
-  const params = await props.params;
+export async function generateMetadata(
+  props: CategoryPageLayoutProps
+): Promise<Metadata> {
+  const params = await props.params
   try {
     const { product_categories } = await getCategoryByHandle(params.category)
 
@@ -66,16 +68,14 @@ export async function generateMetadata(props: CategoryPageLayoutProps): Promise<
   }
 }
 
-export default async function CategoryPageLayout(props: CategoryPageLayoutProps) {
-  const params = await props.params;
+export default async function CategoryPageLayout(
+  props: CategoryPageLayoutProps
+) {
+  const params = await props.params
 
-  const {
-    category
-  } = params;
+  const { category } = params
 
-  const {
-    children
-  } = props;
+  const { children } = props
 
   const { product_categories } = await getCategoryByHandle(category)
   const currentCategory = product_categories[product_categories.length - 1]

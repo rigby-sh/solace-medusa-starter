@@ -22,8 +22,8 @@ type Params = {
 }
 
 export default async function SearchResults(props: Params) {
-  const searchParams = await props.searchParams;
-  const params = await props.params;
+  const searchParams = await props.searchParams
+  const params = await props.params
   const { sortBy, page, collection, type, material, price } = searchParams
   const { query, countryCode } = params
   const decodedQuery = safeDecodeURIComponent(query)

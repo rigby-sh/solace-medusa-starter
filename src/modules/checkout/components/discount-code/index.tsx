@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState, useActionState } from 'react';
+import React, { useActionState, useEffect, useState } from 'react'
 
 import {
   applyPromotions,

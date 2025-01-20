@@ -23,16 +23,12 @@ export const metadata: Metadata = {
     'A performant frontend ecommerce starter template with Next.js 14 and Medusa 2.0.',
 }
 
-export default async function Home(
-  props: {
-    params: Promise<{ countryCode: string }>
-  }
-) {
-  const params = await props.params;
+export default async function Home(props: {
+  params: Promise<{ countryCode: string }>
+}) {
+  const params = await props.params
 
-  const {
-    countryCode
-  } = params;
+  const { countryCode } = params
 
   const [{ collections: collectionsList }, { products }] = await Promise.all([
     getCollectionsList(),

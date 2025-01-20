@@ -43,7 +43,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
-  const params = await props.params;
+  const params = await props.params
   const { handle } = params
   const region = await getRegion(params.countryCode)
 
@@ -69,7 +69,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 }
 
 export default async function ProductPage(props: Props) {
-  const params = await props.params;
+  const params = await props.params
   const region = await getRegion(params.countryCode)
 
   if (!region) {

@@ -26,7 +26,7 @@ async function getOrder(id: string) {
 }
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
-  const params = await props.params;
+  const params = await props.params
   const order = await getOrder(params.id).catch(() => null)
 
   if (!order) {
@@ -40,7 +40,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 }
 
 export default async function OrderDetailPage(props: Props) {
-  const params = await props.params;
+  const params = await props.params
   const order = await getOrder(params.id).catch(() => null)
 
   if (!order) {

@@ -26,12 +26,10 @@ const fetchCart = async () => {
   return cart
 }
 
-export default async function Checkout(
-  props: {
-    searchParams: Promise<{ [key: string]: string | string[] | undefined }>
-  }
-) {
-  const searchParams = await props.searchParams;
+export default async function Checkout(props: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
+  const searchParams = await props.searchParams
   const cart = await fetchCart()
   const customer = await getCustomer()
 

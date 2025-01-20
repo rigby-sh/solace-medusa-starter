@@ -22,8 +22,8 @@ type Params = {
 }
 
 export default async function BlogPage(props: Params) {
-  const params = await props.params;
-  const searchParams = await props.searchParams;
+  const params = await props.params
+  const searchParams = await props.searchParams
   const { sortBy, page, category, q } = searchParams
   const { data: categories } = await getBlogPostCategories()
 

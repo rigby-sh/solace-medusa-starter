@@ -48,8 +48,10 @@ export async function generateStaticParams() {
   return staticParams
 }
 
-export async function generateMetadata(props: CollectionPageLayoutProps): Promise<Metadata> {
-  const params = await props.params;
+export async function generateMetadata(
+  props: CollectionPageLayoutProps
+): Promise<Metadata> {
+  const params = await props.params
   const collection = await getCollectionByHandle(params.handle)
 
   if (!collection) {
@@ -64,16 +66,14 @@ export async function generateMetadata(props: CollectionPageLayoutProps): Promis
   return metadata
 }
 
-export default async function CollectionPageLayout(props: CollectionPageLayoutProps) {
-  const params = await props.params;
+export default async function CollectionPageLayout(
+  props: CollectionPageLayoutProps
+) {
+  const params = await props.params
 
-  const {
-    handle
-  } = params;
+  const { handle } = params
 
-  const {
-    children
-  } = props;
+  const { children } = props
 
   const currentCollection = await getCollectionByHandle(handle).then(
     (collection: StoreCollection) => collection

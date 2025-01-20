@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useActionState } from 'react';
+import { useActionState, useEffect, useState } from 'react'
 
 import { updateCustomer } from '@lib/data/customer'
 import { HttpTypes } from '@medusajs/types'
