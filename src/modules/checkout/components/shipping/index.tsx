@@ -38,12 +38,10 @@ const Shipping: React.FC<ShippingProps> = ({
 
   const isOpen = searchParams.get('step') === 'delivery'
 
-  const selectedShippingMethod =
-    availableShippingMethods?.find(
-      // To do: remove the previously selected shipping method instead of using the last one
-      (method) =>
-        method.id === cart.shipping_methods?.at(-1)?.shipping_option_id
-    ) || availableShippingMethods?.[0]
+  const selectedShippingMethod = availableShippingMethods?.find(
+    // To do: remove the previously selected shipping method instead of using the last one
+    (method) => method.id === cart.shipping_methods?.at(-1)?.shipping_option_id
+  )
 
   const handleEdit = () => {
     router.push(pathname + '?step=delivery', { scroll: false })
@@ -107,7 +105,7 @@ const Shipping: React.FC<ShippingProps> = ({
       </Box>
       {isOpen ? (
         <Box data-testid="delivery-options-container">
-          <RadioGroup value={selectedShippingMethod?.id} onChange={set}>
+          <RadioGroup value={selectedShippingMethod?.id || ''} onChange={set}>
             {availableShippingMethods?.map((option) => {
               return (
                 <RadioGroup.Option
