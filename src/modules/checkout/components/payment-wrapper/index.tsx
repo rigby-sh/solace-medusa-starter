@@ -26,8 +26,6 @@ const Wrapper: React.FC<WrapperProps> = ({ cart, children }) => {
     (s) => s.status === 'pending'
   )
 
-  console.log('paymentSession: ', paymentSession.provider_id)
-
   if (
     isStripe(paymentSession?.provider_id) &&
     paymentSession &&
