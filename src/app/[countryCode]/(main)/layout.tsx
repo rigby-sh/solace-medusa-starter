@@ -13,11 +13,13 @@ export default async function PageLayout(props: {
   params: Promise<{ countryCode: string }>
   children: React.ReactNode
 }) {
+  const { countryCode } = await props.params
+
   return (
     <>
-      <NavWrapper countryCode={(await props.params).countryCode} />
+      <NavWrapper countryCode={countryCode} />
       {props.children}
-      <Footer countryCode={(await props.params).countryCode} />
+      <Footer countryCode={countryCode} />
     </>
   )
 }
