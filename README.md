@@ -15,7 +15,6 @@
 </video>
 </p>
 
-
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
@@ -33,22 +32,24 @@
 - **MedusaJS 2.0 backend**. If this hasn't been set up yet, please use the following:
   - Our prepared repository: <a href="https://github.com/rigby-sh/solace-medusa-starter-api">Medusa 2.0 API <img width="20" alt="GitHub Logo" src="https://github.com/user-attachments/assets/b0657cbf-bbc1-40f1-99a7-8d60da97abac"></a>
   - [Medusa 2.0 Documentation](https://docs.medusajs.com/v2)
-  > **Important**: If you're not using our prepared API repository, remember to:
-  > - Copy the folder from [Repo Link](https://github.com/rigby-sh/solace-medusa-starter-api/tree/main/src/api/store) and paste it to your API project
-  > - Copy the Middlewares file from [Repo Link](https://github.com/rigby-sh/solace-medusa-starter-api/tree/main/src/api) and paste it to your API project
-  > 
-  > These files are required for the search engine and filter logic to work properly. Without them, the search and filtering functionality will not be available.
+    > **Important**: If you're not using our prepared API repository, remember to:
+    >
+    > - Copy the folder from [Repo Link](https://github.com/rigby-sh/solace-medusa-starter-api/tree/main/src/api/store) and paste it to your API project
+    > - Copy the Middlewares file from [Repo Link](https://github.com/rigby-sh/solace-medusa-starter-api/tree/main/src/api) and paste it to your API project
+    >
+    > These files are required for the search engine and filter logic to work properly. Without them, the search and filtering functionality will not be available.
 - **A CMS management system like Strapi**. If this hasn't been set up yet, please use the following:
   - Our prepared repository: <a href="https://github.com/rigby-sh/solace-medusa-starter-strapi">Strapi <img width="20" alt="GitHub Logo" src="https://github.com/user-attachments/assets/b0657cbf-bbc1-40f1-99a7-8d60da97abac"></a>
   - [Strapi Documentation](https://docs.strapi.io/dev-docs/intro)
-  > **Important**: After setting up Strapi, configure the revalidation webhook:
-  > 1. Set `STRAPI_WEBHOOK_REVALIDATION_SECRET` in your Next.js `.env` (you can generate a secure value using `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`)
-  > 2. In Strapi admin panel: Settings → Webhooks → Create new webhook
-  > 3. Configure webhook:
-  >    - URL: `{your-frontend-url}/api/strapi-revalidate?secret={YOUR-STRAPI_WEBHOOK_REVALIDATION_SECRET}`  
-  >      Example: `http://localhost:8000/api/strapi-revalidate?secret=30747ea915627411fa275b9e3e6cafd199f9c5b221696b644509c02510ebe979`
-  >    - No additional headers needed
-  >    - Enable Entry and Media events (Create, Update, Delete)
+    > **Important**: After setting up Strapi, configure the revalidation webhook:
+    >
+    > 1. Set `STRAPI_WEBHOOK_REVALIDATION_SECRET` in your Next.js `.env` (you can generate a secure value using `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`)
+    > 2. In Strapi admin panel: Settings → Webhooks → Create new webhook
+    > 3. Configure webhook:
+    >    - URL: `{your-frontend-url}/api/strapi-revalidate?secret={YOUR-STRAPI_WEBHOOK_REVALIDATION_SECRET}`  
+    >      Example: `http://localhost:8000/api/strapi-revalidate?secret=30747ea915627411fa275b9e3e6cafd199f9c5b221696b644509c02510ebe979`
+    >    - No additional headers needed
+    >    - Enable Entry and Media events (Create, Update, Delete)
 
 &nbsp;
 
@@ -126,7 +127,7 @@ git clone https://github.com/rigby-sh/solace-medusa-starter.git
 
 ```
 
-yarn install
+npm install
 
 ```
 
@@ -154,7 +155,7 @@ Start your application with autoReload enabled
 
 ```
 
-yarn dev
+npm run dev
 
 ```
 
@@ -164,7 +165,7 @@ Build the project to generate the production version preview
 
 ```
 
-yarn build
+npm run build
 
 ```
 
@@ -174,7 +175,7 @@ Run the preview version of the project
 
 ```
 
-yarn start
+npm run start
 
 ```
 
@@ -210,8 +211,7 @@ Deploying your application on Vercel is a quick and straightforward process that
 
 &nbsp;
 
-> [!IMPORTANT]
-> **Image Usage Disclaimer**: The images used in this starter are for preview purposes only. They are licensed exclusively for use within this demo and cannot be used in any commercial applications or redistributed. If you intend to use this starter for your own store, please replace all images with assets that are appropriately licensed for your project.
+> [!IMPORTANT] > **Image Usage Disclaimer**: The images used in this starter are for preview purposes only. They are licensed exclusively for use within this demo and cannot be used in any commercial applications or redistributed. If you intend to use this starter for your own store, please replace all images with assets that are appropriately licensed for your project.
 
 &nbsp;
 
