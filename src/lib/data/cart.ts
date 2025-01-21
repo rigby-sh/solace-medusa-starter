@@ -37,8 +37,14 @@ export async function getOrSetCart(countryCode: string) {
     throw new Error(`Region not found for country code: ${countryCode}`)
   }
 
+  const authHeaders = await getAuthHeaders()
+
   if (!cart) {
-    const cartResp = await sdk.store.cart.create({ region_id: region.id })
+    const cartResp = await sdk.store.cart.create(
+      { region_id: region.id },
+      {},
+      authHeaders
+    )
     cart = cartResp.cart
     setCartId(cart.id)
     revalidateTag('cart')
