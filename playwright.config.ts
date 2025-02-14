@@ -46,8 +46,8 @@ export default defineConfig({
     {
       name: 'chromium auth',
       dependencies: ['setup'],
-      testIgnore: 'public/*.spec.ts',
-      use: { ...devices['Desktop Chrome'], storageState: STORAGE_STATE },
+      testIgnore: ['public/*.spec.ts', 'tests/medusa-test-specs'],
+      use: { ...devices['Desktop Chrome']},
     },
 
     {

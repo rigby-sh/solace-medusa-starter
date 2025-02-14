@@ -65,7 +65,7 @@ export default async function Footer({ countryCode }: { countryCode: string }) {
             </LocalizedClientLink>
             <SocialMedia className="hidden large:flex" />
           </Box>
-          <Box className="hidden shrink grow gap-5 small:flex xl:gap-0">
+          <Box className="hidden shrink grow gap-5 small:flex xl:gap-0" data-testid="footer-links-section">
             {footerNavigation.navigation.map((item, id) => {
               return (
                 <Box

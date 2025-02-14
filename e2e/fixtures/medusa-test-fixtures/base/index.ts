@@ -1,6 +1,6 @@
 import { test as base } from '@playwright/test'
 
-import { resetDatabase } from '../data/reset'
+import { resetDatabase } from '../../../data/reset'
 import { CartPage } from './cart-page'
 import { CategoryPage } from './category-page'
 import { CheckoutPage } from './checkout-page'
