@@ -100,7 +100,12 @@ const AddressSelect: React.FC<AddressSelectProps> = ({
   // Render a placeholder button during SSR to prevent hydration mismatch
   if (!mounted) {
     return (
-      <Button variant="tonal" size="sm" data-testid="change-address-button" disabled>
+      <Button
+        variant="tonal"
+        size="sm"
+        data-testid="change-address-button"
+        disabled
+      >
         Change
       </Button>
     )

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-import { HttpTypes } from '@medusajs/types'
 import { sdk } from '@lib/config'
+import { HttpTypes } from '@medusajs/types'
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL
 const PUBLISHABLE_API_KEY = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
@@ -28,7 +28,10 @@ async function getRegionMap() {
 
       if (process.env.NODE_ENV === 'development') {
         console.log('Proxy.ts: Fetching regions from:', BACKEND_URL)
-        console.log('Proxy.ts: Using publishable key:', PUBLISHABLE_API_KEY?.substring(0, 10) + '...')
+        console.log(
+          'Proxy.ts: Using publishable key:',
+          PUBLISHABLE_API_KEY?.substring(0, 10) + '...'
+        )
       }
 
       // Fetch regions using Medusa SDK

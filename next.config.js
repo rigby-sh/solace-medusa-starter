@@ -44,7 +44,7 @@ const nextConfig = {
     cacheLife: {
       fetch: {
         revalidate: 60, // 60 sekund
-        expire: 3600,    // 1 godzina
+        expire: 3600, // 1 godzina
       },
     },
   },
