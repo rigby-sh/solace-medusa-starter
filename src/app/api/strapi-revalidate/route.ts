@@ -11,11 +11,11 @@ export async function POST(request: NextRequest) {
 
   try {
     if (body.model === 'blog' || body.model === 'blog-post-category') {
-      revalidateTag(`blog-${body.entry.Slug}`)
-      revalidateTag('blog')
-      revalidateTag('explore-blog')
-      revalidateTag('blog-categories')
-      revalidateTag('blog-slugs')
+      revalidateTag(`blog-${body.entry.Slug}`, 'fetch')
+      revalidateTag('blog', 'fetch')
+      revalidateTag('explore-blog', 'fetch')
+      revalidateTag('blog-categories', 'fetch')
+      revalidateTag('blog-slugs', 'fetch')
 
       return NextResponse.json({ revalidated: true, now: Date.now() })
     }
