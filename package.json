@@ -22,8 +22,8 @@
   },
   "resolutions": {
     "webpack": "5",
-    "@types/react": "19.0.7",
-    "@types/react-dom": "19.0.3"
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.3"
   },
   "dependencies": {
     "@headlessui/react": "2.2.0",
@@ -60,9 +60,9 @@
     "next-themes": "0.4.4",
     "pg": "8.11.3",
     "qs": "6.12.1",
-    "react": "19.2.3",
+    "react": "^18.3.1",
     "react-country-flag": "3.0.2",
-    "react-dom": "19.2.3",
+    "react-dom": "^18.3.1",
     "react-intersection-observer": "9.15.0",
     "react-markdown": "9.0.1",
     "rehype-highlight": "7.0.0",
@@ -90,8 +90,8 @@
     "@types/lodash": "4.14.195",
     "@types/node": "^25.0.6",
     "@types/pg": "8.11.0",
-    "@types/react": "19.0.7",
-    "@types/react-dom": "19.0.3",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.3",
     "@types/react-instantsearch-dom": "6.12.3",
     "@typescript-eslint/eslint-plugin": "8.18.2",
     "@typescript-eslint/parser": "8.18.2",
