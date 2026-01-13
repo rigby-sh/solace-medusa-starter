@@ -42,7 +42,6 @@ const AddressSelect: React.FC<AddressSelectProps> = ({
   cart,
   onSelect,
 }) => {
-  const [mounted, setMounted] = useState(false)
   const {
     formRef,
     editFormRef,
@@ -63,10 +62,6 @@ const AddressSelect: React.FC<AddressSelectProps> = ({
     handleEditAddress,
     selectedAddress,
   } = useAddressSelect(addresses, addressInput, cart, onSelect)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   const defaultInitialValues = {
     first_name: '',
@@ -96,20 +91,6 @@ const AddressSelect: React.FC<AddressSelectProps> = ({
   })
 
   const handleSubmit = async () => await formik.handleSubmit()
-
-  // Render a placeholder button during SSR to prevent hydration mismatch
-  if (!mounted) {
-    return (
-      <Button
-        variant="tonal"
-        size="sm"
-        data-testid="change-address-button"
-        disabled
-      >
-        Change
-      </Button>
-    )
-  }
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenDialogChange}>

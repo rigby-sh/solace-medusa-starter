@@ -15,61 +15,52 @@ interface CategoryPageLayoutProps {
 }
 
 export async function generateStaticParams() {
-  try {
-    const product_categories = await listCategories()
+  const product_categories = await listCategories()
 
-    if (!product_categories) {
-      return []
-    }
-
-    const countryCodes = await listRegions().then((regions: StoreRegion[]) =>
-      regions?.map((r) => r.countries?.map((c) => c.iso_2)).flat()
-    )
-
-    const categoryHandles = product_categories.map(
-      (category: any) => category.handle
-    )
-
-    const staticParams = countryCodes
-      ?.map((countryCode: string | undefined) =>
-        categoryHandles.map((handle: any) => ({
-          countryCode,
-          category: [handle],
-        }))
-      )
-      .flat()
-
-    return staticParams
-  } catch (error) {
-    console.error('Skipping static generation for categories:', error)
+  if (!product_categories) {
     return []
   }
+
+  const countryCodes = await listRegions().then((regions: StoreRegion[]) =>
+    regions?.map((r) => r.countries?.map((c) => c.iso_2)).flat()
+  )
+
+  const categoryHandles = product_categories.map(
+    (category: any) => category.handle
+  )
+
+  const staticParams = countryCodes
+    ?.map((countryCode: string | undefined) =>
+      categoryHandles.map((handle: any) => ({
+        countryCode,
+        category: [handle],
+      }))
+    )
+    .flat()
+
+  return staticParams
 }
 
 export async function generateMetadata(
   props: CategoryPageLayoutProps
 ): Promise<Metadata> {
   const params = await props.params
-  try {
-    const { product_categories } = await getCategoryByHandle(params.category)
+  const { product_categories } = await getCategoryByHandle(params.category)
 
-    const title = product_categories
-      .map((category: StoreProductCategory) => category.name)
-      .join(' | ')
+  const title = product_categories
+    .map((category: StoreProductCategory) => category.name)
+    .join(' | ')
 
-    const description =
-      product_categories[product_categories.length - 1].description ??
-      `${title} category.`
+  const description =
+    product_categories[product_categories.length - 1].description ??
+    `${title} category.`
 
-    return {
-      title: `${title} | Solace Medusa Starter`,
-      description,
-      alternates: {
-        canonical: `${params.category.join('/')}`,
-      },
-    }
-  } catch (error) {
-    notFound()
+  return {
+    title: `${title} | Solace Medusa Starter`,
+    description,
+    alternates: {
+      canonical: `${params.category.join('/')}`,
+    },
   }
 }
 

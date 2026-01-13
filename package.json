@@ -13,7 +13,7 @@
     "dev": "next dev --turbopack -p 8000",
     "build": "next build",
     "start": "next start -p 8000",
-    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "lint": "eslint .",
     "format:write": "prettier --write .",
     "format": "prettier --check .",
     "analyze": "ANALYZE=true next build",

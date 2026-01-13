@@ -26,15 +26,6 @@ async function getRegionMap() {
         )
       }
 
-      if (process.env.NODE_ENV === 'development') {
-        console.log('Proxy.ts: Fetching regions from:', BACKEND_URL)
-        console.log(
-          'Proxy.ts: Using publishable key:',
-          PUBLISHABLE_API_KEY?.substring(0, 10) + '...'
-        )
-      }
-
-      // Fetch regions using Medusa SDK
       const { regions } = await sdk.store.region.list()
 
       if (!regions?.length) {
@@ -46,11 +37,6 @@ async function getRegionMap() {
         throw new Error('No regions configured in Medusa backend')
       }
 
-      if (process.env.NODE_ENV === 'development') {
-        console.log(`Proxy.ts: Successfully fetched ${regions.length} regions`)
-      }
-
-      // Create a map of country codes to regions.
       regions.forEach((region: HttpTypes.StoreRegion) => {
         region.countries?.forEach((c) => {
           regionMapCache.regionMap.set(c.iso_2 ?? '', region)

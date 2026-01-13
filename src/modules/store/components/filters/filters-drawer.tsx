@@ -22,14 +22,9 @@ import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
 
 export default function ProductFiltersDrawer({ children }: PropsWithChildren) {
   const [isOpen, setIsOpen] = useState(false)
-  const [mounted, setMounted] = useState(false)
   const panelRef = useRef<HTMLDivElement | null>(null)
 
   const clearAllUrl = useClearFiltersUrl()
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   const handleOpenDialogChange = (open: boolean) => {
     setIsOpen(open)
@@ -63,16 +58,6 @@ export default function ProductFiltersDrawer({ children }: PropsWithChildren) {
       document.body.style.overflow = 'auto'
     }
   }, [isOpen])
-
-  // Render a placeholder button during SSR to prevent hydration mismatch
-  if (!mounted) {
-    return (
-      <Button variant="tonal" className="flex small:hidden" disabled>
-        <FilterIcon />
-        Filters
-      </Button>
-    )
-  }
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenDialogChange}>

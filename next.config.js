@@ -8,6 +8,7 @@ checkEnvVariables()
 const nextConfig = {
   reactStrictMode: true,
   images: {
+    // TO DO: Fix this in the future
     unoptimized: true,
     remotePatterns: [
       {
@@ -39,14 +40,6 @@ const nextConfig = {
         hostname: process.env.NEXT_PUBLIC_SPACE_ENDPOINT,
       },
     ],
-  },
-  experimental: {
-    cacheLife: {
-      fetch: {
-        revalidate: 60, // 60 sekund
-        expire: 3600, // 1 godzina
-      },
-    },
   },
 }
 

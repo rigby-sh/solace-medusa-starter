@@ -63,7 +63,6 @@ const ProfileEditDetails = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess])
 
-  // Render a placeholder button during SSR to prevent hydration mismatch
   if (!mounted) {
     return (
       <Button

@@ -87,8 +87,6 @@ export default async function ProductPage(props: Props) {
     notFound()
   }
 
-  console.log('ProductPage', pricedProduct)
-
   return (
     <ProductTemplate
       product={pricedProduct}
