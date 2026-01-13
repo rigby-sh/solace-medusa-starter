@@ -38,7 +38,7 @@ export function BlogContent({ content }: { content: string }) {
           </Heading>
         ),
         p: ({ node, ...props }) => (
-          <Text className="mb-6 text-secondary medium:mb-12">
+          <Text as="div" className="mb-6 text-secondary medium:mb-12">
             {props.children}
           </Text>
         ),
