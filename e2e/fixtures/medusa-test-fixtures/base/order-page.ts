@@ -1,6 +1,6 @@
 import { Locator, Page } from '@playwright/test'
 
-import { BasePage } from './page-objects/base/base-page'
+import { BasePage } from './base-page'
 
 export class OrderPage extends BasePage {
   container: Locator
