@@ -6,22 +6,27 @@ import { StoreRegion } from '@medusajs/types'
 import BlogPostTemplate from '@modules/blog/templates/blogPostTemplate'
 
 export async function generateStaticParams() {
-  const slugs = await getAllBlogSlugs()
+  try {
+    const slugs = await getAllBlogSlugs()
 
-  if (!slugs) {
+    if (!slugs) {
+      return []
+    }
+
+    const countryCodes = await listRegions().then((regions: StoreRegion[]) =>
+      regions?.map((r) => r.countries?.map((c) => c.iso_2)).flat()
+    )
+
+    return slugs.flatMap((slug) =>
+      countryCodes.map((countryCode) => ({
+        slug,
+        countryCode,
+      }))
+    )
+  } catch (error) {
+    console.error('Skipping static generation for blog:', error)
     return []
   }
-
-  const countryCodes = await listRegions().then((regions: StoreRegion[]) =>
-    regions?.map((r) => r.countries?.map((c) => c.iso_2)).flat()
-  )
-
-  return slugs.flatMap((slug) =>
-    countryCodes.map((countryCode) => ({
-      slug,
-      countryCode,
-    }))
-  )
 }
 
 export async function generateMetadata(props) {
