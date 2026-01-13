@@ -29,11 +29,6 @@ async function getRegionMap() {
       const { regions } = await sdk.store.region.list()
 
       if (!regions?.length) {
-        if (process.env.NODE_ENV === 'development') {
-          console.error(
-            'Proxy.ts: No regions found. Did you set up regions in your Medusa Admin?'
-          )
-        }
         throw new Error('No regions configured in Medusa backend')
       }
 
@@ -45,10 +40,7 @@ async function getRegionMap() {
 
       regionMapCache.regionMapUpdated = Date.now()
     } catch (error) {
-      if (process.env.NODE_ENV === 'development') {
-        console.error('Proxy.ts: Error fetching regions:', error)
-      }
-      throw error
+      throw new Error('Error fetching regions', error)
     }
   }
 
@@ -85,11 +77,7 @@ function getCountryCode(
 
     return countryCode
   } catch (error) {
-    if (process.env.NODE_ENV === 'development') {
-      console.error(
-        'Proxy.ts: Error getting the country code. Did you set up regions in your Medusa Admin and define a NEXT_PUBLIC_MEDUSA_BACKEND_URL environment variable?'
-      )
-    }
+    throw new Error('Error getting the country code', error)
   }
 }
 
