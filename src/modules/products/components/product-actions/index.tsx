@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useParams } from 'next/navigation'
 
 import { addToCart } from '@lib/data/cart'
@@ -68,7 +68,8 @@ export default function ProductActions({
         countryCode,
       })
     } catch (error) {
-      toast('error', error)
+      console.error(error)
+      toast('error', 'Could not add product to cart')
     } finally {
       setTimeout(() => {
         openCartDropdown()

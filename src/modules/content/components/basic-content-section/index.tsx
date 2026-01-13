@@ -22,7 +22,7 @@ export const BasicContentSection = ({ data }: { data: ContentAttributes }) => {
           src={data.Image.url}
           alt={data.Image.alternativeText ?? 'Content section image'}
           fill
-          objectFit="cover"
+          className="object-cover"
         />
       </Box>
     </Container>
