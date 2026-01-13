@@ -1,4 +1,4 @@
-export const rootColors = {
+const rootColors = {
   /*BACKGROUND*/
 
   '--bg-static': '9 9 9',
@@ -56,7 +56,7 @@ export const rootColors = {
   '--border-positive': '3 152 85',
   '--border-warning': '220 104 3',
 }
-export const darkMode = {
+const darkMode = {
   /*BACKGROUND*/
 
   '--bg-static': '9 9 9',
@@ -114,3 +114,5 @@ export const darkMode = {
   '--border-positive': '18 183 106',
   '--border-warning': '247 144 9',
 }
+
+module.exports = { rootColors, darkMode }

@@ -1,4 +1,4 @@
-export const screens = {
+const screens = {
   xsmall: '355px',
   small: '640px',
   medium: '768px',
@@ -6,3 +6,5 @@ export const screens = {
   xl: '1100px',
   '2xl': '1700px',
 }
+
+module.exports = { screens }

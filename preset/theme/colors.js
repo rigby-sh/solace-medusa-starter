@@ -1,4 +1,4 @@
-export const colors = {
+const colors = {
   colors: {
     grey: {
       10: 'rgb(255, 255, 255)',
@@ -127,7 +127,9 @@ export const colors = {
   },
 }
 
-export const boxShadow = {
+const boxShadow = {
   'complementary-basic': '0 2px 10px rgba(0, 0, 0, 0.2)',
   'black-basic': '0px 2px 10px 0px rgba(9, 9, 9, 0.1)',
 }
+
+module.exports = { colors, boxShadow }
