@@ -12,7 +12,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "incremental": true,
     "baseUrl": "./src",
     "paths": {
@@ -35,7 +35,8 @@
     ".eslintrc.cjs",
     "tailwind.config.js",
     "postcss.config.js",
-    "src/modules/common/components/theme-provider"
+    "src/modules/common/components/theme-provider",
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",

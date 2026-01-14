@@ -34,10 +34,15 @@ const ProfileEditDetails = ({
   customer: HttpTypes.StoreCustomer
 }) => {
   const [isSuccess, setIsSuccess] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const [formState, formAction] = useActionState(updateCustomer, {
     success: false,
     error: null,
   })
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const close = () => {
     setIsSuccess(false)
@@ -57,6 +62,20 @@ const ProfileEditDetails = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess])
+
+  if (!mounted) {
+    return (
+      <Button
+        variant="tonal"
+        size="sm"
+        className="w-fit medium:hidden"
+        data-testid="edit-details-button"
+        disabled
+      >
+        Edit details
+      </Button>
+    )
+  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

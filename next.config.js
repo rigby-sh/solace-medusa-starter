@@ -8,6 +8,8 @@ checkEnvVariables()
 const nextConfig = {
   reactStrictMode: true,
   images: {
+    // TO DO: Fix this in the future
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'http',

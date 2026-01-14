@@ -1,8 +1,8 @@
-export const animation = {
+const animation = {
   'slide-down': 'accordion-slide-down 0.3s ease-in-out',
   'slide-up': 'accordion-slide-up 0.3s ease-in-out',
 }
-export const keyframes = {
+const keyframes = {
   'accordion-slide-down': {
     from: { height: '0' },
     to: { height: 'var(--radix-accordion-content-height)' },
@@ -12,3 +12,5 @@ export const keyframes = {
     to: { height: '0' },
   },
 }
+
+module.exports = { animation, keyframes }

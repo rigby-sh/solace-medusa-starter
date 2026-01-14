@@ -35,7 +35,7 @@ export const updateCustomer = cache(async function (
   return await sdk.store.customer
     .update(body, {}, authHeaders)
     .then(() => {
-      revalidateTag('customer')
+      revalidateTag('customer', 'max')
       return { success: true, error: null }
     })
     .catch((err) => {
@@ -73,7 +73,7 @@ export async function signup(_currentState: unknown, formData: FormData) {
 
     await setAuthToken(loginToken as string)
 
-    revalidateTag('customer')
+    revalidateTag('customer', 'max')
     return createdCustomer
   } catch (error: any) {
     return error.toString()
@@ -142,7 +142,7 @@ export async function login(_currentState: unknown, formData: FormData) {
       password,
     })
     await setAuthToken(token as string)
-    revalidateTag('customer')
+    revalidateTag('customer', 'max')
   } catch (error: any) {
     return error.toString()
   }
@@ -151,8 +151,8 @@ export async function login(_currentState: unknown, formData: FormData) {
 export async function signout(countryCode: string) {
   await sdk.auth.logout()
   await removeAuthToken()
-  revalidateTag('auth')
-  revalidateTag('customer')
+  revalidateTag('auth', 'max')
+  revalidateTag('customer', 'max')
   redirect(`/${countryCode}/account`)
 }
 
@@ -184,7 +184,7 @@ export const addCustomerAddress = async (
   return sdk.store.customer
     .createAddress(address, {}, authHeaders)
     .then(() => {
-      revalidateTag('customer')
+      revalidateTag('customer', 'max')
       return { success: true, error: null }
     })
     .catch((err) => {
@@ -200,7 +200,7 @@ export const deleteCustomerAddress = async (
   await sdk.store.customer
     .deleteAddress(addressId, authHeaders)
     .then(() => {
-      revalidateTag('customer')
+      revalidateTag('customer', 'max')
       return { success: true, error: null }
     })
     .catch((err) => {
@@ -235,7 +235,7 @@ export const updateCustomerAddress = async (
   return sdk.store.customer
     .updateAddress(addressId, address, {}, authHeaders)
     .then(() => {
-      revalidateTag('customer')
+      revalidateTag('customer', 'max')
       return { success: true, error: null }
     })
     .catch((err) => {

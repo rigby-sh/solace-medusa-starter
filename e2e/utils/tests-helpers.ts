@@ -77,7 +77,6 @@ export async function goToCartPage(page) {
 }
 
 export async function fillShippingAddressInputs(page) {
-
   await waitForPageLoad(page)
 
   await page.getByTestId('shipping-first-name-input').fill('Adam')

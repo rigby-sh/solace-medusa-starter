@@ -1,6 +1,6 @@
 'use client'
 
-import React, { Fragment, useMemo, useState } from 'react'
+import React, { Fragment, useEffect, useMemo, useState } from 'react'
 import Image from 'next/image'
 
 import { createNavigation } from '@lib/constants'
@@ -46,6 +46,11 @@ const SideMenu = ({
   const [categoryStack, setCategoryStack] = useState<CategoryItem[]>([])
   const currentCategory = categoryStack[categoryStack.length - 1] || null
   const [isOpen, setIsOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const navigation = useMemo(
     () => createNavigation(productCategories, collections),
@@ -169,6 +174,20 @@ const SideMenu = ({
 
   const shouldRenderButton =
     !currentCategory || currentCategory.name !== 'Collections'
+
+  // Render a placeholder button during SSR to prevent hydration mismatch
+  if (!mounted) {
+    return (
+      <Button
+        variant="icon"
+        withIcon
+        className="flex h-auto !p-2 xsmall:!p-3.5 large:hidden"
+        disabled
+      >
+        <BarsIcon />
+      </Button>
+    )
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenDialogChange}>

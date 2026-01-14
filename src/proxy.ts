@@ -1,6 +1,6 @@
-import { notFound } from 'next/navigation'
 import { NextRequest, NextResponse } from 'next/server'
 
+import { sdk } from '@lib/config'
 import { HttpTypes } from '@medusajs/types'
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL
@@ -19,29 +19,29 @@ async function getRegionMap() {
     !regionMap.keys().next().value ||
     regionMapUpdated < Date.now() - 3600 * 1000
   ) {
-    // Fetch regions from Medusa. We can't use the JS client here because middleware is running on Edge and the client needs a Node environment.
-    const { regions } = await fetch(`${BACKEND_URL}/store/regions`, {
-      headers: {
-        'x-publishable-api-key': PUBLISHABLE_API_KEY!,
-      },
-      next: {
-        revalidate: 3600,
-        tags: ['regions'],
-      },
-    }).then((res) => res.json())
+    try {
+      if (!BACKEND_URL || !PUBLISHABLE_API_KEY) {
+        throw new Error(
+          'Missing NEXT_PUBLIC_MEDUSA_BACKEND_URL or NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY'
+        )
+      }
 
-    if (!regions?.length) {
-      notFound()
-    }
+      const { regions } = await sdk.store.region.list()
 
-    // Create a map of country codes to regions.
-    regions.forEach((region: HttpTypes.StoreRegion) => {
-      region.countries?.forEach((c) => {
-        regionMapCache.regionMap.set(c.iso_2 ?? '', region)
+      if (!regions?.length) {
+        throw new Error('No regions configured in Medusa backend')
+      }
+
+      regions.forEach((region: HttpTypes.StoreRegion) => {
+        region.countries?.forEach((c) => {
+          regionMapCache.regionMap.set(c.iso_2 ?? '', region)
+        })
       })
-    })
 
-    regionMapCache.regionMapUpdated = Date.now()
+      regionMapCache.regionMapUpdated = Date.now()
+    } catch (error) {
+      throw new Error('Error fetching regions', error)
+    }
   }
 
   return regionMapCache.regionMap
@@ -77,18 +77,14 @@ function getCountryCode(
 
     return countryCode
   } catch (error) {
-    if (process.env.NODE_ENV === 'development') {
-      console.error(
-        'Middleware.ts: Error getting the country code. Did you set up regions in your Medusa Admin and define a NEXT_PUBLIC_MEDUSA_BACKEND_URL environment variable?'
-      )
-    }
+    throw new Error('Error getting the country code', error)
   }
 }
 
 /**
- * Middleware to handle region selection and onboarding status.
+ * Proxy to handle region selection and onboarding status.
  */
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
   const isOnboarding = searchParams.get('onboarding') === 'true'
   const cartId = searchParams.get('cart_id')

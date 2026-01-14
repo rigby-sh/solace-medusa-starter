@@ -1,6 +1,5 @@
-import plugin from 'tailwindcss/plugin'
-
-import { darkMode, rootColors } from './colors'
+const plugin = require('tailwindcss/plugin')
+const { darkMode, rootColors } = require('./colors')
 
 const uiPlugin = plugin(function ({ addBase, theme }) {
   addBase({
@@ -37,4 +36,4 @@ const uiPlugin = plugin(function ({ addBase, theme }) {
   })
 })
 
-export default uiPlugin
+module.exports = uiPlugin
