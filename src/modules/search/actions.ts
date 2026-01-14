@@ -9,6 +9,7 @@ export const PRODUCT_LIMIT = 12
 
 type SearchParams = {
   currency_code: string
+  region_id: string
   page?: number
   order?: string
   category_id?: string
@@ -21,6 +22,7 @@ type SearchParams = {
 
 export async function search({
   currency_code,
+  region_id,
   page,
   order = 'relevance',
   category_id,
@@ -41,6 +43,7 @@ export async function search({
 
   const searchParams = new URLSearchParams({
     currency_code,
+    region_id,
     order: sortBy,
     offset: ((page - 1) * PRODUCT_LIMIT).toString(),
     limit: PRODUCT_LIMIT.toString(),
@@ -92,6 +95,8 @@ export async function search({
   if (query) {
     searchParams.append('q', safeDecodeURIComponent(query))
   }
+
+  console.log('searchParams', searchParams.toString())
 
   const response = await fetch(
     `${BACKEND_URL}/store/search?${searchParams.toString()}`,

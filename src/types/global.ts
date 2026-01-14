@@ -40,6 +40,9 @@ export type SearchedProduct = {
   regular_price: string
   created_at: string
   updated_at: string
+  variants: {
+    calculated_price: string
+  }[]
 }
 
 export type SearchedProducts = {
