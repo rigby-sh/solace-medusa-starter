@@ -40,6 +40,7 @@ export default async function StoreTemplate({
 
   const { results, count } = await search({
     currency_code: region.currency_code,
+    region_id: region.id,
     order: sortBy,
     page: pageNumber,
     collection: collection?.split(','),
