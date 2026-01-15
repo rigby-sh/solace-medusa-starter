@@ -1,5 +1,5 @@
 import { getRegion } from '@lib/data/regions'
-import { convertToLocale } from '@lib/util/money'
+import { getProductPrice } from '@lib/util/get-product-price'
 import { ProductTile } from '@modules/products/components/product-tile'
 import { PRODUCT_LIMIT } from '@modules/search/actions'
 import { Pagination } from '@modules/store/components/pagination'
@@ -30,6 +30,9 @@ export default async function PaginatedProducts({
         data-testid="products-list"
       >
         {products.map((p) => {
+          const cheapestVariant = getProductPrice({
+            product: p,
+          })
           return (
             <li key={p.id}>
               <ProductTile
@@ -39,10 +42,8 @@ export default async function PaginatedProducts({
                   title: p.title,
                   handle: p.handle,
                   thumbnail: p.thumbnail,
-                  calculatedPrice: convertToLocale({
-                    amount: Number(p.calculated_price),
-                    currency_code: region.currency_code,
-                  }),
+                  calculatedPrice:
+                    cheapestVariant.cheapestPrice.calculated_price,
                   salePrice: p.sale_price,
                 }}
                 regionId={region.id}

@@ -1,4 +1,5 @@
 import { HttpTypes } from '@medusajs/types'
+import { SearchedProduct } from 'types/global'
 
 import { getPercentageDiff } from './get-precentage-diff'
 import { convertToLocale } from './money'
@@ -32,7 +33,7 @@ export function getProductPrice({
   product,
   variantId,
 }: {
-  product: HttpTypes.StoreProduct
+  product: HttpTypes.StoreProduct | SearchedProduct
   variantId?: string
 }) {
   if (!product || !product.id) {
