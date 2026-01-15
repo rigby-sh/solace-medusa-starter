@@ -96,8 +96,6 @@ export async function search({
     searchParams.append('q', safeDecodeURIComponent(query))
   }
 
-  console.log('searchParams', searchParams.toString())
-
   const response = await fetch(
     `${BACKEND_URL}/store/search?${searchParams.toString()}`,
     {
