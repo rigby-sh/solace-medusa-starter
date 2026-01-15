@@ -40,6 +40,7 @@ export default async function CategoryTemplate({
   const filters = await getStoreFilters()
 
   const { results, count } = await search({
+    region_id: region.id,
     currency_code: region.currency_code,
     category_id: currentCategory.id,
     order: sortBy,
