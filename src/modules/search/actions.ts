@@ -114,6 +114,6 @@ export async function search({
 
   return {
     results: data.products,
-    count: data.count,
+    count: data.products.length,
   }
 }

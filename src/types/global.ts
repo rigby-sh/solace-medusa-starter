@@ -1,3 +1,5 @@
+import { StoreProduct } from '@medusajs/types'
+
 export type FeaturedProduct = {
   id: string
   title: string
@@ -30,19 +32,9 @@ export type ProductFilters = {
   }[]
 }
 
-export type SearchedProduct = {
-  id: string
-  title: string
-  handle: string
-  thumbnail: string
-  calculated_price: string
+export type SearchedProduct = StoreProduct & {
   sale_price: string
   regular_price: string
-  created_at: string
-  updated_at: string
-  variants: {
-    calculated_price: string
-  }[]
 }
 
 export type SearchedProducts = {

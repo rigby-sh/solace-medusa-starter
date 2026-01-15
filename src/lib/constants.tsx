@@ -47,14 +47,15 @@ export const storeSortOptions = [
     value: 'created_at',
     label: 'New in',
   },
-  {
-    value: 'price_asc',
-    label: 'Price: Low-High',
-  },
-  {
-    value: 'price_desc',
-    label: 'Price: High-Low',
-  },
+  // TODO: Add price sorting once we have the price sorting working
+  // {
+  //   value: 'price_asc',
+  //   label: 'Price: Low-High',
+  // },
+  // {
+  //   value: 'price_desc',
+  //   label: 'Price: High-Low',
+  // },
 ]
 
 /* Map of payment provider_id to their title and icon. Add in any payment providers you want to use. */
