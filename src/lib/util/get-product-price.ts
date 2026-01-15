@@ -1,8 +1,8 @@
 import { HttpTypes } from '@medusajs/types'
+import { SearchedProduct } from 'types/global'
 
 import { getPercentageDiff } from './get-precentage-diff'
 import { convertToLocale } from './money'
-import { SearchedProduct } from 'types/global'
 
 export const getPricesForVariant = (variant: any) => {
   if (!variant?.calculated_price?.calculated_amount) {
