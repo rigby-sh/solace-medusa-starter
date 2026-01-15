@@ -50,6 +50,7 @@ export default async function SearchResultsTemplate({
 
   const { results, count } = await search({
     currency_code: region.currency_code,
+    region_id: region.id,
     query,
     order: sortBy,
     page: pageNumber,
