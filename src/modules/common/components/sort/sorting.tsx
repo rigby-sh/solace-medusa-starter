@@ -1,6 +1,6 @@
 'use client'
 
-import React, { ChangeEvent } from 'react'
+import { ChangeEvent } from 'react'
 
 import { Menu, Transition } from '@headlessui/react'
 import { formatNameForTestId } from '@lib/util/formatNameForTestId'
@@ -73,7 +73,7 @@ const Sorting = ({ options, sortBy, setQueryParams }: SortingProps) => {
         <Menu as="div">
           {({ close }) => (
             <>
-              <Menu.Button className="flex w-full items-center justify-center gap-2 rounded-full bg-fg-secondary py-3.5 text-md text-basic-primary">
+              <Menu.Button className="flex max-h-12 w-full items-center justify-center gap-2 rounded-full bg-fg-secondary p-3.5 text-md text-basic-primary">
                 <SortIcon />
                 Sort
               </Menu.Button>
