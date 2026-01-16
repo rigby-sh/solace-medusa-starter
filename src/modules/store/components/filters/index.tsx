@@ -1,6 +1,5 @@
 'use client'
 
-import React from 'react'
 import { usePathname, useSearchParams } from 'next/navigation'
 
 import { Box } from '@modules/common/components/box'
@@ -36,10 +35,11 @@ export default function ProductFilters({
     value: type.value,
   }))
 
-  const materialOptions = filters.material.map((material) => ({
-    id: material.id,
-    value: material.value,
-  }))
+  // TO DO: Add material filter when backend is ready
+  // const materialOptions = filters.material.map((material) => ({
+  //   id: material.id,
+  //   value: material.value,
+  // }))
 
   const priceOptions = PRICING_OPTIONS.map((po) => ({
     ...po,
@@ -65,11 +65,12 @@ export default function ProductFilters({
           content={<FilterItems items={typeOptions} param="type" />}
         />
         <Divider />
-        <FilterWrapper
+        {/* TO DO: Add material filter when backend is ready */}
+        {/* <FilterWrapper
           title="Material"
           content={<FilterItems items={materialOptions} param="material" />}
-        />
-        <Divider />
+        /> 
+        <Divider /> */}
         <FilterWrapper
           title="Price"
           content={<FilterItems items={priceOptions} param="price" />}
@@ -102,7 +103,8 @@ export default function ProductFilters({
             </SelectContent>
           </Select>
         )}
-        {materialOptions && materialOptions.length > 0 && (
+        {/* TO DO: Add material filter when backend is ready */}
+        {/* {materialOptions && materialOptions.length > 0 && (
           <Select value={null} onValueChange={() => {}}>
             <SelectTrigger
               aria-label="Choose material/s"
@@ -114,7 +116,7 @@ export default function ProductFilters({
               <FilterItems items={materialOptions} param="material" />
             </SelectContent>
           </Select>
-        )}
+        )} */}
         <Select value={null} onValueChange={() => {}}>
           <SelectTrigger aria-label="Choose price" data-testid="price-filter">
             Price
