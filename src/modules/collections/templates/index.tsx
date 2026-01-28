@@ -26,10 +26,10 @@ export default async function CollectionTemplate({
   params,
 }: {
   searchParams: Record<string, string>
-  params: { countryCode: string; handle: string }
+  params: Promise<{ countryCode: string; handle: string }>
 }) {
   const { sortBy, page, type, material, price } = searchParams
-  const { countryCode, handle } = params
+  const { countryCode, handle } = await params
 
   const region = await getRegion(countryCode)
   if (!region) notFound()
@@ -37,6 +37,7 @@ export default async function CollectionTemplate({
   const currentCollection = await getCollectionByHandle(handle).then(
     (collection: StoreCollection) => collection
   )
+
   if (!currentCollection) notFound()
 
   const pageNumber = page ? parseInt(page) : 1
@@ -57,7 +58,7 @@ export default async function CollectionTemplate({
   const { products: recommendedProducts } = await getProductsList({
     pageParam: 0,
     queryParams: { limit: 9 },
-    countryCode: params.countryCode,
+    countryCode: countryCode,
   }).then(({ response }) => response)
 
   return (
