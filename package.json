@@ -45,7 +45,7 @@
     "@stripe/stripe-js": "5.5.0",
     "@types/mdx": "2.0.13",
     "algoliasearch": "4.20.0",
-    "axios": "^1.13.4",
+    "axios": "^1.13.5",
     "cva": "1.0.0-beta.1",
     "dotenv": "^16.4.7",
     "embla-carousel-autoplay": "8.3.0",
